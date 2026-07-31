@@ -15,6 +15,8 @@
 type Env = (key: string) => string | undefined;
 
 const ALLOWED = (origin: string) =>
+  origin === 'https://velovox.ai' ||
+  origin === 'https://www.velovox.ai' ||
   origin === 'https://zappa36.github.io' ||
   /^http:\/\/localhost(:\d+)?$/.test(origin);
 

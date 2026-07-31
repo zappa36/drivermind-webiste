@@ -195,6 +195,12 @@
     font-family:'JetBrains Mono',monospace;font-size:.9rem;letter-spacing:.06em;color:var(--cyan-soft);
   }
   .loop-strip p{color:var(--dark-muted);font-size:.95rem;max-width:520px}
+  /* the strip also appears on a light section, where the dark palette would fail */
+  .section--light .loop-strip{border-color:var(--paper-line);background:#FFFFFF}
+  .section--light .loop-strip__code{color:#17708C}
+  .section--light .loop-strip p{color:var(--ink-muted)}
+  .role{font-weight:400;color:var(--cyan-soft)}
+  .section--light .role{color:#17708C}
 
   /* ---------- illustrations ---------- */
   .illus{
@@ -646,34 +652,8 @@
   </div>
 </section>
 
-<!-- ======================= STATUS ======================= -->
-<section class="section section--light">
-  <div class="wrap">
-    <span class="eyebrow">Where we are</span>
-    <h2>Early — and honest about it.</h2>
-    <p class="lead">DriverSense has been tested as a proof of concept. It is not yet deployed in production, and you won’t find made-up numbers on this page — when we have real pilot results, we’ll publish them here.</p>
-
-    <div class="grid-3">
-      <div class="card reveal">
-        <h3>A working proof of concept</h3>
-        <p>The full loop — voice capture, AI structuring, dispatcher approval, inheritance by the next driver — runs on a self-collected delivery route with real GPS and dwell data.</p>
-      </div>
-      <div class="card reveal">
-        <h3>Checked with the market</h3>
-        <p>25 interviews with drivers, dispatchers and managers working at carriers including DHL, PostNord, Poste Italiane, Amazon, GLS and PostNL confirmed the problem and the approach.</p>
-      </div>
-      <div class="card reveal">
-        <h3>First pilot in preparation</h3>
-        <p>With a major European parcel carrier: data-sharing terms drafted, delivery scenarios defined, and an SDK path into their own driver app identified. No production deployment yet.</p>
-      </div>
-    </div>
-
-    <p class="pull reveal">No formal founding date yet — DriverSense is an early-stage venture inside <b>Beam, the venture studio of BEUMER Group</b>, still going through Beam’s staged validation.</p>
-  </div>
-</section>
-
 <!-- ======================= TEAM ======================= -->
-<section class="section" id="team">
+<section class="section section--light" id="team">
   <div class="wrap">
     <span class="eyebrow">Team</span>
     <h2>Who is building it</h2>
@@ -681,11 +661,11 @@
 
     <div class="grid-2">
       <div class="card reveal">
-        <h3>Vincenzo De Salvo <span style="color:var(--cyan-soft);font-weight:400">· Commercial</span></h3>
+        <h3>Vincenzo De Salvo <span class="role">· Commercial</span></h3>
         <p>Supply-chain and logistics background from Sony and Tetra Pak in Sweden. Later founded his own AI company before joining Beam to build DriverSense.</p>
       </div>
       <div class="card reveal">
-        <h3>Johannes Berding <span style="color:var(--cyan-soft);font-weight:400">· Technology</span></h3>
+        <h3>Johannes Berding <span class="role">· Technology</span></h3>
         <p>Founded a travel-tech startup built on a novel routing algorithm. Brings GIS algorithms and device sensor signal interpretation — GPS, motion patterns — to the DriverSense platform.</p>
       </div>
     </div>

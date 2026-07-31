@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DriverSense — What one driver learns, the next one inherits</title>
-<meta name="description" content="DriverSense captures the route knowledge in drivers' heads — by voice — checks it with a dispatcher, and hands it to the next driver at the right stop.">
+<meta name="description" content="DriverSense captures the route knowledge in drivers' heads by voice. AI turns it into structured, location-tagged tips, a dispatcher gives the final approval, and the next driver inherits it at the right stop.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Saira:wght@400;500;600&family=Saira+Semi+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -272,6 +272,7 @@
       <li><a href="#how">How it works</a></li>
       <li><a href="#drivers">For drivers</a></li>
       <li><a href="#carriers">For carriers</a></li>
+      <li><a href="#team">Team</a></li>
       <li><a class="btn btn--primary" href="#contact">Get in touch</a></li>
     </ul>
   </div>
@@ -283,7 +284,7 @@
     <div>
       <span class="eyebrow">The intelligence layer for last-mile delivery</span>
       <h1>What one driver learns about a route, the next one inherits.</h1>
-      <p class="lead">Drivers know things no map does — which bell works, where the van fits, when the gate is locked. DriverSense captures that knowledge by voice, has a dispatcher check it, and plays it back to the next driver at exactly the right stop.</p>
+      <p class="lead">Drivers know things no map does — which bell works, where the van fits, when the gate is locked. DriverSense captures that knowledge by voice, AI turns it into a structured, location-tagged tip, a dispatcher gives the final approval, and it plays back to the next driver at exactly the right stop.</p>
       <div class="hero__ctas">
         <a class="btn btn--primary" href="#how">See how it works</a>
         <a class="btn btn--ghost" href="#contact">Get in touch</a>
@@ -299,14 +300,14 @@
       </div>
       <div class="flow-link reveal" aria-hidden="true"></div>
       <div class="tip-card tip-card--check reveal">
-        <div class="tip-card__meta">Berlin Nord Hub · Dispatch</div>
-        <div class="tip-card__body">New tip from M. Kaur — checked against the stop record.</div>
+        <div class="tip-card__meta">AI structuring · Berlin Nord Hub dispatch</div>
+        <div class="tip-card__body">Structured as <em>access · stop 24</em> — side entrance, gate code, matched to the stop record. Ready for a one-tap check.</div>
         <div class="approve-row" aria-hidden="true">
           <span class="mini-btn mini-btn--yes">Approve</span>
           <span class="mini-btn">Edit</span>
           <span class="mini-btn">Reject</span>
         </div>
-        <span class="chip chip--approve">Approved · shared with the route</span>
+        <span class="chip chip--approve">Dispatcher approved · human in the loop</span>
       </div>
       <div class="flow-link reveal" aria-hidden="true"></div>
       <div class="tip-card tip-card--inherit reveal">
@@ -324,7 +325,7 @@
   <div class="wrap">
     <span class="eyebrow">The problem</span>
     <h2>The best route data isn’t in your system.<br>It’s in your drivers’ heads.</h2>
-    <p class="lead">Route plans are built on static data. Reality changes every day — roadworks, blocked docks, broken bells, confusing entrances. Drivers work around all of it. But almost none of it gets written down.</p>
+    <p class="lead">Parcel logistics is highly automated — until the driver leaves the depot. From there, delivery depends on what the driver knows: where to park, which entrance works, how to reach the right door. That knowledge is captured nowhere, so the carrier pays for it three times over.</p>
 
     <div class="illus reveal">
       <svg viewBox="0 0 1080 340" role="img" xmlns="http://www.w3.org/2000/svg">
@@ -407,7 +408,7 @@
         <line x1="430" y1="250" x2="420" y2="284" stroke="#46617F" stroke-width="1.5" opacity=".9"/>
         <circle cx="430" cy="248" r="8" fill="none" stroke="#35BFE3" stroke-opacity=".45" stroke-width="2"/>
         <circle cx="430" cy="248" r="4" fill="#35BFE3"/>
-        <rect x="346" y="284" width="152" height="26" rx="7" fill="#101C2C" stroke="#7FD6EA" stroke-opacity=".35"/>
+        <rect x="346" y="284" width="168" height="26" rx="7" fill="#101C2C" stroke="#7FD6EA" stroke-opacity=".35"/>
         <text x="358" y="302" font-family="'JetBrains Mono',monospace" font-size="13.5" letter-spacing=".05em" fill="#DCE9F4">NO STOPPING 8–17</text>
       </svg>
     </div>
@@ -415,16 +416,16 @@
 
     <div class="grid-3">
       <div class="card reveal">
-        <h3>Nothing is written down</h3>
-        <p>Gate codes, safe parking spots, the door that actually opens — it lives in memory, not in any system.</p>
+        <h3>Ramp-up and churn</h3>
+        <p>A new driver needs four to six weeks to reach full speed, and many don’t last that long. The knowledge leaves with them; the next hire starts from zero.</p>
       </div>
       <div class="card reveal">
-        <h3>Every handover starts from zero</h3>
-        <p>Holiday, sick day, new hire: the next driver relearns the same route the hard way, stop by stop.</p>
+        <h3>The same friction, relearned</h3>
+        <p>Every driver rediscovers the entrances, parking spots and doors the last one already found — repeated across thousands of stops.</p>
       </div>
       <div class="card reveal">
-        <h3>Planning stays blind</h3>
-        <p>The friction never reaches route planning, so the same problems repeat — day after day, driver after driver.</p>
+        <h3>No insight into why</h3>
+        <p>Dispatch sees that a stop ran late or failed, but never why. So tomorrow’s plan repeats today’s mistakes and the ETAs stay wrong.</p>
       </div>
     </div>
 
@@ -442,17 +443,17 @@
       <div class="step step--capture reveal">
         <span class="step__tag">Step 1 · Capture</span>
         <h3>The driver says it</h3>
-        <p class="lead" style="font-size:.98rem">Drivers talk to Otto, a voice assistant — hands-free, while they work. Otto can also notice when something looks off, like an unusually long stop, and simply ask what happened.</p>
+        <p class="lead" style="font-size:.98rem">Drivers talk to Otto, a voice assistant — hands-free, while they work. No typing, no forms. Otto can also notice when something looks off, like an unusually long stop, and simply ask what happened.</p>
       </div>
       <div class="step step--check reveal">
-        <span class="step__tag">Step 2 · Check</span>
-        <h3>A dispatcher approves it</h3>
-        <p class="lead" style="font-size:.98rem">Every tip goes to dispatch first. Approve, edit, or reject — only checked knowledge spreads.</p>
+        <span class="step__tag">Step 2 · Validate</span>
+        <h3>AI structures it, a human approves</h3>
+        <p class="lead" style="font-size:.98rem">AI turns the voice note into a structured, location-tagged tip and matches it to the stop record. A dispatcher gives the final approval in one tap — human in the loop, minimal manual work.</p>
       </div>
       <div class="step step--inherit reveal">
         <span class="step__tag">Step 3 · Inherit</span>
         <h3>The next driver hears it</h3>
-        <p class="lead" style="font-size:.98rem">On the next run, the tip plays at the right stop, at the right moment. New drivers start with the knowledge of everyone who drove the route before them.</p>
+        <p class="lead" style="font-size:.98rem">On the next run, the tip plays at the right stop, at the right moment. New drivers start with the knowledge of everyone who drove the route before them — and each shift sharpens what Otto asks next.</p>
       </div>
     </div>
 
@@ -472,7 +473,7 @@
 
     <div class="illus reveal">
       <svg viewBox="0 0 1080 300" role="img" xmlns="http://www.w3.org/2000/svg">
-        <title>A driver in a hi-vis vest beside a delivery van speaks a voice note; the tip is captured, approved by dispatch, and passed on to the next driver</title>
+        <title>A driver in a hi-vis vest beside a delivery van speaks a voice note; AI structures the tip, a dispatcher approves it, and it is passed on to the next driver</title>
         <defs>
           <linearGradient id="gB1" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0" stop-color="#0E1A2A"/><stop offset="1" stop-color="#182C44"/>
@@ -520,24 +521,24 @@
         </g>
         <line x1="540" y1="124" x2="566" y2="124" stroke="#46617F" stroke-width="2"/>
         <polygon points="566 118, 578 124, 566 130" fill="#46617F"/>
-        <!-- capture + approval chips -->
-        <rect x="584" y="106" width="170" height="34" rx="9" fill="#101C2C" stroke="#35BFE3" stroke-opacity=".5"/>
+        <!-- AI structuring, then the human-in-the-loop approval -->
+        <rect x="584" y="106" width="200" height="34" rx="9" fill="#101C2C" stroke="#35BFE3" stroke-opacity=".5"/>
         <circle cx="602" cy="123" r="4" fill="#35BFE3"/>
-        <text x="614" y="129" font-family="'JetBrains Mono',monospace" font-size="15" letter-spacing=".04em" fill="#DCE9F4">TIP CAPTURED</text>
-        <line x1="669" y1="144" x2="669" y2="156" stroke="#46617F" stroke-width="2"/>
-        <polygon points="663 156, 675 156, 669 166" fill="#46617F"/>
-        <rect x="584" y="170" width="214" height="34" rx="9" fill="#101C2C" stroke="#FFCC00" stroke-opacity=".5"/>
-        <path d="M598 187 l5 5 l9 -10" stroke="#FFCC00" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-        <text x="622" y="193" font-family="'JetBrains Mono',monospace" font-size="15" letter-spacing=".04em" fill="#DCE9F4">DISPATCH APPROVED</text>
+        <text x="614" y="129" font-family="'JetBrains Mono',monospace" font-size="15" letter-spacing=".04em" fill="#DCE9F4">AI STRUCTURES IT</text>
+        <line x1="684" y1="144" x2="684" y2="156" stroke="#46617F" stroke-width="2"/>
+        <polygon points="678 156, 690 156, 684 166" fill="#46617F"/>
+        <rect x="560" y="170" width="238" height="34" rx="9" fill="#101C2C" stroke="#FFCC00" stroke-opacity=".5"/>
+        <path d="M574 187 l5 5 l9 -10" stroke="#FFCC00" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="598" y="193" font-family="'JetBrains Mono',monospace" font-size="15" letter-spacing=".04em" fill="#DCE9F4">DISPATCHER APPROVES</text>
         <line x1="798" y1="187" x2="828" y2="187" stroke="#46617F" stroke-width="2"/>
         <polygon points="828 181, 840 187, 828 193" fill="#46617F"/>
         <!-- passed to the next driver -->
-        <rect x="848" y="170" width="214" height="34" rx="9" fill="#101C2C" stroke="#2BB37E" stroke-opacity=".5"/>
-        <circle cx="864" cy="187" r="4" fill="#2BB37E"/>
-        <text x="876" y="193" font-family="'JetBrains Mono',monospace" font-size="15" letter-spacing=".04em" fill="#DCE9F4">NEXT DRIVER HEARS IT</text>
+        <rect x="844" y="170" width="228" height="34" rx="9" fill="#101C2C" stroke="#2BB37E" stroke-opacity=".5"/>
+        <circle cx="860" cy="187" r="4" fill="#2BB37E"/>
+        <text x="872" y="193" font-family="'JetBrains Mono',monospace" font-size="15" letter-spacing=".04em" fill="#DCE9F4">NEXT DRIVER HEARS IT</text>
       </svg>
     </div>
-    <p class="illus-cap reveal">Speak it hands-free → dispatch approves → the next driver hears it</p>
+    <p class="illus-cap reveal">Speak it hands-free → AI structures it → a dispatcher approves → the next driver hears it</p>
 
     <div class="grid-3">
       <div class="card reveal">
@@ -565,19 +566,27 @@
     <div class="grid-2">
       <div class="card reveal">
         <h3>Faster ramp-up</h3>
-        <p>New and temporary drivers inherit the route from day one, instead of learning it the hard way.</p>
+        <p>New and temporary drivers inherit the route from day one, instead of spending four to six weeks learning it the hard way.</p>
       </div>
       <div class="card reveal">
         <h3>Known problems stop repeating</h3>
-        <p>A broken bell or blocked access gets captured once — so the next driver doesn’t hit the same wall.</p>
+        <p>A broken bell or blocked access gets captured once — so the next driver doesn’t hit the same wall, and neither does the one after that.</p>
       </div>
       <div class="card reveal">
         <h3>A knowledge base you can trust</h3>
-        <p>Every tip is checked by a human before it counts. No noise, no stale advice piling up.</p>
+        <p>AI structures every tip and matches it to the stop record; a dispatcher gives the final approval. Trustworthy data, almost no manual work.</p>
       </div>
       <div class="card reveal">
         <h3>Planning that learns</h3>
-        <p>Structured friction records flow back into your route planning — the street-level layer static plans are missing.</p>
+        <p>Dispatch finally sees why a stop ran late or failed, not just that it did. Structured records feed route plans and ETA accuracy.</p>
+      </div>
+      <div class="card reveal">
+        <h3>Ships inside your own app</h3>
+        <p>Delivered as an SDK in the driver app your drivers already use — no second app to roll out. Sold per depot.</p>
+      </div>
+      <div class="card reveal">
+        <h3>A data asset that compounds</h3>
+        <p>Approved tips accumulate into a corpus a competitor can’t buy. It only grows by running real deliveries.</p>
       </div>
     </div>
 
@@ -650,10 +659,52 @@
 
 <!-- ======================= STATUS ======================= -->
 <section class="section section--light">
-  <div class="wrap status">
+  <div class="wrap">
     <span class="eyebrow">Where we are</span>
     <h2>Early — and honest about it.</h2>
-    <p class="lead">DriverSense is new. We are preparing our first pilot with a major European parcel carrier. You won’t find big claims or made-up numbers on this page — when we have real pilot results, we’ll publish them here.</p>
+    <p class="lead">DriverSense has been tested as a proof of concept. It is not yet deployed in production, and you won’t find made-up numbers on this page — when we have real pilot results, we’ll publish them here.</p>
+
+    <div class="grid-3">
+      <div class="card reveal">
+        <h3>A working proof of concept</h3>
+        <p>The full loop — voice capture, AI structuring, dispatcher approval, inheritance by the next driver — runs on a self-collected delivery route with real GPS and dwell data.</p>
+      </div>
+      <div class="card reveal">
+        <h3>Checked with the market</h3>
+        <p>25 interviews with drivers, dispatchers and managers working at carriers including DHL, PostNord, Poste Italiane, Amazon, GLS and PostNL confirmed the problem and the approach.</p>
+      </div>
+      <div class="card reveal">
+        <h3>First pilot in preparation</h3>
+        <p>With a major European parcel carrier: data-sharing terms drafted, delivery scenarios defined, and an SDK path into their own driver app identified. No production deployment yet.</p>
+      </div>
+    </div>
+
+    <p class="pull reveal">No formal founding date yet — DriverSense is an early-stage venture inside <b>Beam, the venture studio of BEUMER Group</b>, still going through Beam’s staged validation.</p>
+  </div>
+</section>
+
+<!-- ======================= TEAM ======================= -->
+<section class="section" id="team">
+  <div class="wrap">
+    <span class="eyebrow">Team</span>
+    <h2>Who is building it</h2>
+    <p class="lead">Two founders, backed by Beam — the venture studio of BEUMER Group.</p>
+
+    <div class="grid-2">
+      <div class="card reveal">
+        <h3>Vincenzo De Salvo <span style="color:var(--cyan-soft);font-weight:400">· Commercial</span></h3>
+        <p>Supply-chain and logistics background from Sony and Tetra Pak in Sweden. Later founded his own AI company before joining Beam to build DriverSense.</p>
+      </div>
+      <div class="card reveal">
+        <h3>Johannes Berding <span style="color:var(--cyan-soft);font-weight:400">· Technology</span></h3>
+        <p>Founded a travel-tech startup built on a novel routing algorithm. Brings GIS algorithms and device sensor signal interpretation — GPS, motion patterns — to the DriverSense platform.</p>
+      </div>
+    </div>
+
+    <div class="loop-strip reveal">
+      <span class="loop-strip__code">BEUMER’S UNFAIR ADVANTAGE</span>
+      <p>Decades of parcel-logistics trust, existing carrier relationships and an installed sortation base open doors — and data access — that a standalone software startup could not get.</p>
+    </div>
   </div>
 </section>
 
@@ -661,8 +712,8 @@
 <section class="section section--light section--divide" id="contact">
   <div class="wrap">
     <span class="eyebrow">Contact</span>
-    <h2>See the demo.</h2>
-    <p class="lead">We’d rather show you than tell you. Leave a note and we’ll set up a walkthrough.</p>
+    <h2>Let’s run a pilot.</h2>
+    <p class="lead">What we’re looking for first is a pilot with a postal or parcel company: one depot to start, a motivated subset of drivers, and some dispatcher time to approve incoming tips — plus access to basic route and stop data and a path to SDK integration in your driver app. Together we prove driver capture rate, faster ramp-up and fewer failed first attempts.</p>
 
     <form id="contact-form" class="contact-form" novalidate>
         <div class="field">
@@ -692,7 +743,7 @@
   <div class="wrap foot">
     <div>
       <a class="wordmark" href="#top">DRIVER<span>SENSE</span></a>
-      <small>A Beam Entrepreneurs venture — part of BEUMER Group</small>
+      <small>Built at Beam — the venture studio of BEUMER Group</small>
     </div>
     <small>© 2026 DriverSense</small>
     <span class="demo-note">Names, routes, and tips shown on this page are illustrative demo content.</span>

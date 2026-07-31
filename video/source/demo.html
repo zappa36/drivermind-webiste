@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>velovox.ai — demo video source</title>
+<link rel="stylesheet" href="fonts.css">
+<style>
+  /*
+    Animation source for the velovox.ai demo marketing video.
+    Fixed 1920×1080 stage. Every animation is a CSS keyframe animation with an
+    absolute delay on one global 37s timeline, so the whole video can be paused
+    and seeked frame-by-frame via document.getAnimations() (see render.cjs).
+  */
+  :root{
+    --navy-900:#0C1623;
+    --navy-800:#16283C;
+    --cyan:#35BFE3;
+    --cyan-soft:#7FD6EA;
+    --yellow:#FFCC00;
+    --green:#2BB37E;
+    --green-soft:#7FE6BE;
+    --dark-text:#E9F1F8;
+    --dark-muted:#9FB3C8;
+    --dark-line:rgba(127,214,234,.16);
+    --card-dark:rgba(22,40,60,.72);
+    --radius:18px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:1920px;height:1080px;overflow:hidden;background:var(--navy-900)}
+  body{
+    font-family:'Saira',sans-serif;color:var(--dark-text);line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  #stage{position:relative;width:1920px;height:1080px;overflow:hidden}
+
+  /* ---------- ambient background ---------- */
+  .glow{position:absolute;border-radius:50%;filter:blur(10px);pointer-events:none}
+  .glow--a{
+    width:1400px;height:1100px;right:-380px;top:-420px;
+    background:radial-gradient(closest-side, rgba(53,191,227,.11), transparent 70%);
+    animation:driftA 22s ease-in-out infinite alternate;
+  }
+  .glow--b{
+    width:1200px;height:1000px;left:-360px;bottom:-420px;
+    background:radial-gradient(closest-side, rgba(43,179,126,.08), transparent 70%);
+    animation:driftB 26s ease-in-out infinite alternate;
+  }
+  @keyframes driftA{from{transform:translate(0,0) scale(1)}to{transform:translate(-90px,60px) scale(1.08)}}
+  @keyframes driftB{from{transform:translate(0,0) scale(1)}to{transform:translate(70px,-50px) scale(1.06)}}
+
+  /* ---------- scene plumbing ---------- */
+  .scene{
+    position:absolute;inset:0;
+    animation:sceneIn .45s ease-out both;animation-delay:var(--in);
+  }
+  .scene__exit{
+    position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    animation:sceneOut .4s ease-in both;animation-delay:var(--out);
+  }
+  .scene--hold .scene__exit{animation:none}
+  @keyframes sceneIn{from{opacity:0}to{opacity:1}}
+  @keyframes sceneOut{from{opacity:1}to{opacity:0}}
+
+  /* element entrance: fade + rise, absolute delay via --d */
+  .rise{animation:riseIn .55s cubic-bezier(.16,.7,.25,1) both;animation-delay:var(--d)}
+  @keyframes riseIn{
+    from{opacity:0;transform:translateY(34px)}
+    to{opacity:1;transform:translateY(0)}
+  }
+
+  /* word-by-word reveal: base delay --wb + index --i */
+  .w{
+    display:inline-block;
+    animation:wordIn .38s cubic-bezier(.2,.7,.3,1) both;
+    animation-delay:calc(var(--wb) + var(--i) * 110ms);
+  }
+  @keyframes wordIn{
+    from{opacity:0;transform:translateY(14px);filter:blur(7px)}
+    to{opacity:1;transform:translateY(0);filter:blur(0)}
+  }
+
+  /* ---------- shared typography ---------- */
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;font-size:23px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--cyan);display:block;
+  }
+  h1,h2{font-family:'Saira Semi Condensed',sans-serif;line-height:1.1;font-weight:700}
+  .center{display:flex;flex-direction:column;align-items:center;text-align:center;gap:28px;max-width:1360px}
+  .col{display:flex;flex-direction:column;align-items:center;gap:34px;width:1000px}
+
+  .wordmark{font-family:'Saira Semi Condensed',sans-serif;font-weight:700;letter-spacing:.05em}
+  .wordmark span{color:var(--cyan)}
+
+  /* persistent corner brand */
+  .corner{
+    position:absolute;left:64px;top:52px;font-size:30px;opacity:0;
+    animation:cornerIn .5s ease both 4600ms, cornerOut .5s ease both 31900ms;
+  }
+  @keyframes cornerIn{from{opacity:0}to{opacity:.85}}
+  @keyframes cornerOut{from{opacity:.85}to{opacity:0}}
+
+  /* ---------- cards / chips (site language) ---------- */
+  .tip-card{
+    width:100%;background:var(--card-dark);border:1px solid var(--dark-line);
+    border-left:5px solid var(--cyan);border-radius:var(--radius);
+    padding:44px 52px;text-align:left;backdrop-filter:blur(4px);
+  }
+  .tip-card--check{border-left-color:var(--yellow)}
+  .tip-card--inherit{border-left-color:var(--green)}
+  .tip-card__meta{
+    font-family:'JetBrains Mono',monospace;font-size:20px;letter-spacing:.11em;
+    text-transform:uppercase;color:var(--dark-muted);margin-bottom:26px;
+  }
+  .tip-card__body{font-size:36px;line-height:1.45}
+  .tip-card__body em{font-style:normal;color:var(--cyan-soft)}
+  .tip-card--inherit .tip-card__body em{color:var(--green-soft)}
+
+  .step-tag{
+    font-family:'JetBrains Mono',monospace;font-size:22px;letter-spacing:.14em;
+    text-transform:uppercase;padding:12px 26px;border-radius:999px;border:1.5px solid;
+  }
+  .step-tag--capture{color:var(--cyan);border-color:rgba(53,191,227,.45)}
+  .step-tag--check{color:var(--yellow);border-color:rgba(255,204,0,.4)}
+  .step-tag--inherit{color:#6FDDB2;border-color:rgba(43,179,126,.45)}
+
+  .chip{
+    display:inline-block;font-family:'JetBrains Mono',monospace;font-size:19px;
+    letter-spacing:.09em;text-transform:uppercase;padding:10px 22px;border-radius:999px;
+    border:1.5px solid var(--dark-line);color:var(--dark-muted);white-space:nowrap;
+  }
+  .chip--approve{border-color:rgba(255,204,0,.45);color:var(--yellow)}
+  .chip--live{border-color:rgba(43,179,126,.5);color:#6FDDB2}
+
+  /* ---------- scene 1 · title ---------- */
+  #s1 .wordmark{font-size:132px}
+  #s1 .tagline{
+    font-family:'Saira Semi Condensed',sans-serif;font-weight:600;font-size:44px;
+    color:var(--dark-muted);max-width:1100px;
+  }
+
+  /* ---------- scene 2 · problem ---------- */
+  #s2 .center{max-width:1640px}
+  #s2 h2{font-size:88px}
+  #s2 h2 span{white-space:nowrap}
+  #s2 h2 .alt{color:var(--cyan-soft)}
+  #s2 .frictions{
+    display:flex;gap:22px;margin-top:26px;
+  }
+  .friction{
+    font-family:'JetBrains Mono',monospace;font-size:21px;letter-spacing:.08em;
+    text-transform:uppercase;color:var(--dark-muted);
+    border:1.5px solid var(--dark-line);border-radius:12px;padding:14px 26px;
+  }
+  #s2 .kicker{
+    font-family:'Saira Semi Condensed',sans-serif;font-weight:600;font-size:40px;
+    color:var(--dark-text);margin-top:14px;
+  }
+  #s2 .kicker b{color:var(--cyan-soft);font-weight:600}
+
+  /* ---------- voice waveform ---------- */
+  .wave{display:flex;gap:9px;align-items:center;height:76px}
+  .wave i{
+    width:9px;border-radius:5px;background:var(--cyan);height:var(--h);
+    animation:bar .8s ease-in-out infinite alternate;
+    animation-delay:calc(var(--p) * -.19s);
+  }
+  .wave--play i{background:var(--green)}
+  @keyframes bar{from{transform:scaleY(.22)}to{transform:scaleY(1)}}
+
+  .cardrow{display:flex;gap:34px;align-items:center;margin-bottom:30px}
+  .micdot{
+    width:76px;height:76px;border-radius:50%;flex:none;
+    display:flex;align-items:center;justify-content:center;
+    border:2px solid rgba(53,191,227,.5);
+    animation:pulse 1.6s ease-out infinite;
+  }
+  .micdot--green{border-color:rgba(43,179,126,.55);animation-name:pulseGreen}
+  @keyframes pulse{
+    0%{box-shadow:0 0 0 0 rgba(53,191,227,.35)}
+    100%{box-shadow:0 0 0 26px rgba(53,191,227,0)}
+  }
+  @keyframes pulseGreen{
+    0%{box-shadow:0 0 0 0 rgba(43,179,126,.35)}
+    100%{box-shadow:0 0 0 26px rgba(43,179,126,0)}
+  }
+
+  /* ---------- scene 4 · structured rows ---------- */
+  .rows{display:flex;flex-direction:column;gap:18px;margin-bottom:34px}
+  .row{
+    display:flex;align-items:baseline;gap:30px;
+    border:1px solid var(--dark-line);border-radius:12px;padding:18px 28px;
+    background:rgba(12,22,35,.45);
+  }
+  .row dt{
+    font-family:'JetBrains Mono',monospace;font-size:19px;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--dark-muted);width:150px;flex:none;
+  }
+  .row dd{font-size:30px;color:var(--dark-text)}
+  .row dd b{color:var(--cyan-soft);font-weight:500}
+  .approve-row{display:flex;gap:20px;align-items:center}
+  .mini-btn{
+    font-family:'Saira Semi Condensed',sans-serif;font-weight:600;font-size:28px;
+    padding:14px 40px;border-radius:14px;border:1.5px solid var(--dark-line);
+    background:transparent;color:var(--dark-muted);
+  }
+  .mini-btn--yes{
+    background:var(--yellow);border-color:var(--yellow);color:var(--navy-900);
+    animation:riseIn .55s cubic-bezier(.16,.7,.25,1) both, press .34s ease-in-out both;
+    animation-delay:var(--d), 19750ms;
+  }
+  @keyframes press{
+    0%{transform:scale(1)}
+    45%{transform:scale(.93)}
+    100%{transform:scale(1)}
+  }
+  .verdict{display:flex;gap:16px;margin-left:20px;align-items:center}
+  .verdict .chip{font-size:18px;padding:9px 20px}
+  #s4 .col{width:1150px}
+
+  /* ---------- scene 5 · inherit ---------- */
+  .stopline{
+    font-family:'JetBrains Mono',monospace;font-size:23px;letter-spacing:.13em;
+    text-transform:uppercase;color:var(--dark-muted);
+    display:flex;align-items:center;gap:18px;
+  }
+  .pin{
+    width:16px;height:16px;border-radius:50%;background:var(--green);flex:none;
+    animation:pulseGreen 1.6s ease-out infinite;
+  }
+
+  /* ---------- scene 6 · benefits ---------- */
+  .benefits{display:flex;flex-direction:column;gap:44px;text-align:left}
+  .benefit{
+    display:flex;align-items:center;gap:30px;
+    font-family:'Saira Semi Condensed',sans-serif;font-weight:600;font-size:62px;line-height:1.15;
+  }
+  .benefit .tick{
+    width:22px;height:22px;border-radius:6px;flex:none;transform:rotate(45deg);
+  }
+  .benefit--a .tick{background:var(--cyan)}
+  .benefit--b .tick{background:var(--yellow)}
+  .benefit--c .tick{background:var(--green)}
+  .benefit small{
+    display:block;font-family:'Saira',sans-serif;font-weight:400;font-size:27px;
+    color:var(--dark-muted);margin-top:6px;
+  }
+
+  /* ---------- scene 7 · CTA ---------- */
+  #s7 .wordmark{font-size:110px}
+  #s7 .tagline{
+    font-family:'Saira Semi Condensed',sans-serif;font-weight:600;font-size:42px;
+    color:var(--dark-muted);
+  }
+  .btn{
+    display:inline-block;font-family:'Saira Semi Condensed',sans-serif;font-weight:600;
+    font-size:36px;padding:22px 56px;border-radius:16px;
+    background:var(--cyan);color:var(--navy-900);margin-top:10px;
+  }
+  #s7 .url{
+    font-family:'JetBrains Mono',monospace;font-size:24px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--dark-muted);margin-top:8px;
+  }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="glow glow--a"></div>
+  <div class="glow glow--b"></div>
+
+  <div class="corner wordmark">VELOVOX<span>.AI</span></div>
+
+  <!-- ============ scene 1 · title (0.0 – 4.0s) ============ -->
+  <section class="scene" id="s1" style="--in:0ms;--out:3600ms">
+    <div class="scene__exit" style="--out:3600ms">
+      <div class="center">
+        <span class="eyebrow rise" style="--d:400ms">The intelligence layer for last-mile delivery</span>
+        <div class="wordmark rise" style="--d:800ms">VELOVOX<span>.AI</span></div>
+        <p class="tagline rise" style="--d:1600ms">What one driver learns about a route,<br>the next one inherits.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ scene 2 · problem (4.0 – 9.0s) ============ -->
+  <section class="scene" id="s2" style="--in:4000ms">
+    <div class="scene__exit" style="--out:8600ms">
+      <div class="center">
+        <span class="eyebrow rise" style="--d:4300ms">The problem</span>
+        <h2>
+          <span class="rise" style="--d:4550ms;display:block">The best route data isn’t in your system.</span>
+          <span class="rise alt" style="--d:5450ms;display:block">It’s in your drivers’ heads.</span>
+        </h2>
+        <div class="frictions">
+          <span class="friction rise" style="--d:6350ms">Broken bell</span>
+          <span class="friction rise" style="--d:6600ms">Unknown gate code</span>
+          <span class="friction rise" style="--d:6850ms">Blocked dock</span>
+          <span class="friction rise" style="--d:7100ms">Nowhere to park</span>
+        </div>
+        <p class="kicker rise" style="--d:7600ms">Captured <b>nowhere</b> — relearned on every shift.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ scene 3 · capture (9.0 – 15.5s) ============ -->
+  <section class="scene" id="s3" style="--in:9000ms">
+    <div class="scene__exit" style="--out:15100ms">
+      <div class="col">
+        <span class="step-tag step-tag--capture rise" style="--d:9300ms">01 · Capture — the driver says it</span>
+        <div class="tip-card rise" style="--d:9800ms">
+          <div class="tip-card__meta rise" style="--d:10100ms">Driver · Route 7 · Stop 24 · 07:42</div>
+          <div class="cardrow rise" style="--d:10250ms">
+            <div class="micdot">
+              <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#35BFE3" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10v1a7 7 0 0 0 14 0v-1"/><path d="M12 18v4"/></svg>
+            </div>
+            <div class="wave">
+              <i style="--p:0;--h:26px"></i><i style="--p:1;--h:46px"></i><i style="--p:2;--h:66px"></i><i style="--p:3;--h:38px"></i><i style="--p:4;--h:58px"></i><i style="--p:5;--h:72px"></i><i style="--p:6;--h:34px"></i><i style="--p:7;--h:52px"></i><i style="--p:8;--h:68px"></i><i style="--p:9;--h:30px"></i><i style="--p:10;--h:48px"></i><i style="--p:11;--h:64px"></i><i style="--p:12;--h:40px"></i><i style="--p:13;--h:56px"></i><i style="--p:14;--h:28px"></i><i style="--p:15;--h:50px"></i><i style="--p:16;--h:70px"></i><i style="--p:17;--h:36px"></i><i style="--p:18;--h:54px"></i><i style="--p:19;--h:44px"></i>
+            </div>
+          </div>
+          <div class="tip-card__body" style="--wb:10700ms">
+            <em>
+              <span class="w" style="--i:0">“Front</span>
+              <span class="w" style="--i:1">bell</span>
+              <span class="w" style="--i:2">is</span>
+              <span class="w" style="--i:3">broken.</span>
+              <span class="w" style="--i:4">Ring</span>
+              <span class="w" style="--i:5">at</span>
+              <span class="w" style="--i:6">the</span>
+              <span class="w" style="--i:7">side</span>
+              <span class="w" style="--i:8">door</span>
+              <span class="w" style="--i:9">in</span>
+              <span class="w" style="--i:10">the</span>
+              <span class="w" style="--i:11">yard</span>
+              <span class="w" style="--i:12">—</span>
+              <span class="w" style="--i:13">code</span>
+              <span class="w" style="--i:14">4711.”</span>
+            </em>
+          </div>
+        </div>
+        <span class="chip rise" style="--d:13400ms">Voice note · Hands-free · While they work</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ scene 4 · check (15.5 – 22.0s) ============ -->
+  <section class="scene" id="s4" style="--in:15500ms">
+    <div class="scene__exit" style="--out:21600ms">
+      <div class="col">
+        <span class="step-tag step-tag--check rise" style="--d:15800ms">02 · Check — AI structures, a human approves</span>
+        <div class="tip-card tip-card--check rise" style="--d:16300ms">
+          <div class="tip-card__meta rise" style="--d:16500ms">AI draft · Matched to stop record</div>
+          <dl class="rows">
+            <div class="row rise" style="--d:16750ms"><dt>Type</dt><dd><b>Access</b> · building entry</dd></div>
+            <div class="row rise" style="--d:17250ms"><dt>Stop</dt><dd>#24 · Hofweg 12</dd></div>
+            <div class="row rise" style="--d:17750ms"><dt>Tip</dt><dd>Use the side door in the yard</dd></div>
+            <div class="row rise" style="--d:18250ms"><dt>Code</dt><dd><b>4711</b></dd></div>
+          </dl>
+          <div class="approve-row">
+            <span class="mini-btn rise" style="--d:18950ms">Edit</span>
+            <span class="mini-btn mini-btn--yes" style="--d:19050ms">Approve</span>
+            <span class="verdict">
+              <span class="chip chip--approve rise" style="--d:20200ms">✓ Approved by dispatch</span>
+              <span class="chip chip--live rise" style="--d:20950ms">Live on route 7</span>
+            </span>
+          </div>
+        </div>
+        <span class="chip rise" style="--d:20500ms">Human in the loop · One tap</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ scene 5 · inherit (22.0 – 28.0s) ============ -->
+  <section class="scene" id="s5" style="--in:22000ms">
+    <div class="scene__exit" style="--out:27700ms">
+      <div class="col">
+        <span class="step-tag step-tag--inherit rise" style="--d:22300ms">03 · Inherit — the next driver hears it</span>
+        <div class="stopline rise" style="--d:22850ms">
+          <span class="pin"></span> Next shift · New driver · Arriving at stop 24
+        </div>
+        <div class="tip-card tip-card--inherit rise" style="--d:23450ms">
+          <div class="tip-card__meta rise" style="--d:23650ms">Auto playback · Stop 24 · Hofweg 12</div>
+          <div class="cardrow rise" style="--d:23800ms">
+            <div class="micdot micdot--green">
+              <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#2BB37E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="#2BB37E" stroke="none"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9.5 9.5 0 0 1 0 13"/></svg>
+            </div>
+            <div class="wave wave--play">
+              <i style="--p:3;--h:30px"></i><i style="--p:8;--h:52px"></i><i style="--p:1;--h:68px"></i><i style="--p:12;--h:36px"></i><i style="--p:5;--h:60px"></i><i style="--p:16;--h:74px"></i><i style="--p:2;--h:32px"></i><i style="--p:9;--h:54px"></i><i style="--p:14;--h:66px"></i><i style="--p:0;--h:28px"></i><i style="--p:11;--h:50px"></i><i style="--p:6;--h:62px"></i><i style="--p:18;--h:42px"></i><i style="--p:4;--h:58px"></i><i style="--p:13;--h:26px"></i><i style="--p:7;--h:48px"></i><i style="--p:17;--h:72px"></i><i style="--p:10;--h:38px"></i><i style="--p:15;--h:56px"></i><i style="--p:19;--h:46px"></i>
+            </div>
+          </div>
+          <div class="tip-card__body" style="--wb:24200ms">
+            <em>
+              <span class="w" style="--i:0">“Heads</span>
+              <span class="w" style="--i:1">up</span>
+              <span class="w" style="--i:2">—</span>
+              <span class="w" style="--i:3">the</span>
+              <span class="w" style="--i:4">front</span>
+              <span class="w" style="--i:5">bell</span>
+              <span class="w" style="--i:6">is</span>
+              <span class="w" style="--i:7">broken.</span>
+              <span class="w" style="--i:8">Use</span>
+              <span class="w" style="--i:9">the</span>
+              <span class="w" style="--i:10">side</span>
+              <span class="w" style="--i:11">door</span>
+              <span class="w" style="--i:12">in</span>
+              <span class="w" style="--i:13">the</span>
+              <span class="w" style="--i:14">yard,</span>
+              <span class="w" style="--i:15">code</span>
+              <span class="w" style="--i:16">4711.”</span>
+            </em>
+          </div>
+        </div>
+        <span class="chip chip--live rise" style="--d:26500ms">At exactly the right stop · At exactly the right moment</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ scene 6 · benefits (28.0 – 32.5s) ============ -->
+  <section class="scene" id="s6" style="--in:28100ms">
+    <div class="scene__exit" style="--out:32300ms">
+      <div class="benefits">
+        <div class="benefit benefit--a rise" style="--d:28500ms">
+          <span class="tick"></span>
+          <div>Faster ramp-up for new drivers<small>Day one starts with everyone’s route knowledge</small></div>
+        </div>
+        <div class="benefit benefit--b rise" style="--d:29400ms">
+          <span class="tick"></span>
+          <div>Known problems stop repeating<small>Fix the friction once, keep the fix forever</small></div>
+        </div>
+        <div class="benefit benefit--c rise" style="--d:30300ms">
+          <span class="tick"></span>
+          <div>A knowledge base that compounds<small>Every shift makes every route smarter</small></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ scene 7 · CTA (32.5 – 37.0s) ============ -->
+  <section class="scene scene--hold" id="s7" style="--in:32700ms">
+    <div class="scene__exit">
+      <div class="center">
+        <div class="wordmark rise" style="--d:33000ms">VELOVOX<span>.AI</span></div>
+        <p class="tagline rise" style="--d:33800ms">What one driver learns, the next one inherits.</p>
+        <span class="btn rise" style="--d:34600ms">See it on your routes</span>
+        <span class="url rise" style="--d:35200ms">velovox.ai</span>
+      </div>
+    </div>
+  </section>
+</div>
+</body>
+</html>

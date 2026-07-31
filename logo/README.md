@@ -13,6 +13,8 @@ needed to render them.
 | `parcelvox-logo-light.svg` | Full lockup on light backgrounds |
 | `parcelvox-mark.svg` | Mark only (cyan bubble) — avatars, favicons, dark surfaces |
 | `parcelvox-mark-navy.svg` | Mark only (navy bubble) — light surfaces |
+| `parcelvox-logo-dark.png` / `parcelvox-logo-light.png` | 2400px transparent PNG exports of the lockups |
+| `parcelvox-mark.png` / `parcelvox-mark-navy.png` | 1024px transparent PNG exports of the marks |
 | `parcelvox-mark-512.png` | 512px transparent PNG export of the mark |
 
 Keep clear space around the lockup of at least the mark's width, and don't

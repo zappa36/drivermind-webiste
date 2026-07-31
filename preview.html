@@ -238,6 +238,11 @@
     border-radius:10px;padding:10px 14px;
   }
   .form-note.show{display:block}
+  .form-note--ok{
+    color:#0E6B47;background:rgba(43,179,126,.16);border-color:rgba(43,179,126,.5);
+  }
+  /* Honeypot: off-screen for humans, present for bots. */
+  .hp-field{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 
   /* ---------- footer ---------- */
   footer{border-top:1px solid var(--dark-line);padding:44px 0 52px}
@@ -693,6 +698,10 @@
           <label for="f-msg">Message</label>
           <textarea id="f-msg" name="message"></textarea>
         </div>
+        <div class="hp-field" aria-hidden="true">
+          <label for="f-website">Website</label>
+          <input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off">
+        </div>
         <button class="btn btn--primary" type="submit">Send message</button>
         <div class="form-note" id="form-note" role="status">This form isn’t connected to a backend yet — wire it up before publishing.</div>
     </form>
@@ -728,9 +737,55 @@
     els.forEach(function(el){ io.observe(el); });
   })();
 
-  // Contact form: not wired to a backend on purpose — shows an honest note instead of a fake success.
-  document.getElementById('contact-form').addEventListener('submit', function(e){
-    e.preventDefault();
-    document.getElementById('form-note').classList.add('show');
-  });
+  // Contact form → relay function → Slack. While ENDPOINT is empty the form
+  // shows an honest not-connected note instead of a fake success.
+  (function(){
+    var ENDPOINT = ''; // deployed contact function URL, e.g. https://<site>.netlify.app/.netlify/functions/contact
+    var form = document.getElementById('contact-form');
+    var note = document.getElementById('form-note');
+    var btn = form.querySelector('button[type="submit"]');
+    function show(msg, ok){
+      note.textContent = msg;
+      note.classList.toggle('form-note--ok', !!ok);
+      note.classList.add('show');
+    }
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      if (!ENDPOINT) {
+        show('This form isn’t connected to a backend yet — wire it up before publishing.', false);
+        return;
+      }
+      var data = {
+        name: form.name.value.trim(),
+        email: form.email.value.trim(),
+        company: form.company.value.trim(),
+        message: form.message.value.trim(),
+        website: form.website.value // honeypot, humans leave it empty
+      };
+      if (!data.name || !data.message || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
+        show('Please add your name, a valid work email, and a short message.', false);
+        return;
+      }
+      btn.disabled = true;
+      var label = btn.textContent;
+      btn.textContent = 'Sending…';
+      fetch(ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      })
+      .then(function(r){ if (!r.ok) throw new Error('send failed'); return r.json(); })
+      .then(function(){
+        form.reset();
+        show('Message sent — we’ll get back to you shortly.', true);
+      })
+      .catch(function(){
+        show('Something went wrong sending your message. Email us instead: vincenzo@beamberlin.com', false);
+      })
+      .then(function(){
+        btn.disabled = false;
+        btn.textContent = label;
+      });
+    });
+  })();
 </script>

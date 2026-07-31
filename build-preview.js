@@ -37,6 +37,10 @@ const faceCss = FACES.map(([family, weight, file]) => {
 
 let html = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8');
 
+// The artifact CSP blocks outbound requests, so the preview always keeps the
+// contact endpoint blank and shows the honest not-connected note instead.
+html = html.replace(/var ENDPOINT = '[^']*'/, "var ENDPOINT = ''");
+
 // Drop the Google Fonts preconnects and stylesheet link.
 html = html.replace(/^\s*<link rel="preconnect"[^>]*>\n/gm, '');
 html = html.replace(/^\s*<link href="https:\/\/fonts\.googleapis\.com[^>]*>\n/gm, '');

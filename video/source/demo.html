@@ -8,7 +8,7 @@
   /*
     Animation source for the ParcelVox demo marketing video.
     Fixed 1920×1080 stage. Every animation is a CSS keyframe animation with an
-    absolute delay on one global 37s timeline, so the whole video can be paused
+    absolute delay on one global 47.5s timeline, so the whole video can be paused
     and seeked frame-by-frame via document.getAnimations() (see render.cjs).
   */
   :root{
@@ -69,7 +69,7 @@
   }
 
   /* word-by-word reveal: base delay --wb + index --i, pace --ws
-     (330ms in the voiced scenes so captions track the spoken lines) */
+     (250/270ms in the voiced scenes so captions track the spoken lines) */
   .w{
     display:inline-block;
     animation:wordIn .38s cubic-bezier(.2,.7,.3,1) both;
@@ -95,7 +95,7 @@
   /* persistent corner brand */
   .corner{
     position:absolute;left:64px;top:52px;font-size:30px;opacity:0;
-    animation:cornerIn .5s ease both 4600ms, cornerOut .5s ease both 36100ms;
+    animation:cornerIn .5s ease both 5600ms, cornerOut .5s ease both 42500ms;
   }
   @keyframes cornerIn{from{opacity:0}to{opacity:.85}}
   @keyframes cornerOut{from{opacity:.85}to{opacity:0}}
@@ -207,7 +207,7 @@
   .mini-btn--yes{
     background:var(--yellow);border-color:var(--yellow);color:var(--navy-900);
     animation:riseIn .55s cubic-bezier(.16,.7,.25,1) both, press .34s ease-in-out both;
-    animation-delay:var(--d), 21050ms;
+    animation-delay:var(--d), 24450ms;
   }
   @keyframes press{
     0%{transform:scale(1)}
@@ -271,8 +271,8 @@
   <div class="corner wordmark">PARCELVOX<span>.AI</span></div>
 
   <!-- ============ scene 1 · title (0.0 – 4.0s) ============ -->
-  <section class="scene" id="s1" style="--in:0ms;--out:3600ms">
-    <div class="scene__exit" style="--out:3600ms">
+  <section class="scene" id="s1" style="--in:0ms;--out:4600ms">
+    <div class="scene__exit" style="--out:4600ms">
       <div class="center">
         <span class="eyebrow rise" style="--d:400ms">The intelligence layer for last-mile delivery</span>
         <div class="wordmark rise" style="--d:800ms">PARCELVOX<span>.AI</span></div>
@@ -282,33 +282,33 @@
   </section>
 
   <!-- ============ scene 2 · problem (4.0 – 9.0s) ============ -->
-  <section class="scene" id="s2" style="--in:4000ms">
-    <div class="scene__exit" style="--out:8600ms">
+  <section class="scene" id="s2" style="--in:5000ms">
+    <div class="scene__exit" style="--out:11600ms">
       <div class="center">
-        <span class="eyebrow rise" style="--d:4300ms">The problem</span>
+        <span class="eyebrow rise" style="--d:5300ms">The problem</span>
         <h2>
-          <span class="rise" style="--d:4550ms;display:block">The best route data isn’t in your system.</span>
-          <span class="rise alt" style="--d:5450ms;display:block">It’s in your drivers’ heads.</span>
+          <span class="rise" style="--d:5550ms;display:block">The best route data isn’t in your system.</span>
+          <span class="rise alt" style="--d:6450ms;display:block">It’s in your drivers’ heads.</span>
         </h2>
         <div class="frictions">
-          <span class="friction rise" style="--d:6350ms">Broken bell</span>
-          <span class="friction rise" style="--d:6600ms">Unknown gate code</span>
-          <span class="friction rise" style="--d:6850ms">Blocked dock</span>
-          <span class="friction rise" style="--d:7100ms">Nowhere to park</span>
+          <span class="friction rise" style="--d:7350ms">Broken bell</span>
+          <span class="friction rise" style="--d:7600ms">Unknown gate code</span>
+          <span class="friction rise" style="--d:7850ms">Blocked dock</span>
+          <span class="friction rise" style="--d:8100ms">Nowhere to park</span>
         </div>
-        <p class="kicker rise" style="--d:7600ms">Captured <b>nowhere</b> — relearned on every shift.</p>
+        <p class="kicker rise" style="--d:8600ms">Captured <b>nowhere</b> — relearned on every shift.</p>
       </div>
     </div>
   </section>
 
   <!-- ============ scene 3 · capture (9.0 – 15.5s) ============ -->
-  <section class="scene" id="s3" style="--in:9000ms">
-    <div class="scene__exit" style="--out:16400ms">
+  <section class="scene" id="s3" style="--in:12000ms">
+    <div class="scene__exit" style="--out:19400ms">
       <div class="col">
-        <span class="step-tag step-tag--capture rise" style="--d:9300ms">01 · Capture — the driver says it</span>
-        <div class="tip-card rise" style="--d:9800ms">
-          <div class="tip-card__meta rise" style="--d:10100ms">Driver · Route 7 · Stop 24 · 07:42</div>
-          <div class="cardrow rise" style="--d:10250ms">
+        <span class="step-tag step-tag--capture rise" style="--d:12300ms">01 · Capture — the driver says it</span>
+        <div class="tip-card rise" style="--d:12800ms">
+          <div class="tip-card__meta rise" style="--d:13100ms">Driver · Route 7 · Stop 24 · 07:42</div>
+          <div class="cardrow rise" style="--d:13250ms">
             <div class="micdot">
               <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#35BFE3" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10v1a7 7 0 0 0 14 0v-1"/><path d="M12 18v4"/></svg>
             </div>
@@ -316,7 +316,7 @@
               <i style="--p:0;--h:26px"></i><i style="--p:1;--h:46px"></i><i style="--p:2;--h:66px"></i><i style="--p:3;--h:38px"></i><i style="--p:4;--h:58px"></i><i style="--p:5;--h:72px"></i><i style="--p:6;--h:34px"></i><i style="--p:7;--h:52px"></i><i style="--p:8;--h:68px"></i><i style="--p:9;--h:30px"></i><i style="--p:10;--h:48px"></i><i style="--p:11;--h:64px"></i><i style="--p:12;--h:40px"></i><i style="--p:13;--h:56px"></i><i style="--p:14;--h:28px"></i><i style="--p:15;--h:50px"></i><i style="--p:16;--h:70px"></i><i style="--p:17;--h:36px"></i><i style="--p:18;--h:54px"></i><i style="--p:19;--h:44px"></i>
             </div>
           </div>
-          <div class="tip-card__body" style="--wb:10700ms;--ws:250ms">
+          <div class="tip-card__body" style="--wb:13700ms;--ws:250ms">
             <em>
               <span class="w" style="--i:0">“Front</span>
               <span class="w" style="--i:1">bell</span>
@@ -336,49 +336,49 @@
             </em>
           </div>
         </div>
-        <span class="chip rise" style="--d:15400ms">Voice note · Hands-free · While they work</span>
+        <span class="chip rise" style="--d:18000ms">Voice note · Hands-free · While they work</span>
       </div>
     </div>
   </section>
 
   <!-- ============ scene 4 · check (15.5 – 22.0s) ============ -->
-  <section class="scene" id="s4" style="--in:16800ms">
-    <div class="scene__exit" style="--out:22900ms">
+  <section class="scene" id="s4" style="--in:19800ms">
+    <div class="scene__exit" style="--out:27200ms">
       <div class="col">
-        <span class="step-tag step-tag--check rise" style="--d:17100ms">02 · Check — AI structures, a human approves</span>
-        <div class="tip-card tip-card--check rise" style="--d:17600ms">
-          <div class="tip-card__meta rise" style="--d:17800ms">AI draft · Matched to stop record</div>
+        <span class="step-tag step-tag--check rise" style="--d:20100ms">02 · Check — AI structures, a human approves</span>
+        <div class="tip-card tip-card--check rise" style="--d:20600ms">
+          <div class="tip-card__meta rise" style="--d:20800ms">AI draft · Matched to stop record</div>
           <dl class="rows">
-            <div class="row rise" style="--d:18050ms"><dt>Type</dt><dd><b>Access</b> · building entry</dd></div>
-            <div class="row rise" style="--d:18550ms"><dt>Stop</dt><dd>#24 · Hofweg 12</dd></div>
-            <div class="row rise" style="--d:19050ms"><dt>Tip</dt><dd>Use the side door in the yard</dd></div>
-            <div class="row rise" style="--d:19550ms"><dt>Code</dt><dd><b>4711</b></dd></div>
+            <div class="row rise" style="--d:21050ms"><dt>Type</dt><dd><b>Access</b> · building entry</dd></div>
+            <div class="row rise" style="--d:21650ms"><dt>Stop</dt><dd>#24 · Hofweg 12</dd></div>
+            <div class="row rise" style="--d:22250ms"><dt>Tip</dt><dd>Use the side door in the yard</dd></div>
+            <div class="row rise" style="--d:22850ms"><dt>Code</dt><dd><b>4711</b></dd></div>
           </dl>
           <div class="approve-row">
-            <span class="mini-btn rise" style="--d:20250ms">Edit</span>
-            <span class="mini-btn mini-btn--yes" style="--d:20350ms">Approve</span>
+            <span class="mini-btn rise" style="--d:23650ms">Edit</span>
+            <span class="mini-btn mini-btn--yes" style="--d:23750ms">Approve</span>
             <span class="verdict">
-              <span class="chip chip--approve rise" style="--d:21500ms">✓ Approved by dispatch</span>
-              <span class="chip chip--live rise" style="--d:22250ms">Live on route 7</span>
+              <span class="chip chip--approve rise" style="--d:24900ms">✓ Approved by dispatch</span>
+              <span class="chip chip--live rise" style="--d:25650ms">Live on route 7</span>
             </span>
           </div>
         </div>
-        <span class="chip rise" style="--d:21800ms">Human in the loop · One tap</span>
+        <span class="chip rise" style="--d:25200ms">Human in the loop · One tap</span>
       </div>
     </div>
   </section>
 
   <!-- ============ scene 5 · inherit (22.0 – 28.0s) ============ -->
-  <section class="scene" id="s5" style="--in:23300ms">
-    <div class="scene__exit" style="--out:32000ms">
+  <section class="scene" id="s5" style="--in:27600ms">
+    <div class="scene__exit" style="--out:36300ms">
       <div class="col">
-        <span class="step-tag step-tag--inherit rise" style="--d:23600ms">03 · Inherit — the next driver hears it</span>
-        <div class="stopline rise" style="--d:24150ms">
+        <span class="step-tag step-tag--inherit rise" style="--d:27900ms">03 · Inherit — the next driver hears it</span>
+        <div class="stopline rise" style="--d:28450ms">
           <span class="pin"></span> Next shift · New driver · Arriving at stop 24
         </div>
-        <div class="tip-card tip-card--inherit rise" style="--d:24750ms">
-          <div class="tip-card__meta rise" style="--d:24950ms">Auto playback · Stop 24 · Hofweg 12</div>
-          <div class="cardrow rise" style="--d:25100ms">
+        <div class="tip-card tip-card--inherit rise" style="--d:29050ms">
+          <div class="tip-card__meta rise" style="--d:29250ms">Auto playback · Stop 24 · Hofweg 12</div>
+          <div class="cardrow rise" style="--d:29400ms">
             <div class="micdot micdot--green">
               <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#2BB37E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="#2BB37E" stroke="none"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9.5 9.5 0 0 1 0 13"/></svg>
             </div>
@@ -386,7 +386,7 @@
               <i style="--p:3;--h:30px"></i><i style="--p:8;--h:52px"></i><i style="--p:1;--h:68px"></i><i style="--p:12;--h:36px"></i><i style="--p:5;--h:60px"></i><i style="--p:16;--h:74px"></i><i style="--p:2;--h:32px"></i><i style="--p:9;--h:54px"></i><i style="--p:14;--h:66px"></i><i style="--p:0;--h:28px"></i><i style="--p:11;--h:50px"></i><i style="--p:6;--h:62px"></i><i style="--p:18;--h:42px"></i><i style="--p:4;--h:58px"></i><i style="--p:13;--h:26px"></i><i style="--p:7;--h:48px"></i><i style="--p:17;--h:72px"></i><i style="--p:10;--h:38px"></i><i style="--p:15;--h:56px"></i><i style="--p:19;--h:46px"></i>
             </div>
           </div>
-          <div class="tip-card__body" style="--wb:25500ms;--ws:270ms">
+          <div class="tip-card__body" style="--wb:29800ms;--ws:270ms">
             <em>
               <span class="w" style="--i:0">“Heads</span>
               <span class="w" style="--i:1">up</span>
@@ -408,24 +408,24 @@
             </em>
           </div>
         </div>
-        <span class="chip chip--live rise" style="--d:31300ms">At exactly the right stop · At exactly the right moment</span>
+        <span class="chip chip--live rise" style="--d:34900ms">At exactly the right stop · At exactly the right moment</span>
       </div>
     </div>
   </section>
 
   <!-- ============ scene 6 · benefits (28.0 – 32.5s) ============ -->
-  <section class="scene" id="s6" style="--in:32400ms">
-    <div class="scene__exit" style="--out:36500ms">
+  <section class="scene" id="s6" style="--in:36700ms">
+    <div class="scene__exit" style="--out:42500ms">
       <div class="benefits">
-        <div class="benefit benefit--a rise" style="--d:32800ms">
+        <div class="benefit benefit--a rise" style="--d:37100ms">
           <span class="tick"></span>
           <div>Faster ramp-up for new drivers<small>Day one starts with everyone’s route knowledge</small></div>
         </div>
-        <div class="benefit benefit--b rise" style="--d:33700ms">
+        <div class="benefit benefit--b rise" style="--d:38200ms">
           <span class="tick"></span>
           <div>Known problems stop repeating<small>Fix the friction once, keep the fix forever</small></div>
         </div>
-        <div class="benefit benefit--c rise" style="--d:34600ms">
+        <div class="benefit benefit--c rise" style="--d:39300ms">
           <span class="tick"></span>
           <div>A knowledge base that compounds<small>Every shift makes every route smarter</small></div>
         </div>
@@ -434,13 +434,13 @@
   </section>
 
   <!-- ============ scene 7 · CTA (32.5 – 37.0s) ============ -->
-  <section class="scene scene--hold" id="s7" style="--in:36900ms">
+  <section class="scene scene--hold" id="s7" style="--in:42900ms">
     <div class="scene__exit">
       <div class="center">
-        <div class="wordmark rise" style="--d:37200ms">PARCELVOX<span>.AI</span></div>
-        <p class="tagline rise" style="--d:38000ms">What one driver learns, the next one inherits.</p>
-        <span class="btn rise" style="--d:38800ms">See it on your routes</span>
-        <span class="url rise" style="--d:39400ms">parcelvox.ai</span>
+        <div class="wordmark rise" style="--d:43200ms">PARCELVOX<span>.AI</span></div>
+        <p class="tagline rise" style="--d:44000ms">What one driver learns, the next one inherits.</p>
+        <span class="btn rise" style="--d:44800ms">See it on your routes</span>
+        <span class="url rise" style="--d:45400ms">parcelvox.ai</span>
       </div>
     </div>
   </section>

@@ -41,7 +41,8 @@ const music = readWav(musicFile);
 const SR = music.rate;
 const N = music.L.length;
 
-const VOICE_PEAK = 0.62;  // voice level after normalization
+const VOICE_RMS = 0.2;      // ≈ -14 dBFS speech loudness in the mix
+const VOICE_PEAK_CAP = 0.95;
 const DUCK = 0.42;        // music gain under speech (~ -7.5dB)
 const RAMP = 0.3;         // seconds
 const duck = new Float64Array(N).fill(1);
@@ -54,9 +55,16 @@ for (const arg of voiceArgs) {
   const v = readWav(file);
   const ratio = v.rate / SR;
   const outFrames = Math.floor(v.L.length / ratio);
-  let peak = 0;
-  for (let i = 0; i < v.L.length; i++) peak = Math.max(peak, Math.abs(v.L[i]));
-  const g = VOICE_PEAK / peak;
+  // normalize by loudness (RMS), not peak — takes with one sharp consonant
+  // would otherwise land several dB quieter than smoother takes
+  let peak = 0, sum = 0;
+  for (let i = 0; i < v.L.length; i++) {
+    peak = Math.max(peak, Math.abs(v.L[i]));
+    sum += v.L[i] * v.L[i];
+  }
+  const rms = Math.sqrt(sum / v.L.length);
+  let g = VOICE_RMS / rms;
+  if (peak * g > VOICE_PEAK_CAP) g = VOICE_PEAK_CAP / peak;
   const s0 = Math.round(start * SR);
   for (let i = 0; i < outFrames && s0 + i < N; i++) {
     const src = i * ratio;

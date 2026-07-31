@@ -1,9 +1,0 @@
-# Netlify serves this repo so the contact relay function can run.
-# The canonical site stays on GitHub Pages; this deployment exists for
-# /.netlify/functions/contact, which forwards form submissions to Slack.
-# Required environment variable (set in the Netlify UI, never in the repo):
-#   SLACK_WEBHOOK_URL — a Slack incoming-webhook URL for the target channel.
-
-[build]
-  publish = "."
-  functions = "netlify/functions"

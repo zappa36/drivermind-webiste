@@ -747,7 +747,7 @@
   // Contact form → relay function → Slack. While ENDPOINT is empty the form
   // shows an honest not-connected note instead of a fake success.
   (function(){
-    var ENDPOINT = ''; // deployed contact function URL, e.g. https://<site>.netlify.app/.netlify/functions/contact
+    var ENDPOINT = ''; // deployed contact function URL, e.g. https://<project-ref>.supabase.co/functions/v1/contact
     var form = document.getElementById('contact-form');
     var note = document.getElementById('form-note');
     var btn = form.querySelector('button[type="submit"]');

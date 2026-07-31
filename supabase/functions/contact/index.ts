@@ -14,9 +14,10 @@
 
 type Env = (key: string) => string | undefined;
 
+// Add the custom domain (apex and www) here once it is registered, then
+// redeploy the function — the browser blocks the response from any origin
+// not on this list, so the form would fail silently on a new domain.
 const ALLOWED = (origin: string) =>
-  origin === 'https://velovox.ai' ||
-  origin === 'https://www.velovox.ai' ||
   origin === 'https://zappa36.github.io' ||
   /^http:\/\/localhost(:\d+)?$/.test(origin);
 

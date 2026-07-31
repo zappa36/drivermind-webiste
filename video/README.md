@@ -1,7 +1,8 @@
 # velovox.ai demo marketing video
 
-`velovox-demo.mp4` — 37s, 1920×1080, 30fps, H.264, silent. A kinetic-typography
-walkthrough of the product story in the site's own design language:
+`velovox-demo.mp4` — 37s, 1920×1080, 30fps, H.264 + AAC stereo. A
+kinetic-typography walkthrough of the product story in the site's own design
+language, over an ambient electronic music bed:
 
 1. Title — wordmark + tagline
 2. The problem — "The best route data isn't in your system. It's in your drivers' heads."
@@ -20,16 +21,27 @@ Playwright, so the render is deterministic on any machine. Fonts are embedded in
 `source/fonts.css` (Saira, Saira Semi Condensed, JetBrains Mono — latin subsets),
 so no network is needed.
 
+The music is synthesized from scratch by `source/music.cjs` (no samples, no
+license needed): a 120 BPM ambient bed — pad chords (Am9 → Fmaj7 → Cmaj9 → G6,
+resolving to C under the CTA), soft kick and bass pulses through the story
+scenes, and a plucked 3-3-2 arpeggio with ping-pong echo. Deterministic output;
+levels sit at ≈ −16 dB RMS / −1.5 dBFS peak.
+
 ```sh
 # 1. render frames (requires playwright + a chromium install)
 node source/render.cjs source/demo.html frames 30 37000
 
-# 2. assemble
-ffmpeg -framerate 30 -i frames/frame_%05d.jpg \
+# 2. generate the music bed
+node source/music.cjs music.wav
+
+# 3. assemble
+ffmpeg -framerate 30 -i frames/frame_%05d.jpg -i music.wav \
   -c:v libx264 -crf 19 -preset slow -pix_fmt yuv420p \
+  -c:a aac -b:a 192k -shortest \
   -movflags +faststart velovox-demo.mp4
 ```
 
 To tweak timing or copy, edit the `--in`/`--out`/`--d`/`--wb` millisecond values
 inline in `source/demo.html` — every element's delay is an absolute time on the
-global timeline.
+global timeline. The music's section boundaries live in the `CHORDS` table and
+arrangement block of `source/music.cjs`.

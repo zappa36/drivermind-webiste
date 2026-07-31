@@ -6,10 +6,14 @@ conversion wraps around when the model output exceeds +/-1.0, which produces
 loud static bursts mid-sentence. Here the float audio is normalized and
 clamped before quantization.
 
+The lines are phrased with commas instead of full stops (same words as the
+on-screen captions) so the delivery flows instead of pausing hard at each
+sentence break.
+
 Usage:
     pip install piper-tts numpy
-    python3 -m piper.download_voices en_US-amy-medium --data-dir voices
-    python3 tts.py voices/en_US-amy-medium.onnx voice/
+    python3 -m piper.download_voices en_US-hfc_female-medium --data-dir voices
+    python3 tts.py voices/en_US-hfc_female-medium.onnx voice/
 """
 import sys
 import wave
@@ -18,10 +22,10 @@ import numpy as np
 from piper import PiperVoice, SynthesisConfig
 
 LINES = [
-    ("voice1.wav", "Front bell is broken. Ring at the side door in the yard. "
-                   "Code four seven one one."),
-    ("voice2.wav", "Heads up! The front bell is broken. Use the side door in "
-                   "the yard. Code four seven one one."),
+    ("voice1.wav", "Front bell is broken, ring at the side door in the yard "
+                   "— code four seven one one."),
+    ("voice2.wav", "Heads up! The front bell is broken, use the side door in "
+                   "the yard, code four seven one one."),
 ]
 SENTENCE_SILENCE = 0.05  # seconds between sentence chunks
 PEAK = 0.9
@@ -29,7 +33,7 @@ PEAK = 0.9
 model = sys.argv[1]
 outdir = sys.argv[2].rstrip("/") if len(sys.argv) > 2 else "."
 voice = PiperVoice.load(model)
-cfg = SynthesisConfig(length_scale=0.8, normalize_audio=True)
+cfg = SynthesisConfig(length_scale=0.85, normalize_audio=True)
 rate = voice.config.sample_rate
 gap = np.zeros(int(SENTENCE_SILENCE * rate), dtype=np.float32)
 

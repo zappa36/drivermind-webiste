@@ -1,6 +1,6 @@
-# velovox.ai demo marketing video
+# ParcelVox demo marketing video
 
-`velovox-demo.mp4` — 41s, 1920×1080, 30fps, H.264 + AAC stereo. A
+`parcelvox-demo.mp4` — 41s, 1920×1080, 30fps, H.264 + AAC stereo. A
 kinetic-typography walkthrough of the product story in the site's own design
 language, with a voiced-over tip (friendly female TTS voice) and an ambient
 electronic music bed:
@@ -11,7 +11,7 @@ electronic music bed:
 4. Check — AI structures it, a dispatcher approves in one tap
 5. Inherit — the next driver hears it at exactly the right stop
 6. Benefits — ramp-up, no repeated friction, compounding knowledge base
-7. CTA — "See it on your routes" · velovox.ai
+7. CTA — "See it on your routes" · parcelvox.ai
 
 ## Regenerating
 
@@ -56,7 +56,7 @@ node source/mix.cjs music.wav audio.wav source/voice/voice1.wav@10.4 source/voic
 ffmpeg -framerate 30 -i frames/frame_%05d.jpg -i audio.wav \
   -c:v libx264 -crf 19 -preset slow -pix_fmt yuv420p \
   -c:a aac -b:a 192k -shortest \
-  -movflags +faststart velovox-demo.mp4
+  -movflags +faststart parcelvox-demo.mp4
 ```
 
 To tweak timing or copy, edit the `--in`/`--out`/`--d`/`--wb`/`--ws` millisecond

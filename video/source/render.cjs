@@ -10,7 +10,7 @@
  * Then assemble with ffmpeg:
  *   ffmpeg -framerate 30 -i frames/frame_%05d.jpg \
  *     -c:v libx264 -crf 19 -preset slow -pix_fmt yuv420p \
- *     -movflags +faststart velovox-demo.mp4
+ *     -movflags +faststart parcelvox-demo.mp4
  *
  * Requires playwright (any install; browsers via PLAYWRIGHT_BROWSERS_PATH).
  */

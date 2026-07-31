@@ -3,19 +3,20 @@
  * Generates the royalty-free background music for the demo video as a WAV
  * file — synthesized from scratch so there is nothing to license.
  *
- * 37s, 44.1kHz stereo, 120 BPM, keyed to the video's scene timeline:
+ * 41s, 44.1kHz stereo, 120 BPM, keyed to the video's scene timeline:
  *   0–4s    title     — pad swell only
  *   4–9s    problem   — bass enters on bar starts
- *   9–28s   the loop  — kick pulse + plucked arpeggio with ping-pong echo
- *   28–32s  benefits  — fullest section
- *   32–37s  CTA       — pulses stop, chord resolves to C, fade out
+ *   9–32s   the loop  — kick pulse + plucked arpeggio with ping-pong echo
+ *           (voiceover sits on top at ~10.4s and ~25.3s; ducking happens in mix.cjs)
+ *   32–36s  benefits  — fullest section
+ *   36–41s  CTA       — pulses stop, chord resolves to C, fade out
  *
  * Usage:  node music.cjs [out.wav]
  */
 const fs = require('fs');
 
 const SR = 44100;
-const DUR = 37.0;
+const DUR = 41.0;
 const N = Math.round(SR * DUR);
 const L = new Float64Array(N);
 const R = new Float64Array(N);
@@ -43,7 +44,8 @@ const CHORDS = [
   [20, 24, [F3, A3, C4, E4],      87.31,  [A4, C5, E5, F4]],
   [24, 28, [G3, C4, E4, D4],      130.81, [C5, D5, E5, G4]],
   [28, 32, [G3, B3, D4, E4],      98.00,  [B4, D5, E5, G5]],
-  [32, 37, [G3, C4, E4, D4],      130.81, [C5, D5, E5, G4]], // resolve on C
+  [32, 36, [F3, A3, C4, E4],      87.31,  [A4, C5, E5, F4]], // benefits
+  [36, 41, [G3, C4, E4, D4],      130.81, [C5, D5, E5, G4]], // resolve on C
 ];
 
 /* ---------- voices ---------- */
@@ -122,11 +124,11 @@ const PAD_G = 0.070, BASS_G = 0.17, KICK_G = 0.16, ARP_G = 0.16;
 for (const [cs, ce, notes, root, arpSet] of CHORDS) {
   for (const f of notes) pad(f, cs, ce - 0.25, PAD_G);
 
-  // bass: bar starts only during "problem", then a half-time pulse; long resolve at 32s
-  if (cs >= 32) {
+  // bass: bar starts only during "problem", then a half-time pulse; long resolve at 36s
+  if (cs >= 36) {
     bass(root, cs, 4.6, BASS_G * 1.1);
   } else {
-    for (let t = cs; t < Math.min(ce, 32); t += 1.0) {
+    for (let t = cs; t < Math.min(ce, 36); t += 1.0) {
       if (t < 4) continue;
       if (t < 9 && t % 2 !== 0) continue; // sparse (bar starts) before the story begins
       bass(root, t, 0.92, BASS_G);
@@ -134,15 +136,15 @@ for (const [cs, ce, notes, root, arpSet] of CHORDS) {
   }
 }
 
-// kick pulse through the story + benefits (9–32s), half-time
-for (let t = 9; t < 32; t += 1.0) kick(t, KICK_G);
+// kick pulse through the story + benefits (9–36s), half-time
+for (let t = 9; t < 36; t += 1.0) kick(t, KICK_G);
 
-// arpeggio: 3-3-2 rhythm in eighths (hits at 0, .75, 1.5 in each 2s bar), 9–33.5s
+// arpeggio: 3-3-2 rhythm in eighths (hits at 0, .75, 1.5 in each 2s bar), 9–36s
 let arpIdx = 0;
-for (let bar = 8; bar < 33.5; bar += 2) {
+for (let bar = 8; bar < 36; bar += 2) {
   for (const off of [0, 0.75, 1.5]) {
     const t = bar + off;
-    if (t < 9 || t >= 33.5) continue;
+    if (t < 9 || t >= 36) continue;
     const chord = CHORDS.find(([cs, ce]) => t >= cs && t < ce);
     if (!chord) continue;
     const set = chord[4];
@@ -150,7 +152,7 @@ for (let bar = 8; bar < 33.5; bar += 2) {
     const pan = (arpIdx % 2 === 0 ? -0.55 : 0.55);
     // second voice an octave down joins for the inherit + benefits scenes
     pluck(note, t, ARP_G, pan);
-    if (t >= 22) pluck(note / 2, t, ARP_G * 0.55, -pan);
+    if (t >= 25) pluck(note / 2, t, ARP_G * 0.55, -pan);
     arpIdx++;
   }
 }
@@ -168,7 +170,7 @@ for (let i = 0; i < N; i++) {
   const t = i / SR;
   let g = 1;
   if (t < 1.5) g *= t / 1.5;                       // fade in
-  if (t > 35.0) g *= Math.max(0, (DUR - t) / 2.0); // fade out
+  if (t > 39.0) g *= Math.max(0, (DUR - t) / 2.0); // fade out
   L[i] *= g;
   R[i] *= g;
 }

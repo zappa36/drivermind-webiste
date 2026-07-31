@@ -14,15 +14,16 @@
 
 type Env = (key: string) => string | undefined;
 
-// Add the custom domain (apex and www) here once it is registered, then
-// redeploy the function — the browser blocks the response from any origin
-// not on this list, so the form would fail silently on a new domain.
+// The browser blocks the response from any origin not on this list, so the
+// form fails on a new domain until it is added here and the function
+// redeployed. zappa36.github.io stays as the pre-domain fallback origin.
 const ALLOWED = (origin: string) =>
+  /^https:\/\/(www\.)?parcelvox\.com$/.test(origin) ||
   origin === 'https://zappa36.github.io' ||
   /^http:\/\/localhost(:\d+)?$/.test(origin);
 
 const cors = (origin: string) => ({
-  'Access-Control-Allow-Origin': ALLOWED(origin) ? origin : 'https://zappa36.github.io',
+  'Access-Control-Allow-Origin': ALLOWED(origin) ? origin : 'https://parcelvox.com',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type, Authorization, apikey',
   'Content-Type': 'application/json',

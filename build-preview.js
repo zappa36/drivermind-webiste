@@ -24,6 +24,7 @@ if (!FONT_DIR) {
 // JetBrains Mono at 400 for eyebrows, meta lines, and labels.
 const FACES = [
   ['Saira', 400, 'fontsource-saira-5.3.0/package/files/saira-latin-400-normal.woff2'],
+  ['Saira', 600, 'fontsource-saira-5.3.0/package/files/saira-latin-600-normal.woff2'],
   ['Saira Semi Condensed', 600, 'fontsource-saira-semi-condensed-5.3.0/package/files/saira-semi-condensed-latin-600-normal.woff2'],
   ['Saira Semi Condensed', 700, 'fontsource-saira-semi-condensed-5.3.0/package/files/saira-semi-condensed-latin-700-normal.woff2'],
   ['JetBrains Mono', 400, 'fontsource-jetbrains-mono-5.3.0/package/files/jetbrains-mono-latin-400-normal.woff2'],

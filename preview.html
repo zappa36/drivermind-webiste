@@ -18,7 +18,8 @@
     --green-soft:#6FDDB2;
     --text:#E9F1F8;
     --muted:#9FB3C8;
-    --dim:#5E7590;
+    --dim:#5E7590;          /* decorative/aria-hidden text only — 3.9:1 on navy */
+    --dim-lift:#7189A3;     /* readable small text on navy — 5.1:1 */
     --light:#F4F7FA;
     --ink:#0C1623;
     --ink-muted:#4A6076;
@@ -51,11 +52,12 @@
     font-size:12px;letter-spacing:.16em;text-transform:uppercase;
     color:var(--cyan);display:block;margin-bottom:16px;
   }
-  .section--light .eyebrow{color:var(--teal-ink)}
-  h1,h2,h3{font-family:'Saira Semi Condensed',sans-serif;line-height:1.08;font-weight:700}
+  /* darker than --teal-ink: 12px text needs 4.5:1 on the light ground */
+  .section--light .eyebrow{color:#17708A}
+  h1,h2,h3{font-family:'Saira Semi Condensed',sans-serif;font-weight:700}
+  h1,h2{line-height:1.08}
   h2{font-size:clamp(1.9rem,3.4vw,2.6rem)}
   h3{font-size:1.15rem;font-weight:600}
-  .mono{font-family:'JetBrains Mono',monospace}
 
   .btn{
     display:inline-block;font-family:'Saira Semi Condensed',sans-serif;font-weight:600;
@@ -67,6 +69,7 @@
   .btn--primary{background:var(--cyan);color:var(--navy)}
   .btn--primary:hover{background:var(--cyan-soft)}
   .btn--glow{box-shadow:0 0 32px rgba(53,191,227,.35)}
+  .btn--glow-soft{box-shadow:0 0 32px rgba(53,191,227,.3)}
   .btn--ghost{border-color:rgba(127,214,234,.25);color:var(--text)}
   .btn--ghost:hover{border-color:var(--cyan);color:var(--cyan-soft)}
   .btn--dark{background:var(--ink);color:var(--light)}
@@ -128,9 +131,15 @@
   .hero h1{font-size:clamp(2.6rem,4.6vw,4rem);line-height:1.04;margin:0 0 22px}
   .hero__lead{font-size:1.08rem;color:var(--muted);margin:0 0 32px;max-width:540px}
   .hero__ctas{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:26px}
-  .hero__hint{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.12em;color:var(--dim)}
+  .hero__hint{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.12em;color:var(--dim-lift)}
   .hero__fade{position:absolute;left:0;right:0;bottom:0;height:110px;background:linear-gradient(transparent, var(--navy))}
-  @media (max-width:860px){ .hero__pin{display:none} }
+  /* Below 920px the pin chips would clip the viewport edge (861-904px band)
+     and the stretched route markers land on hero copy — path lines stay as
+     background texture, the rest hides. */
+  @media (max-width:920px){
+    .hero__pin{display:none}
+    .hero__route circle,.hero__route .route-van{display:none}
+  }
 
   /* ---------- problem ---------- */
   .section--problem{padding:104px 0 96px}
@@ -165,6 +174,11 @@
   .log__foot{
     padding:12px 16px;border-top:1px solid rgba(127,214,234,.1);
     font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.08em;color:var(--dim);
+  }
+  /* Below ~385px the fixed grid tracks exceed the card; scroll instead of clip. */
+  @media (max-width:420px){
+    .log{overflow-x:auto}
+    .log__cols,.log__row{grid-template-columns:44px 36px 1fr 92px;gap:6px;padding-left:12px;padding-right:12px}
   }
   .costs{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:72px}
   .cost{border-top:1px solid var(--line-strong);padding-top:18px}
@@ -296,7 +310,7 @@
   }
   .maps__foot{
     margin-top:16px;text-align:center;
-    font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.08em;color:var(--teal-ink);
+    font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.08em;color:#17708A;
   }
   .carriers__cta{margin-top:48px;text-align:center}
   @media (max-width:860px){
@@ -367,13 +381,16 @@
   .field textarea{min-height:120px;resize:vertical}
   .hp-field{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
   .cform__actions{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
-  .cform__alt{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.1em;color:var(--dim)}
+  .cform__alt{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.1em;color:var(--dim-lift)}
+  /* Stays rendered (height 0) while empty so the role=status live region
+     exists before text is injected — display:none regions can be skipped
+     by screen readers when content lands in the same frame they appear. */
   .form-note{
-    display:none;margin-top:16px;font-size:.92rem;color:var(--yellow);
+    display:block;margin-top:16px;font-size:.92rem;color:var(--yellow);
     background:rgba(255,204,0,.1);border:1px solid rgba(255,204,0,.4);
     border-radius:10px;padding:10px 14px;
   }
-  .form-note.show{display:block}
+  .form-note:not(.show){margin:0;padding:0;border-width:0;height:0;overflow:hidden}
   .form-note--ok{color:var(--green-soft);background:rgba(43,179,126,.1);border-color:rgba(43,179,126,.4)}
   @media (max-width:640px){ .cform__row{grid-template-columns:1fr;gap:0} .cform__row .field{margin-bottom:18px} }
 
@@ -381,7 +398,13 @@
   footer{border-top:1px solid rgba(127,214,234,.12);padding:44px 0 52px}
   .foot{display:flex;flex-wrap:wrap;gap:16px 32px;justify-content:space-between;align-items:baseline}
   .foot small{color:var(--muted);font-size:.85rem;display:block}
-  .foot .demo-note{margin-top:14px;width:100%;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.05em;color:var(--dim)}
+  .foot .demo-note{margin-top:14px;width:100%;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.05em;color:var(--dim-lift)}
+  .skip-link{
+    position:absolute;left:-9999px;top:0;z-index:100;
+    background:var(--cyan);color:var(--navy);padding:10px 16px;
+    border-radius:0 0 8px 0;font-weight:600;text-decoration:none;
+  }
+  .skip-link:focus{left:0}
 
   /* ---------- motion ---------- */
   .reveal{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s ease}
@@ -401,10 +424,13 @@
     .hero__route .route-draw{animation:none;stroke-dashoffset:0}
     .hero__route .route-van{animation:none;opacity:1}
     .hero__pin{animation:none;opacity:1}
-    .nodata,.timeline__spark,.dsp__eyes,.otto__ring,.otto__blob,.otto__eye{animation:none}
-    .timeline__spark{display:none}
+    .nodata,.dsp__eyes,.otto__blob,.otto__eye{animation:none}
+    /* the spark and orbit rings have no static frame in the design — hide them */
+    .timeline__spark,.otto__ring{display:none}
   }
 </style>
+
+<a class="skip-link" href="#main">Skip to content</a>
 
 <!-- ======================= NAV ======================= -->
 <nav class="nav" aria-label="Main">
@@ -458,6 +484,8 @@
   </div>
   <div class="hero__fade" aria-hidden="true"></div>
 </header>
+
+<main id="main">
 
 <!-- ======================= PROBLEM ======================= -->
 <section class="section section--problem">
@@ -709,13 +737,15 @@
         <input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off">
       </div>
       <div class="cform__actions">
-        <button class="btn btn--primary btn--glow" type="submit">Send message</button>
+        <button class="btn btn--primary btn--glow-soft" type="submit">Send message</button>
         <span class="cform__alt">OR WRITE US · VINCENZO@BEAMBERLIN.COM</span>
       </div>
       <div class="form-note" id="form-note" role="status"></div>
     </form>
   </div>
 </section>
+
+</main>
 
 <!-- ======================= FOOTER ======================= -->
 <footer>
@@ -798,7 +828,7 @@
         // server — offline, blocked by an extension, or blocked by a network.
         var blocked = err instanceof TypeError;
         show(blocked
-          ? 'Couldn’t reach our server — an ad blocker, browser extension or network may be blocking it. Email us instead: vincenzo@beamberlin.com'
+          ? 'Couldn’t reach our server — an ad blocker, extension or network may be blocking it. Email us instead: vincenzo@beamberlin.com'
           : 'Something went wrong sending your message. Email us instead: vincenzo@beamberlin.com', false);
       })
       .then(function(){

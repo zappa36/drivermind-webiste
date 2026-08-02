@@ -19,15 +19,12 @@ if (!FONT_DIR) {
   process.exit(1);
 }
 
-// Only the weights the stylesheet actually uses. Saira renders at 400 only,
-// Saira Semi Condensed at 600/700 (h3/.btn and h1,h2/.wordmark), and
-// JetBrains Mono at 400 for eyebrows, meta lines, and labels.
+// Only the weights the stylesheet actually uses: 400 body, 600 h3/buttons/
+// bold segments, 700 h1/h2/wordmark.
 const FACES = [
-  ['Saira', 400, 'fontsource-saira-5.3.0/package/files/saira-latin-400-normal.woff2'],
-  ['Saira', 600, 'fontsource-saira-5.3.0/package/files/saira-latin-600-normal.woff2'],
-  ['Saira Semi Condensed', 600, 'fontsource-saira-semi-condensed-5.3.0/package/files/saira-semi-condensed-latin-600-normal.woff2'],
-  ['Saira Semi Condensed', 700, 'fontsource-saira-semi-condensed-5.3.0/package/files/saira-semi-condensed-latin-700-normal.woff2'],
-  ['JetBrains Mono', 400, 'fontsource-jetbrains-mono-5.3.0/package/files/jetbrains-mono-latin-400-normal.woff2'],
+  ['Plus Jakarta Sans', 400, 'pjs/package/files/plus-jakarta-sans-latin-400-normal.woff2'],
+  ['Plus Jakarta Sans', 600, 'pjs/package/files/plus-jakarta-sans-latin-600-normal.woff2'],
+  ['Plus Jakarta Sans', 700, 'pjs/package/files/plus-jakarta-sans-latin-700-normal.woff2'],
 ];
 
 const faceCss = FACES.map(([family, weight, file]) => {

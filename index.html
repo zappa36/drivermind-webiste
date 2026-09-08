@@ -287,6 +287,44 @@
   .dsp__cheek--r{left:33px;top:22px;width:3px;height:2px;border-radius:50%;background:rgba(255,204,0,.4)}
   .dsp__mouth{left:25px;top:23px;width:6px;height:3px;border-bottom:1.5px solid #16283C;border-radius:0 0 6px 6px}
 
+
+  /* ---------- demo video (lite embed: player loads on click) ---------- */
+  .demo__head{text-align:center;margin-bottom:44px}
+  .demo__head h2{margin:0}
+  .demo__frame{
+    position:relative;max-width:880px;margin:0 auto;aspect-ratio:16/9;
+    border:1px solid var(--line-strong);border-radius:var(--radius);
+    overflow:hidden;background:var(--panel);
+  }
+  .demo__frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+  .demo__poster{
+    position:absolute;inset:0;width:100%;height:100%;display:block;
+    border:0;padding:0;cursor:pointer;background:var(--panel);
+  }
+  .demo__poster img{width:100%;height:100%;object-fit:cover;display:block}
+  .demo__poster::after{
+    content:"";position:absolute;inset:0;
+    background:radial-gradient(55% 55% at 50% 50%, rgba(11,19,32,.1), rgba(11,19,32,.45));
+    transition:background .2s ease;
+  }
+  .demo__poster:hover::after{background:radial-gradient(55% 55% at 50% 50%, transparent, rgba(11,19,32,.35))}
+  .demo__play{
+    position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:1;
+    width:76px;height:76px;border-radius:50%;
+    background:var(--cyan);box-shadow:0 0 40px rgba(53,191,227,.5);
+    transition:transform .15s ease, background .15s ease;
+  }
+  .demo__poster:hover .demo__play{transform:translate(-50%,-50%) scale(1.06);background:var(--cyan-soft)}
+  .demo__play::after{
+    content:"";position:absolute;left:55%;top:50%;transform:translate(-50%,-50%);
+    border-style:solid;border-width:12px 0 12px 20px;
+    border-color:transparent transparent transparent var(--navy);
+  }
+  .demo__cap{
+    margin-top:16px;text-align:center;
+    font-family:'Plus Jakarta Sans',sans-serif;font-size:10.5px;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--dim-lift);
+  }
   /* ---------- carriers (light) ---------- */
   .section--light{background:var(--light);color:var(--ink)}
   .section--light h2{margin:0 0 40px}
@@ -612,6 +650,23 @@
   </div>
 </section>
 
+<!-- ======================= DEMO ======================= -->
+<section class="section" id="demo">
+  <div class="wrap">
+    <div class="demo__head">
+      <span class="eyebrow reveal">The demo</span>
+      <h2 class="reveal">Otto, on the road.</h2>
+    </div>
+    <div class="demo__frame reveal">
+      <button class="demo__poster" id="demo-video" type="button" aria-label="Play the ParcelVox demo video (loads the YouTube player)">
+        <img src="data:image/jpeg;base64,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" alt="" width="480" height="360">
+        <span class="demo__play" aria-hidden="true"></span>
+      </button>
+    </div>
+    <div class="demo__cap reveal">THE FULL LOOP — CAPTURE, APPROVE, INHERIT</div>
+  </div>
+</section>
+
 <!-- ======================= FOR CARRIERS ======================= -->
 <section class="section section--light" id="carriers">
   <div class="wrap">
@@ -782,6 +837,21 @@
     els.forEach(function(el){ io.observe(el); });
   })();
 
+
+  // Demo video: swap the inline poster for the YouTube player only on demand.
+  (function(){
+    var poster = document.getElementById('demo-video');
+    if (!poster) return;
+    poster.addEventListener('click', function(){
+      var frame = document.createElement('iframe');
+      frame.src = 'https://www.youtube-nocookie.com/embed/RBD_jzFBiNk?autoplay=1&rel=0';
+      frame.title = 'ParcelVox demo video';
+      frame.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+      frame.allowFullscreen = true;
+      poster.parentNode.appendChild(frame);
+      poster.remove();
+    });
+  })();
   // Contact form → relay function → Slack. While ENDPOINT is empty the form
   // shows an honest not-connected note instead of a fake success.
   (function(){

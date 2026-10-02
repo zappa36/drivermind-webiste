@@ -38,9 +38,10 @@ const faceCss = FACES.map(([family, weight, file]) => {
 
 let html = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8');
 
-// The artifact CSP blocks outbound requests, so the preview always keeps the
-// contact endpoint blank and shows the honest not-connected note instead.
+// The artifact CSP blocks outbound requests, so the preview ships with the
+// contact endpoint and the analytics beacon endpoint blanked.
 html = html.replace(/var ENDPOINT = '[^']*'/, "var ENDPOINT = ''");
+html = html.replace(/var EP = '[^']*'/, "var EP = ''");
 
 // Drop the Google Fonts preconnects and stylesheet link.
 html = html.replace(/^\s*<link rel="preconnect"[^>]*>\n/gm, '');

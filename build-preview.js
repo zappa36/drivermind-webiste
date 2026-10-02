@@ -19,12 +19,15 @@ if (!FONT_DIR) {
   process.exit(1);
 }
 
-// Only the weights the stylesheet actually uses: 400 body, 600 h3/buttons/
-// bold segments, 700 h1/h2/wordmark.
+// Only the weights the stylesheet actually uses. Space Grotesk is the
+// structural face (500 kickers, 600 headings/buttons, 700 display/numbers);
+// Source Sans 3 is the reading face (400 body, 700 emphasis).
 const FACES = [
-  ['Plus Jakarta Sans', 400, 'pjs/package/files/plus-jakarta-sans-latin-400-normal.woff2'],
-  ['Plus Jakarta Sans', 600, 'pjs/package/files/plus-jakarta-sans-latin-600-normal.woff2'],
-  ['Plus Jakarta Sans', 700, 'pjs/package/files/plus-jakarta-sans-latin-700-normal.woff2'],
+  ['Space Grotesk', 500, 'sg/package/files/space-grotesk-latin-500-normal.woff2'],
+  ['Space Grotesk', 600, 'sg/package/files/space-grotesk-latin-600-normal.woff2'],
+  ['Space Grotesk', 700, 'sg/package/files/space-grotesk-latin-700-normal.woff2'],
+  ['Source Sans 3', 400, 'ss3/package/files/source-sans-3-latin-400-normal.woff2'],
+  ['Source Sans 3', 700, 'ss3/package/files/source-sans-3-latin-700-normal.woff2'],
 ];
 
 const faceCss = FACES.map(([family, weight, file]) => {

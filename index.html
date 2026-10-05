@@ -95,6 +95,19 @@
   .pv-pill--coral{color:var(--coral-ink)}
   .on-dark .pv-pill{border:var(--border-dark)}
   .on-dark .pv-pill--coral{color:var(--coral)}
+  /* cookie bar — Google Analytics loads only after Accept */
+  .consent{
+    position:fixed;left:0;right:0;bottom:0;z-index:60;
+    display:flex;align-items:center;justify-content:center;gap:8px 20px;flex-wrap:wrap;
+    padding:14px 16px;background:var(--ink-blue-deep);color:var(--oat);
+    border-top:var(--border-dark);font-size:14px;text-align:center;
+  }
+  .consent p{margin:0}
+  .consent__no{
+    background:none;border:none;cursor:pointer;padding:6px 4px;
+    font:inherit;color:var(--oat-muted);text-decoration:underline;
+  }
+  .consent__no:hover{color:var(--oat)}
 
   .pv-live{
     display:inline-flex;align-items:center;gap:7px;padding:4px 12px;
@@ -613,70 +626,46 @@
 </main>
 
 <script>
-  // Anonymous page analytics → the track Edge Function → page_events table.
-  // No cookies, no IPs, no identifiers: the session id is random, in-memory
-  // only, and gone when the tab closes. Honors Do Not Track and GPC.
+  // Google Analytics (G-53R087K5V2), loaded only once the visitor accepts
+  // the cookie bar: it sets cookies, so EU visitors have to opt in first.
+  // The choice is remembered in localStorage.
   (function(){
-    if (navigator.doNotTrack === '1' || window.doNotTrack === '1' || navigator.globalPrivacyControl) return;
-    var EP = 'https://zizczdzziwudjqnpukpf.supabase.co/functions/v1/track';
-    if (!EP) return; // the preview build blanks the endpoint
-    var sid = (self.crypto && crypto.randomUUID) ? crypto.randomUUID() : Date.now() + '-' + Math.random().toString(36).slice(2);
-    var queue = [];
+    var GA_ID = 'G-53R087K5V2';
+    if (!GA_ID) return; // the preview build blanks the id
 
-    function flush(){
-      if (!queue.length) return;
-      var body = JSON.stringify({ s: sid, ev: queue.splice(0, 50) });
-      // sendBeacon posts text/plain — no preflight, survives page unload.
-      if (!(navigator.sendBeacon && navigator.sendBeacon(EP, body))) {
-        fetch(EP, { method: 'POST', body: body, keepalive: true }).catch(function(){});
-      }
+    function loadGA(){
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function(){ dataLayer.push(arguments); };
+      gtag('js', new Date());
+      gtag('config', GA_ID);
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
+      document.head.appendChild(s);
     }
 
-    // Pageview
-    queue.push({
-      event: 'view',
-      path: location.pathname,
-      referrer: document.referrer.slice(0, 160),
-      viewport: innerWidth + 'x' + innerHeight
+    var choice = null;
+    try { choice = localStorage.getItem('pv-consent'); } catch (e) {}
+    if (choice === 'yes') return loadGA();
+    if (choice === 'no') return;
+
+    var bar = document.createElement('div');
+    bar.className = 'consent';
+    bar.setAttribute('role', 'region');
+    bar.setAttribute('aria-label', 'Cookie choice');
+    bar.innerHTML =
+      '<p>We use Google Analytics to see which parts of this page get read. It sets cookies, so it\u2019s your call.</p>' +
+      '<button class="pv-btn" data-v="primary" data-size="sm" data-on="dark" type="button" data-c="yes">Accept</button>' +
+      '<button class="consent__no" type="button" data-c="no">No thanks</button>';
+    bar.addEventListener('click', function(e){
+      var b = e.target.closest('button[data-c]');
+      if (!b) return;
+      var v = b.getAttribute('data-c');
+      try { localStorage.setItem('pv-consent', v); } catch (e2) {}
+      bar.remove();
+      if (v === 'yes') loadGA();
     });
-
-    // Clicks on links and buttons, flushed immediately (the page may navigate)
-    document.addEventListener('click', function(e){
-      var el = e.target && e.target.closest && e.target.closest('a,button');
-      if (!el) return;
-      var sec = el.closest('section,header,footer');
-      queue.push({
-        event: 'click',
-        target: el.getAttribute('href') || el.textContent.trim(),
-        section: (sec && (sec.id || sec.className.split(' ')[0])) || null
-      });
-      flush();
-    }, true);
-
-    // Reading time: count a second for each section that is ≥half visible
-    // while the tab is in the foreground; report in 15s slices.
-    var visible = {}, acc = {};
-    var io = ('IntersectionObserver' in window) && new IntersectionObserver(function(entries){
-      entries.forEach(function(en){
-        var id = en.target.id || en.target.className.split(' ')[0];
-        visible[id] = en.isIntersecting;
-      });
-    }, { threshold: 0.5 });
-    if (io) document.querySelectorAll('section[id]').forEach(function(s){ io.observe(s); });
-    setInterval(function(){
-      if (document.hidden) return;
-      for (var id in visible) if (visible[id]) acc[id] = (acc[id] || 0) + 1;
-    }, 1000);
-    function flushReads(){
-      for (var id in acc) if (acc[id] > 0) {
-        queue.push({ event: 'read', section: id, seconds: acc[id] });
-        acc[id] = 0;
-      }
-      flush();
-    }
-    setInterval(flushReads, 15000);
-    addEventListener('pagehide', flushReads);
-    document.addEventListener('visibilitychange', function(){ if (document.hidden) flushReads(); });
+    document.body.appendChild(bar);
   })();
 </script>
 

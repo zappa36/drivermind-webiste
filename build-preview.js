@@ -39,9 +39,8 @@ const faceCss = FACES.map(([family, weight, file]) => {
 let html = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8');
 
 // The artifact CSP blocks outbound requests, so the preview ships with the
-// contact endpoint and the analytics beacon endpoint blanked.
-html = html.replace(/var ENDPOINT = '[^']*'/, "var ENDPOINT = ''");
-html = html.replace(/var EP = '[^']*'/, "var EP = ''");
+// Google Analytics id blanked — no cookie bar, no gtag load in previews.
+html = html.replace(/var GA_ID = '[^']*'/, "var GA_ID = ''");
 
 // Drop the Google Fonts preconnects and stylesheet link.
 html = html.replace(/^\s*<link rel="preconnect"[^>]*>\n/gm, '');

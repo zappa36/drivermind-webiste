@@ -178,7 +178,23 @@
   .hero__link:hover{text-decoration:underline}
   @media (max-width:920px){
     .hero__pin{display:none}
-    .hero__route circle,.hero__route .route-van{display:none}
+    /* without the pins the bare route line just cuts through the copy */
+    .hero__route{display:none}
+  }
+  /* compact rhythm on phones: tighter header, shorter section padding */
+  @media (max-width:720px){
+    .site-head .wrap{
+      display:grid;grid-template-columns:1fr auto;align-items:center;
+      gap:10px 16px;padding-top:12px;padding-bottom:14px;
+    }
+    .site-head .cta{grid-row:1;grid-column:2;margin-left:0}
+    .site-nav{grid-row:2;grid-column:1 / -1;margin-left:0;gap:8px 18px}
+    .site-nav a{font-size:13px}
+    .hero .wrap{padding-top:64px;padding-bottom:72px}
+    .sec .wrap{padding-top:64px;padding-bottom:64px}
+  }
+  @media (max-width:480px){
+    .wrap{padding:0 20px}
   }
 
   /* ============ sections ============ */

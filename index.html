@@ -193,15 +193,33 @@
      children count tracks against max-content and overflow small screens. */
   .intro .wrap,.demo .wrap{grid-template-columns:minmax(0,1fr)}
 
-  /* intro: the four use cases */
+  /* intro: the core loop in three steps */
   .intro .wrap{display:grid;gap:48px}
   .intro h2{max-width:720px}
   .intro .lead{max-width:560px}
-  .uc-index{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:32px}
-  .uc-link{display:grid;gap:10px;align-content:start;border-top:2px solid var(--ink-blue);padding-top:18px;text-decoration:none;color:inherit}
-  .uc-link__num{font:700 15px/1 var(--font-display);color:var(--coral-ink);font-variant-numeric:tabular-nums}
-  .uc-link__row{display:flex;align-items:center;justify-content:space-between;gap:12px}
-  .uc-link p{margin:0;color:var(--ink-muted)}
+  .loop{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:32px}
+  .loop__step{display:grid;gap:10px;align-content:start;border-top:2px solid var(--ink-blue);padding-top:18px}
+  .loop__num{font:700 15px/1 var(--font-display);color:var(--coral-ink);font-variant-numeric:tabular-nums}
+  .loop__step h3{font-size:18px}
+  .loop__step p{margin:0;color:var(--ink-muted)}
+
+  /* what else Otto can do — compact cards for the next use cases */
+  .more .wrap{display:grid;gap:48px;grid-template-columns:minmax(0,1fr)}
+  .more h2{max-width:720px}
+  .more .lead{max-width:620px}
+  .more-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px}
+  .more-card{
+    display:grid;gap:12px;align-content:start;background:var(--oat);
+    border:var(--border-light);border-radius:var(--radius-md);
+    box-shadow:var(--shadow-card);padding:24px;
+  }
+  .more-card h3{font-size:20px}
+  .more-card p{margin:0;color:var(--ink-muted)}
+  .more-card .says{margin-top:4px;padding-top:14px;border-top:var(--border-light);font-size:14px;color:var(--ink)}
+  .more-card .says b{
+    display:block;margin-bottom:6px;
+    font:500 11px/1 var(--font-display);letter-spacing:.09em;text-transform:uppercase;color:var(--coral-ink);
+  }
 
   /* use-case sections */
   .uc .wrap{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:64px;align-items:start}
@@ -303,7 +321,7 @@
     <a class="wordmark" href="#top">Parcel<b>Vox</b></a>
     <nav class="site-nav" aria-label="Main">
       <a href="#how">How it works</a>
-      <a href="#report">Use cases</a>
+      <a href="#more">What else Otto does</a>
       <a href="#drivers">On the driver's side</a>
     </nav>
     <div class="cta"><a class="pv-btn" data-v="primary" data-size="sm" data-on="dark" href="#pilot">Book a demo</a></div>
@@ -351,40 +369,35 @@
 <section class="sec on-light intro" id="how">
   <div class="wrap">
     <div class="sec-head">
-      <span class="kicker">Four ways Otto works the route</span>
+      <span class="kicker">What ParcelVox does</span>
       <h2>Your drivers talk. Otto handles the rest.</h2>
       <p class="lead">Otto works by voice, hands-free. Your drivers never type, scroll or wait on hold.</p>
     </div>
-    <div class="uc-index">
-      <a class="uc-link" href="#report">
-        <span class="uc-link__num">01</span>
-        <h3>Driver report</h3>
-        <p>Your driver tells Otto what they found.</p>
-      </a>
-      <a class="uc-link" href="#call">
-        <span class="uc-link__num">02</span>
-        <h3>Customer call</h3>
-        <p>Otto checks someone is home.</p>
-      </a>
-      <a class="uc-link" href="#office">
-        <span class="uc-link__num">03</span>
-        <h3>Help from the office</h3>
-        <p>Otto gets an answer when a driver is stuck.</p>
-      </a>
-      <a class="uc-link" href="#checkin">
-        <span class="uc-link__num">04</span>
-        <h3>Driver check-in</h3>
-        <p>Otto keeps the van up to date.</p>
-      </a>
+    <div class="loop">
+      <div class="loop__step">
+        <span class="loop__num">01</span>
+        <h3>The driver reports</h3>
+        <p>Your driver presses Otto, says what they found and moves on.</p>
+      </div>
+      <div class="loop__step">
+        <span class="loop__num">02</span>
+        <h3>Otto files it</h3>
+        <p>The tip is filed against the address — it belongs to the depot now, not one driver.</p>
+      </div>
+      <div class="loop__step">
+        <span class="loop__num">03</span>
+        <h3>The next driver inherits it</h3>
+        <p>Whoever drives to that stop next hears the tip on the way in.</p>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ======================= 01 DRIVER REPORT ======================= -->
+<!-- ======================= DRIVER REPORT (the product) ======================= -->
 <section class="sec on-dark uc" id="report">
   <div class="wrap">
     <div class="uc__copy">
-      <span class="kicker">01 · Driver report</span>
+      <span class="kicker">Driver report</span>
       <h2>Ten minutes lost, stop after stop. Never again.</h2>
       <p class="lead">The gate code has changed. There's a dog at the door. Scaffolding covers the entrance. Today, what a driver learns leaves with them.</p>
       <p class="body-p">With ParcelVox, your driver presses Otto, says what happened and moves on. Otto asks what the next driver needs to know, three questions at most. He files the tip against the address. The next time anyone drives to that stop, Otto reads the tip to them on the way in.</p>
@@ -435,154 +448,30 @@
   </div>
 </section>
 
-<!-- ======================= 02 CUSTOMER CALL ======================= -->
-<section class="sec on-light uc" id="call">
+<!-- ======================= WHAT ELSE OTTO CAN DO ======================= -->
+<section class="sec on-light more" id="more">
   <div class="wrap">
-    <div class="uc__media" aria-hidden="true">
-      <div class="phone">
-        <div class="phone__bar"><span>16:05</span><span>Phone call · 0:41</span></div>
-        <div class="phone__stage">
-          <span class="otto"><span class="otto__ring"></span><span class="otto__ring otto__ring--2"></span><span class="otto__blob"><span class="otto__eye"></span><span class="otto__eye"></span></span></span>
-          <span class="phone__who">Otto · delivery office</span>
-          <span class="phone__sub">about your fresh-food delivery</span>
-          <span class="wave"><i></i><i></i><i></i><i></i><i></i></span>
-        </div>
-        <div class="transcript">
-          <div class="turn turn--otto"><span>Otto · 0:03</span><p>“Hello, this is Otto from the delivery office. Am I speaking with Mr Brandt? I'm calling about your fresh-food delivery this evening.”</p></div>
-          <div class="turn"><span>Mr Brandt · 0:19</span><p>“I'm still at work. Not before six.”</p></div>
-          <div class="turn turn--otto"><span>Otto · 0:24 · speaking</span><p>“Understood. Your driver will come after six and hand it to you in person.”</p></div>
-        </div>
-        <div class="controls">
-          <span class="ctrl"><i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg></i>Mute</span>
-          <span class="ctrl"><i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></i>Speaker</span>
-          <span class="ctrl"><i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate(135deg)"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></i>End</span>
-        </div>
-      </div>
+    <div class="sec-head">
+      <span class="kicker">Beyond the driver report</span>
+      <h2>What else Otto can do for you.</h2>
+      <p class="lead">The driver report is where ParcelVox starts. These come next — each one by voice, each one inside your rules, and the final say stays with you.</p>
     </div>
-    <div class="uc__copy">
-      <span class="kicker">02 · Customer call</span>
-      <h2>Find the empty home before your driver does.</h2>
-      <p class="lead">Four floors, no lift, nobody in. Your driver climbs back down with the parcel and you pay for a second trip.</p>
-      <p class="body-p">Otto calls your customer before the van arrives. He checks someone will be home and agrees a time. He follows your rules — you decide what he may say and do on your behalf: fresh food goes into the customer's hands, never to a neighbour. If a stranger answers, Otto says nothing about the parcel. Then he tells your driver what was agreed.</p>
-      <div class="uc__cols">
-        <div class="uc__col">
-          <h3>For your drivers</h3>
-          <ul>
-            <li>Fewer stairs climbed for nothing.</li>
-            <li>No calls to customers from behind the wheel.</li>
-            <li>They arrive knowing someone is in.</li>
-          </ul>
-        </div>
-        <div class="uc__col">
-          <h3>For your operation</h3>
-          <ul>
-            <li>More deliveries succeed on the first attempt.</li>
-            <li>Fewer second trips.</li>
-            <li>Fresh-food and time-critical deliveries arrive when promised.</li>
-            <li>Every call stays inside your rules. You keep the final say.</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ======================= 03 HELP FROM THE OFFICE ======================= -->
-<section class="sec on-dark uc" id="office">
-  <div class="wrap">
-    <div class="uc__copy">
-      <span class="kicker">03 · Help from the office</span>
-      <h2>Stuck at the door? Otto gets the office.</h2>
-      <p class="lead">The code on the label doesn't work. The address is wrong. The parcel won't fit the box. Today your driver waits on hold, then explains it all from the start.</p>
-      <p class="body-p">With ParcelVox, your driver tells Otto once. Otto contacts the office with the stop, the customer and the problem already filled in. He comes back with the answer. And he's always on duty — in the weeks when dispatch can't take another call, Otto still answers.</p>
-      <div class="uc__cols">
-        <div class="uc__col">
-          <h3>For your drivers</h3>
-          <ul>
-            <li>No hold music.</li>
-            <li>No explaining the problem twice.</li>
-            <li>They're back on the road sooner.</li>
-          </ul>
-        </div>
-        <div class="uc__col">
-          <h3>For your operation</h3>
-          <ul>
-            <li>Requests reach dispatch already sorted.</li>
-            <li>Every fix is filed against the address, so it only happens once.</li>
-            <li>Busy weeks don't pile up: Otto is there for every driver at once.</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <div class="uc__media" aria-hidden="true">
-      <div class="phone">
-        <div class="phone__bar"><span>11:52</span><span>Stop 9 · Kollwitzstraße 48</span></div>
-        <div class="phone__stage">
-          <span class="otto"><span class="otto__ring"></span><span class="otto__ring otto__ring--2"></span><span class="otto__blob"><span class="otto__eye"></span><span class="otto__eye"></span></span></span>
-          <span class="wave"><i></i><i></i><i></i><i></i><i></i></span>
-          <span class="pv-live"><i></i>Voice · asking the office</span>
-        </div>
-        <div class="transcript">
-          <div class="turn"><span>Driver · 0:02</span><p>“Kollwitzstraße 48. The code on the label doesn't work.”</p></div>
-          <div class="turn turn--otto"><span>Otto · 0:06</span><p>“I'll ask the office.”</p></div>
-          <div class="turn turn--otto"><span>Otto · 2 min later · speaking</span><p>“The new code is 4711. It's on file for the next driver.”</p></div>
-        </div>
-        <div class="controls">
-          <span class="ctrl"><i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg></i>Mute</span>
-          <span class="ctrl"><i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></i>Speaker</span>
-          <span class="ctrl"><i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate(135deg)"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></i>End</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ======================= 04 DRIVER CHECK-IN ======================= -->
-<section class="sec on-light uc" id="checkin">
-  <div class="wrap">
-    <div class="uc__media" aria-hidden="true">
-      <div class="phone">
-        <div class="phone__bar"><span>10:18</span><span>Phone call · hands-free</span></div>
-        <div class="phone__stage">
-          <span class="otto"><span class="otto__ring"></span><span class="otto__ring otto__ring--2"></span><span class="otto__blob"><span class="otto__eye"></span><span class="otto__eye"></span></span></span>
-          <span class="phone__who">Otto · back office</span>
-          <span class="phone__sub">about stop 7, Kollwitzstraße 71</span>
-          <span class="wave"><i></i><i></i><i></i><i></i><i></i></span>
-        </div>
-        <div class="transcript">
-          <div class="turn turn--otto"><span>Otto · 09:40 · one question</span><p>“How late are you running? When do you reach Okafor?”</p></div>
-          <div class="turn turn--otto"><span>Otto · 10:18 · one change</span><p>“The customer at Kollwitzstraße 71 is away until tomorrow. Skip that stop today.”</p></div>
-          <div class="turn turn--otto"><span>Otto · 16:12 · one update</span><p>“Brandt is home after six. Keep the fresh-food box cool and hand it over then.”</p></div>
-        </div>
-        <div class="controls">
-          <span class="ctrl"><i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg></i>Mute</span>
-          <span class="ctrl"><i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></i>Speaker</span>
-          <span class="ctrl"><i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate(135deg)"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></i>End</span>
-        </div>
-      </div>
-    </div>
-    <div class="uc__copy">
-      <span class="kicker">04 · Driver check-in</span>
-      <h2>One short call. Hands on the wheel.</h2>
-      <p class="lead">Dispatch rings to ask where the van is. The driver rings back to check a change. Neither call gets anyone a parcel closer to the door.</p>
-      <p class="body-p">Otto calls your driver for the office, with one reason per call. He gets the answer, confirms it in one line and lets them drive. You decide when: trigger a check-in yourself, or set the rules and Otto makes the call for you — and never more often than your rules allow.</p>
-      <div class="uc__cols">
-        <div class="uc__col">
-          <h3>For your drivers</h3>
-          <ul>
-            <li>Short calls that get to the point.</li>
-            <li>Clear instructions they can act on straight away.</li>
-            <li>No trips to stops that were cancelled an hour ago.</li>
-          </ul>
-        </div>
-        <div class="uc__col">
-          <h3>For your operation</h3>
-          <ul>
-            <li>You know who is running late without ringing round.</li>
-            <li>Changes reach the van as soon as they happen.</li>
-          </ul>
-        </div>
-      </div>
+    <div class="more-grid">
+      <article class="more-card">
+        <h3>Customer call</h3>
+        <p>Otto calls your customer before the van arrives, checks someone will be home and agrees a time. Fewer stairs climbed for nothing, more deliveries that succeed on the first attempt.</p>
+        <p class="says"><b>Otto · to your customer</b>“Understood. Your driver will come after six and hand it to you in person.”</p>
+      </article>
+      <article class="more-card">
+        <h3>Help from the office</h3>
+        <p>Stuck at the door, your driver tells Otto once. Otto reaches the office with the stop and the problem already filled in, and comes back with the answer — even in the weeks when dispatch can't take another call.</p>
+        <p class="says"><b>Otto · to your driver</b>“The new code is 4711. It's on file for the next driver.”</p>
+      </article>
+      <article class="more-card">
+        <h3>Driver check-in</h3>
+        <p>Otto calls your driver for the office, one reason per call, and lets them drive. You decide when: trigger a check-in yourself, or set the rules and Otto makes the call for you.</p>
+        <p class="says"><b>Otto · to your driver</b>“The customer at Kollwitzstraße 71 is away until tomorrow. Skip that stop today.”</p>
+      </article>
     </div>
   </div>
 </section>

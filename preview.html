@@ -611,29 +611,33 @@
     }
 
     // Pin the pill just above the widget's top-right corner. The widget UI
-    // lives in the element's shadow root, so measure the first sized box in
-    // there; if nothing is measurable, the CSS fallback (above the bubble's
-    // corner spot) applies.
+    // lives in the element's shadow root behind a full-viewport wrapper, so
+    // take the largest sized box that is NOT near-viewport-sized: that is
+    // the panel (or the launcher bubble when collapsed). If every sized box
+    // covers the viewport, the widget is fullscreen (phones). If nothing is
+    // measurable yet, the CSS fallback applies.
     var placeTimer = null;
     function placeClose(){
       var c = document.getElementById('otto-close');
       var w = document.querySelector('elevenlabs-convai');
       if (!c || !w) { if (placeTimer) { clearInterval(placeTimer); placeTimer = null; } return; }
-      var target = null;
-      if (w.offsetWidth > 40 && w.offsetHeight > 40) target = w;
-      else if (w.shadowRoot) {
-        var els = w.shadowRoot.querySelectorAll('div');
-        for (var i = 0; i < els.length && !target; i++) {
-          var b = els[i].getBoundingClientRect();
-          if (b.width > 40 && b.height > 40) target = els[i];
-        }
+      var best = null, bestArea = 0, sized = 0;
+      var viewA = innerWidth * innerHeight;
+      var els = [w];
+      if (w.shadowRoot) els = els.concat(Array.prototype.slice.call(w.shadowRoot.querySelectorAll('div')));
+      for (var i = 0; i < els.length; i++) {
+        var b = els[i].getBoundingClientRect();
+        if (b.width < 44 || b.height < 44) continue;
+        sized++;
+        var a = b.width * b.height;
+        if (a > viewA * 0.9) continue; // full-viewport wrapper, not the panel
+        if (a > bestArea) { bestArea = a; best = b; }
       }
-      if (!target) { c.style.top = ''; c.style.right = ''; c.style.bottom = ''; return; }
-      var r = target.getBoundingClientRect();
-      if (r.top >= 54) {
-        c.style.top = (r.top - 46) + 'px';
+      if (!sized) { c.style.top = ''; c.style.right = ''; c.style.bottom = ''; return; }
+      if (best && best.top >= 54) {
+        c.style.top = (best.top - 46) + 'px';
         c.style.bottom = 'auto';
-        c.style.right = Math.max(10, innerWidth - r.right) + 'px';
+        c.style.right = Math.max(10, innerWidth - best.right) + 'px';
       } else {
         // widget fills the screen (phones): keep the pill reachable top-right
         c.style.top = '10px';

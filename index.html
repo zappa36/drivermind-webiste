@@ -85,6 +85,8 @@
   .pv-btn[data-size="lg"]{font-size:15px;padding:11px 22px}
   .pv-btn[data-v="primary"]{background:var(--coral);color:var(--ink-blue-deep)}
   .pv-btn[data-v="primary"]:hover{background:var(--coral-deep);color:var(--oat)}
+  .pv-btn[data-v="outline"]{border:var(--border-dark);color:var(--oat)}
+  .pv-btn[data-v="outline"]:hover{border-color:var(--oat)}
 
   .pv-pill{
     display:inline-flex;align-items:center;padding:4px 12px;
@@ -386,7 +388,8 @@
       <h1>What one driver learns, the whole fleet inherits.</h1>
       <p class="lead">Every driver knows things the map doesn't. Otto, the voice of ParcelVox, captures them at the door and hands them to the next driver. He also makes the calls that keep the route moving: to the customer before the van arrives, to the office when a driver is stuck, and to the driver when something changes.</p>
       <div class="hero__ctas">
-        <a class="pv-btn" data-v="primary" data-size="lg" data-on="dark" href="#pilot">Book a demo</a>
+        <button class="pv-btn" data-v="primary" data-size="lg" data-on="dark" type="button" data-talk-otto hidden>Talk to Otto</button>
+        <a class="pv-btn" data-v="primary" data-size="lg" data-on="dark" href="#pilot" id="hero-demo">Book a demo</a>
         <a class="hero__link" href="#how">See how it works →</a>
       </div>
     </div>
@@ -593,19 +596,33 @@
       document.body.appendChild(el);
     }
 
+    function pick(a, b){
+      row.querySelectorAll('.try-btn').forEach(function(x){ x.setAttribute('aria-pressed', 'false'); });
+      if (b) b.setAttribute('aria-pressed', 'true');
+      mount(a[1]);
+      note.textContent = a[0] + ' is ready — Otto picks up in the bottom-right corner.';
+    }
+
     live.forEach(function(a){
       var b = document.createElement('button');
       b.type = 'button';
       b.className = 'try-btn';
       b.textContent = a[0];
       b.setAttribute('aria-pressed', 'false');
-      b.addEventListener('click', function(){
-        row.querySelectorAll('.try-btn').forEach(function(x){ x.setAttribute('aria-pressed', 'false'); });
-        b.setAttribute('aria-pressed', 'true');
-        mount(a[1]);
-        note.textContent = a[0] + ' is ready — Otto picks up in the bottom-right corner.';
-      });
+      b.addEventListener('click', function(){ pick(a, b); });
       row.appendChild(b);
+    });
+
+    // Hero button: launches the first live agent on the spot. While Otto is
+    // live, the hero's coral hit belongs to him; Book a demo steps back to
+    // the outline style (one coral accent per surface).
+    var demoBtn = document.getElementById('hero-demo');
+    if (demoBtn) demoBtn.setAttribute('data-v', 'outline');
+    document.querySelectorAll('[data-talk-otto]').forEach(function(h){
+      h.hidden = false;
+      h.addEventListener('click', function(){
+        pick(live[0], row.querySelector('.try-btn'));
+      });
     });
   })();
 </script>

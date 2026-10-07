@@ -189,7 +189,8 @@
       display:grid;grid-template-columns:1fr auto;align-items:center;
       gap:10px 16px;padding-top:12px;padding-bottom:14px;
     }
-    .site-head .cta{grid-row:1;grid-column:2;margin-left:0}
+    /* the hero's own buttons are a thumb-length away — no CTA in the bar */
+    .site-head .cta{display:none}
     /* nav on one tidy line; sideways scroll on very narrow phones */
     .site-nav{
       grid-row:2;grid-column:1 / -1;margin-left:0;gap:16px;

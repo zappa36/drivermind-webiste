@@ -39,8 +39,10 @@ const faceCss = FACES.map(([family, weight, file]) => {
 let html = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8');
 
 // The artifact CSP blocks outbound requests, so the preview ships with the
-// Google Analytics id blanked — no cookie bar, no gtag load in previews.
+// Google Analytics id blanked — no cookie bar, no gtag load in previews —
+// and the ElevenLabs agent ids blanked, which keeps the try section hidden.
 html = html.replace(/var GA_ID = '[^']*'/, "var GA_ID = ''");
+html = html.replace(/var AGENTS = \[[\s\S]*?\];/, (m) => m.replace(/', '[^']*'\]/g, "', '']"));
 
 // Drop the Google Fonts preconnects and stylesheet link.
 html = html.replace(/^\s*<link rel="preconnect"[^>]*>\n/gm, '');

@@ -233,6 +233,20 @@
     font:500 11px/1 var(--font-display);letter-spacing:.09em;text-transform:uppercase;color:var(--coral-ink);
   }
 
+  /* try Otto — one ElevenLabs agent per use case, mounted on demand */
+  .try .wrap{display:grid;gap:32px;grid-template-columns:minmax(0,1fr)}
+  .try__btns{display:flex;gap:12px;flex-wrap:wrap}
+  .try-btn{
+    font:600 14px/1 var(--font-display);letter-spacing:.01em;cursor:pointer;
+    padding:10px 18px;border-radius:var(--radius-sm);
+    background:transparent;color:var(--oat);border:var(--border-dark);
+    transition:border-color var(--dur-fast) var(--ease),
+      color var(--dur-fast) var(--ease),background var(--dur-fast) var(--ease);
+  }
+  .try-btn:hover{border-color:var(--oat)}
+  .try-btn[aria-pressed="true"]{background:var(--coral);border-color:var(--coral);color:var(--ink-blue-deep)}
+  .try__note{margin:0;color:var(--oat-muted);font-size:14px;min-height:22px}
+
   /* use-case sections */
   .uc .wrap{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:64px;align-items:start}
   .uc__copy{display:grid;gap:18px;justify-items:start}
@@ -486,6 +500,19 @@
   </div>
 </section>
 
+<!-- ======================= TRY OTTO (hidden until agent ids are filled in) ======================= -->
+<section class="sec on-dark try" id="try" hidden>
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="kicker">Try it yourself</span>
+      <h2>Talk to Otto.</h2>
+      <p class="lead">Pick a call and talk to Otto, live from your browser. Your microphone turns on only when you start the call, and off when you end it.</p>
+    </div>
+    <div class="try__btns" role="group" aria-label="Choose a call to try"></div>
+    <p class="try__note"></p>
+  </div>
+</section>
+
 <!-- ======================= DEMO (kept from the live site) ======================= -->
 <section class="sec on-deep demo" id="demo">
   <div class="wrap">
@@ -523,6 +550,59 @@
 </section>
 
 </main>
+
+<script>
+  // Try-Otto: one ElevenLabs agent per use case. Paste each agent id from
+  // the ElevenLabs dashboard (agent → Widget tab) into AGENTS below. A
+  // button appears only for a filled-in id, and the whole section stays
+  // hidden while every id is empty — so this ships dormant. The ElevenLabs
+  // script loads on the first click, never on page load.
+  (function(){
+    var AGENTS = [
+      ['Driver report', ''],
+      ['Customer call', ''],
+      ['Help from the office', ''],
+      ['Driver check-in', '']
+    ];
+    var sec = document.getElementById('try');
+    var row = sec.querySelector('.try__btns');
+    var note = sec.querySelector('.try__note');
+    var live = AGENTS.filter(function(a){ return a[1]; });
+    if (!live.length) return;
+    sec.hidden = false;
+
+    var loaded = false;
+    function mount(id){
+      if (!loaded) {
+        loaded = true;
+        var s = document.createElement('script');
+        s.async = true;
+        s.src = 'https://unpkg.com/@elevenlabs/convai-widget-embed';
+        document.head.appendChild(s);
+      }
+      var old = document.querySelector('elevenlabs-convai');
+      if (old) old.remove();
+      var el = document.createElement('elevenlabs-convai');
+      el.setAttribute('agent-id', id);
+      document.body.appendChild(el);
+    }
+
+    live.forEach(function(a){
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'try-btn';
+      b.textContent = a[0];
+      b.setAttribute('aria-pressed', 'false');
+      b.addEventListener('click', function(){
+        row.querySelectorAll('.try-btn').forEach(function(x){ x.setAttribute('aria-pressed', 'false'); });
+        b.setAttribute('aria-pressed', 'true');
+        mount(a[1]);
+        note.textContent = a[0] + ' is ready — Otto picks up in the bottom-right corner.';
+      });
+      row.appendChild(b);
+    });
+  })();
+</script>
 
 <script>
   // Google Analytics (G-53R087K5V2), loaded only once the visitor accepts

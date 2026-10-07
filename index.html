@@ -596,10 +596,17 @@
     }
 
     function pick(a, b){
+      var open = document.querySelector('elevenlabs-convai');
       row.querySelectorAll('.try-btn').forEach(function(x){ x.setAttribute('aria-pressed', 'false'); });
+      // clicking the active use case again closes Otto instead of remounting
+      if (open && open.getAttribute('agent-id') === a[1]) {
+        open.remove();
+        note.textContent = '';
+        return;
+      }
       if (b) b.setAttribute('aria-pressed', 'true');
       mount(a[1]);
-      note.textContent = a[0] + ' is ready — Otto picks up in the bottom-right corner.';
+      note.textContent = a[0] + ' is ready — Otto picks up in the bottom-right corner. Click the button again to close him.';
     }
 
     live.forEach(function(a){

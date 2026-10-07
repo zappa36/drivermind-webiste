@@ -248,6 +248,15 @@
   .try-btn:hover{border-color:var(--oat)}
   .try-btn[aria-pressed="true"]{background:var(--coral);border-color:var(--coral);color:var(--ink-blue-deep)}
   .try__note{margin:0;color:var(--oat-muted);font-size:14px;min-height:22px}
+  /* floating close control while Otto is open — the widget itself has none */
+  .otto-close{
+    position:fixed;top:14px;right:14px;z-index:2147483647;
+    display:flex;align-items:center;gap:8px;cursor:pointer;
+    background:var(--ink-blue-deep);color:var(--oat);
+    border:var(--border-dark);border-radius:var(--radius-pill);padding:8px 16px;
+    font:600 13px/1 var(--font-display);box-shadow:0 2px 10px rgba(10,23,48,.35);
+  }
+  .otto-close:hover{border-color:var(--oat)}
 
   /* use-case sections */
   .uc .wrap{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:64px;align-items:start}
@@ -587,20 +596,34 @@
       var el = document.createElement('elevenlabs-convai');
       el.setAttribute('agent-id', id);
       document.body.appendChild(el);
+      if (!document.getElementById('otto-close')) {
+        var c = document.createElement('button');
+        c.id = 'otto-close';
+        c.className = 'otto-close';
+        c.type = 'button';
+        c.innerHTML = 'Close Otto <span aria-hidden="true">\u2715</span>';
+        c.addEventListener('click', closeOtto);
+        document.body.appendChild(c);
+      }
+    }
+
+    function closeOtto(){
+      var w = document.querySelector('elevenlabs-convai');
+      if (w) w.remove();
+      var c = document.getElementById('otto-close');
+      if (c) c.remove();
+      row.querySelectorAll('.try-btn').forEach(function(x){ x.setAttribute('aria-pressed', 'false'); });
+      note.textContent = '';
     }
 
     function pick(a, b){
       var open = document.querySelector('elevenlabs-convai');
-      row.querySelectorAll('.try-btn').forEach(function(x){ x.setAttribute('aria-pressed', 'false'); });
       // clicking the active use case again closes Otto instead of remounting
-      if (open && open.getAttribute('agent-id') === a[1]) {
-        open.remove();
-        note.textContent = '';
-        return;
-      }
+      if (open && open.getAttribute('agent-id') === a[1]) { closeOtto(); return; }
+      row.querySelectorAll('.try-btn').forEach(function(x){ x.setAttribute('aria-pressed', 'false'); });
       if (b) b.setAttribute('aria-pressed', 'true');
       mount(a[1]);
-      note.textContent = a[0] + ' is ready — Otto picks up in the bottom-right corner. Click the button again to close him.';
+      note.textContent = a[0] + ' is ready — Otto picks up in the bottom-right corner.';
     }
 
     live.forEach(function(a){

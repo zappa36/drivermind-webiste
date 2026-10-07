@@ -248,15 +248,16 @@
   .try-btn:hover{border-color:var(--oat)}
   .try-btn[aria-pressed="true"]{background:var(--coral);border-color:var(--coral);color:var(--ink-blue-deep)}
   .try__note{margin:0;color:var(--oat-muted);font-size:14px;min-height:22px}
-  /* floating close control while Otto is open — the widget itself has none */
+  /* floating close control while Otto is open — the widget itself has none.
+     JS keeps it pinned just above the widget's top-right corner. */
   .otto-close{
-    position:fixed;top:14px;right:14px;z-index:2147483647;
+    position:fixed;bottom:96px;right:14px;z-index:2147483647;
     display:flex;align-items:center;gap:8px;cursor:pointer;
-    background:var(--ink-blue-deep);color:var(--oat);
-    border:var(--border-dark);border-radius:var(--radius-pill);padding:8px 16px;
-    font:600 13px/1 var(--font-display);box-shadow:0 2px 10px rgba(10,23,48,.35);
+    background:#fff;color:var(--ink);
+    border:1px solid rgba(27,37,54,.2);border-radius:var(--radius-pill);padding:8px 16px;
+    font:600 13px/1 var(--font-display);box-shadow:var(--shadow-card);
   }
-  .otto-close:hover{border-color:var(--oat)}
+  .otto-close:hover{border-color:var(--ink)}
 
   /* use-case sections */
   .uc .wrap{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:64px;align-items:start}
@@ -604,6 +605,40 @@
         c.innerHTML = 'Close Otto <span aria-hidden="true">\u2715</span>';
         c.addEventListener('click', closeOtto);
         document.body.appendChild(c);
+        placeTimer = setInterval(placeClose, 400);
+        placeClose();
+      }
+    }
+
+    // Pin the pill just above the widget's top-right corner. The widget UI
+    // lives in the element's shadow root, so measure the first sized box in
+    // there; if nothing is measurable, the CSS fallback (above the bubble's
+    // corner spot) applies.
+    var placeTimer = null;
+    function placeClose(){
+      var c = document.getElementById('otto-close');
+      var w = document.querySelector('elevenlabs-convai');
+      if (!c || !w) { if (placeTimer) { clearInterval(placeTimer); placeTimer = null; } return; }
+      var target = null;
+      if (w.offsetWidth > 40 && w.offsetHeight > 40) target = w;
+      else if (w.shadowRoot) {
+        var els = w.shadowRoot.querySelectorAll('div');
+        for (var i = 0; i < els.length && !target; i++) {
+          var b = els[i].getBoundingClientRect();
+          if (b.width > 40 && b.height > 40) target = els[i];
+        }
+      }
+      if (!target) { c.style.top = ''; c.style.right = ''; c.style.bottom = ''; return; }
+      var r = target.getBoundingClientRect();
+      if (r.top >= 54) {
+        c.style.top = (r.top - 46) + 'px';
+        c.style.bottom = 'auto';
+        c.style.right = Math.max(10, innerWidth - r.right) + 'px';
+      } else {
+        // widget fills the screen (phones): keep the pill reachable top-right
+        c.style.top = '10px';
+        c.style.bottom = 'auto';
+        c.style.right = '10px';
       }
     }
 

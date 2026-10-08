@@ -219,7 +219,7 @@
   .intro h2{max-width:720px}
   .intro .lead{max-width:560px}
   .loop{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:32px}
-  .loop__step{display:grid;gap:10px;align-content:start;border-top:2px solid var(--ink-blue);padding-top:18px}
+  .loop__step{display:grid;gap:10px;grid-template-rows:auto auto 1fr auto;border-top:2px solid var(--ink-blue);padding-top:18px}
   .loop__num{font:700 15px/1 var(--font-display);color:var(--coral-ink);font-variant-numeric:tabular-nums}
   .loop__step h3{font-size:18px}
   .loop__step p{margin:0;color:var(--ink-muted)}
@@ -463,20 +463,20 @@
       </div>
       <div class="loop__step">
         <span class="loop__num">03</span>
-        <h3>The next driver inherits it</h3>
-        <p>Whoever drives to that stop next hears the tip on the way in.</p>
-        <div class="loop__ex">
-          <b>Otto · on the way in</b>
-          <span>“Heads up — Kollwitzstraße 18: road closed, park on Sredzkistraße and walk in.”</span>
-        </div>
-      </div>
-      <div class="loop__step">
-        <span class="loop__num">04</span>
         <h3>The plan learns it</h3>
         <p>After an AI review, tips feed the next day's planning — ETAs get more accurate, rounds run tighter.</p>
         <div class="loop__ex">
           <b>Next plan</b>
           <span>Every visit to Kollwitzstraße 18 gets its two extra minutes — the ETA stays honest.</span>
+        </div>
+      </div>
+      <div class="loop__step">
+        <span class="loop__num">04</span>
+        <h3>The next driver inherits it</h3>
+        <p>Whoever drives to that stop next hears the tip on the way in.</p>
+        <div class="loop__ex">
+          <b>Otto · on the way in</b>
+          <span>“Heads up — Kollwitzstraße 18: road closed, park on Sredzkistraße and walk in.”</span>
         </div>
       </div>
     </div>

@@ -622,8 +622,8 @@
       if (old) old.remove();
       var el = document.createElement('elevenlabs-convai');
       el.setAttribute('agent-id', id);
-      // start minimized: the launcher bubble, not the opened panel
-      el.setAttribute('variant', 'full');
+      // size/state come from the widget settings in the ElevenLabs
+      // dashboard (variant + collapsible) — don't override them here
       document.body.appendChild(el);
       if (!document.getElementById('otto-ctl')) {
         var wrap = document.createElement('div');

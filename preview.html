@@ -275,7 +275,7 @@
 
   /* floating controls while Otto is open (instructions + close) — the
      widget itself has neither. JS pins them above its top-right corner. */
-  .otto-ctl{position:fixed;bottom:96px;right:14px;z-index:2147483647;display:flex;gap:8px}
+  .otto-ctl{position:fixed;bottom:96px;right:14px;z-index:2147483647;display:flex;gap:8px;visibility:hidden}
   .otto-pill{
     display:flex;align-items:center;gap:8px;cursor:pointer;
     background:#fff;color:var(--ink);
@@ -653,7 +653,8 @@
         wrap.appendChild(info);
         wrap.appendChild(c);
         document.body.appendChild(wrap);
-        placeTimer = setInterval(placeClose, 400);
+        prevTop = null;
+        placeTimer = setInterval(placeClose, 250);
         placeClose();
       }
     }
@@ -665,6 +666,7 @@
     // covers the viewport, the widget is fullscreen (phones). If nothing is
     // measurable yet, the CSS fallback applies.
     var placeTimer = null;
+    var prevTop = null;
     function placeClose(){
       var c = document.getElementById('otto-ctl');
       var w = document.querySelector('elevenlabs-convai');
@@ -681,17 +683,22 @@
         if (a > viewA * 0.9) continue; // full-viewport wrapper, not the panel
         if (a > bestArea) { bestArea = a; best = b; }
       }
-      if (!sized) { c.style.top = ''; c.style.right = ''; c.style.bottom = ''; return; }
+      // stay hidden until the widget renders and its panel stops moving, so
+      // the pills appear in place instead of jumping up from the corner
+      if (!sized) { c.style.visibility = 'hidden'; prevTop = null; return; }
+      var topPx;
       if (best && best.top >= 54) {
-        c.style.top = (best.top - 46) + 'px';
-        c.style.bottom = 'auto';
+        topPx = Math.round(best.top - 46);
         c.style.right = Math.max(10, innerWidth - best.right) + 'px';
       } else {
         // widget fills the screen (phones): keep the pill reachable top-right
-        c.style.top = '10px';
-        c.style.bottom = 'auto';
+        topPx = 10;
         c.style.right = '10px';
       }
+      c.style.top = topPx + 'px';
+      c.style.bottom = 'auto';
+      c.style.visibility = (prevTop !== null && Math.abs(topPx - prevTop) < 4) ? 'visible' : 'hidden';
+      prevTop = topPx;
     }
 
     function closeOtto(){

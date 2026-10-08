@@ -232,6 +232,8 @@
   .loop__ex b{font:500 11px/1 var(--font-display);letter-spacing:.09em;text-transform:uppercase;color:var(--coral-ink)}
   .loop__ex--tip span{display:flex;gap:10px}
   .loop__ex--tip i{font-style:normal;flex:0 0 76px;color:var(--ink-muted)}
+  .deep-link{justify-self:start;font:600 15px/1 var(--font-display);color:var(--coral-ink);text-decoration:none}
+  .deep-link:hover{text-decoration:underline}
 
   /* what else Otto can do — compact cards for the next use cases */
   .more .wrap{display:grid;gap:48px;grid-template-columns:minmax(0,1fr)}
@@ -485,59 +487,39 @@
         </div>
       </div>
     </div>
+    <a class="deep-link" href="/driver-report.html">The driver report in detail →</a>
   </div>
 </section>
 
-<!-- ======================= DRIVER REPORT (the product) ======================= -->
-<section class="sec on-dark uc" id="report">
+<!-- ======================= SDK · FITS THE STACK ======================= -->
+<section class="sec on-dark uc" id="sdk">
   <div class="wrap">
     <div class="uc__copy">
-      <span class="kicker">Driver report</span>
-      <h2>Ten minutes lost, stop after stop. Never again.</h2>
-      <p class="lead">The gate code has changed. There's a dog at the door. Scaffolding covers the entrance. Today, what a driver learns leaves with them.</p>
-      <p class="body-p">With ParcelVox, your driver presses Otto, says what happened and moves on. Otto asks what the next driver needs to know, three questions at most. He files the tip against the address. The next time anyone drives to that stop, Otto reads the tip to them on the way in.</p>
+      <span class="kicker">The SDK</span>
+      <h2>Otto plugs into the stack you already run.</h2>
+      <p class="lead">No new device, no extra app to log into. ParcelVox ships as an SDK inside your driver app and works with the systems your operation already runs on.</p>
       <div class="uc__cols">
         <div class="uc__col">
-          <h3>For your drivers</h3>
+          <h3>In the driver app</h3>
           <ul>
-            <li>They report in a few sentences, by voice. No forms, no typing.</li>
-            <li>They hear what earlier drivers found before they reach the door.</li>
-            <li>Any route feels like their own route.</li>
+            <li>The SDK adds the voice layer to the app your drivers already carry.</li>
+            <li>One press and Otto listens — hands-free from there.</li>
           </ul>
         </div>
         <div class="uc__col">
-          <h3>For your operation</h3>
+          <h3>Reads your operation</h3>
           <ul>
-            <li>The depot keeps what drivers know about each stop, not one driver.</li>
-            <li>Drivers spend less time searching at the door.</li>
-            <li>Cover drivers start with what the regular driver knows.</li>
+            <li>Stops, time windows and customer instructions come in from your planning and order systems.</li>
+            <li>Otto knows the round before the first door.</li>
           </ul>
         </div>
-      </div>
-    </div>
-    <div class="uc__media" aria-hidden="true">
-      <div class="phone">
-        <div class="phone__bar"><span>17:42</span><span>Report · stop 12</span></div>
-        <div class="phone__stage">
-          <span class="otto"><span class="otto__ring"></span><span class="otto__ring otto__ring--2"></span><span class="otto__blob"><span class="otto__eye"></span><span class="otto__eye"></span></span></span>
-          <span class="wave"><i></i><i></i><i></i><i></i><i></i></span>
-          <span class="pv-live"><i></i>Voice · 0:14</span>
+        <div class="uc__col">
+          <h3>Writes back, structured</h3>
+          <ul>
+            <li>Tips, call outcomes and delays go back as structured data, filed against the address.</li>
+            <li>After an AI review, they feed the next day's plan.</li>
+          </ul>
         </div>
-        <div class="transcript">
-          <div class="turn"><span>Driver · 0:02</span><p>“Road's closed, couldn't get to the address.”</p></div>
-          <div class="turn turn--otto"><span>Otto · 0:05</span><p>“Got it. Was there a way round?”</p></div>
-          <div class="turn"><span>Driver · 0:08</span><p>“Parked on Sredzkistraße and walked. Two minutes.”</p></div>
-          <div class="turn turn--otto"><span>Otto · 0:12 · speaking</span><p>“Thanks. I'll tell the next driver: road closed, park on Sredzkistraße and walk in.”</p></div>
-        </div>
-        <div class="controls">
-          <span class="ctrl"><i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg></i>Mute</span>
-          <span class="ctrl"><i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></i>Speaker</span>
-          <span class="ctrl"><i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate(135deg)"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></i>End</span>
-        </div>
-      </div>
-      <div class="readout">
-        <div class="readout__kick"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>Otto reads out · on the way in</div>
-        <p>Heads up — Kollwitzstraße 18, coming up. A driver reported: road closed, park on Sredzkistraße.</p>
       </div>
     </div>
   </div>

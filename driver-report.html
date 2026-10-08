@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ParcelVox — What one driver learns, the whole fleet inherits</title>
-<meta name="description" content="Every driver knows things the map doesn't. Otto, the voice of ParcelVox, captures them at the door and hands them to the next driver. He also makes the calls that keep the route moving.">
+<title>ParcelVox — the driver report, in detail</title>
+<meta name="description" content="The ParcelVox driver report in detail: what the driver says, what Otto files against the address, and what the next driver hears on the way in.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Source+Sans+3:wght@400;700&display=swap" rel="stylesheet">
@@ -236,8 +236,6 @@
   .loop__ex b{font:500 11px/1 var(--font-display);letter-spacing:.09em;text-transform:uppercase;color:var(--coral-ink)}
   .loop__ex--tip span{display:flex;gap:10px}
   .loop__ex--tip i{font-style:normal;flex:0 0 76px;color:var(--ink-muted)}
-  .deep-link{justify-self:start;font:600 15px/1 var(--font-display);color:var(--coral-ink);text-decoration:none}
-  .deep-link:hover{text-decoration:underline}
 
   /* what else Otto can do — compact cards for the next use cases */
   .more .wrap{display:grid;gap:48px;grid-template-columns:minmax(0,1fr)}
@@ -395,440 +393,73 @@
 
 <a class="skip-link" href="#main">Skip to content</a>
 
-<!-- ======================= HEADER ======================= -->
-<header class="site-head on-dark">
+<header class="site-head">
   <div class="wrap">
-    <a class="wordmark" href="#top">Parcel<b>Vox</b></a>
-    <nav class="site-nav" aria-label="Main">
-      <a href="#how">How it works</a>
-      <a href="#more">What else Otto does</a>
-      <a href="#drivers">On the driver's side</a>
+    <a class="wordmark" href="/">Parcel<b>Vox</b></a>
+    <nav class="site-nav" aria-label="Site">
+      <a href="/">← Back to parcelvox.com</a>
     </nav>
-    <div class="cta"><a class="pv-btn" data-v="primary" data-size="sm" data-on="dark" href="#pilot">Book a demo</a></div>
   </div>
 </header>
 
-<!-- ======================= HERO ======================= -->
-<section class="hero on-dark" id="top">
-  <div class="wrap">
-    <svg class="hero__route" viewBox="0 0 1240 720" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-      <path d="M 480 780 C 560 640, 520 560, 640 500 C 780 430, 740 340, 880 280 C 990 233, 1030 170, 1160 120" fill="none" stroke="rgba(244,241,232,.1)" stroke-width="8" stroke-linecap="round"/>
-      <path class="route-draw" d="M 480 780 C 560 640, 520 560, 640 500 C 780 430, 740 340, 880 280 C 990 233, 1030 170, 1160 120" fill="none" stroke="rgba(244,241,232,.6)" stroke-width="2" stroke-linecap="round"/>
-      <g class="route-van">
-        <rect x="522" y="588" width="46" height="24" rx="4" fill="#F4F1E8"/>
-        <rect x="552" y="591" width="12" height="11" rx="2" fill="#0E2138"/>
-        <rect x="526" y="598" width="22" height="3" fill="#0E2138" opacity=".4"/>
-        <circle cx="534" cy="614" r="5" fill="#0A1730" stroke="rgba(244,241,232,.5)" stroke-width="2"/>
-        <circle cx="556" cy="614" r="5" fill="#0A1730" stroke="rgba(244,241,232,.5)" stroke-width="2"/>
-      </g>
-      <circle cx="640" cy="500" r="9" fill="none" stroke="rgba(244,241,232,.3)" stroke-width="1.5"/>
-      <circle cx="640" cy="500" r="4.5" fill="#F4F1E8"/>
-      <circle cx="880" cy="280" r="9" fill="none" stroke="rgba(244,241,232,.3)" stroke-width="1.5"/>
-      <circle cx="880" cy="280" r="4.5" fill="#F4F1E8"/>
-      <circle cx="1080" cy="152" r="9" fill="none" stroke="rgba(244,241,232,.3)" stroke-width="1.5"/>
-      <circle cx="1080" cy="152" r="4.5" fill="#F4F1E8"/>
-    </svg>
-    <div class="hero__pin hero__pin--1" aria-hidden="true"><span class="pin-chip">Kollwitzstraße 18 · Road closed, park on Sredzkistraße</span></div>
-    <div class="hero__pin hero__pin--2" aria-hidden="true"><span class="pin-chip">Kollwitzstraße 48 · New code 4711</span></div>
-    <div class="hero__pin hero__pin--3" aria-hidden="true"><span class="pin-chip">Brandt · Home after six</span></div>
-    <div class="hero__copy">
-      <span class="kicker">ParcelVox · Voice for the route</span>
-      <h1>What one driver learns, the whole fleet inherits.</h1>
-      <p class="lead">Every driver knows things the map doesn't. Otto, the voice of ParcelVox, captures them at the door and hands them to the next driver. He also makes the calls that keep the route moving: to the customer before the van arrives, to the office when a driver is stuck, and to the driver when something changes.</p>
-      <div class="hero__ctas">
-        <button class="pv-btn" data-v="primary" data-size="lg" data-on="dark" type="button" data-talk-otto hidden>Talk to Otto</button>
-        <a class="pv-btn" data-v="primary" data-size="lg" data-on="dark" href="#pilot" id="hero-demo">Book a demo</a>
-      </div>
-    </div>
-  </div>
-</section>
-
 <main id="main">
 
-<!-- ======================= INTRO ======================= -->
-<section class="sec on-light intro" id="how">
-  <div class="wrap">
-    <div class="sec-head">
-      <span class="kicker">What ParcelVox does</span>
-      <h2>Your drivers talk. Otto handles the rest.</h2>
-      <p class="lead">Otto works by voice, hands-free. Your drivers never type, scroll or wait on hold.</p>
-    </div>
-    <div class="loop">
-      <div class="loop__step">
-        <span class="loop__num">01</span>
-        <h3>The driver reports</h3>
-        <p>Your driver presses Otto, says what they found and moves on.</p>
-        <div class="loop__ex">
-          <b>Driver · at the door</b>
-          <span>“Road's closed, couldn't get to the address. Parked on Sredzkistraße and walked. Two minutes.”</span>
-        </div>
-      </div>
-      <div class="loop__step">
-        <span class="loop__num">02</span>
-        <h3>Otto files it</h3>
-        <p>The tip is structured and filed against the address — it belongs to the depot now, not one driver.</p>
-        <div class="loop__ex loop__ex--tip">
-          <b>Tip on file</b>
-          <span><i>Stop</i>Kollwitzstraße 18</span>
-          <span><i>Problem</i>Road closed</span>
-          <span><i>Way round</i>Park on Sredzkistraße, walk two minutes</span>
-        </div>
-      </div>
-      <div class="loop__step">
-        <span class="loop__num">03</span>
-        <h3>The plan learns it</h3>
-        <p>After an AI review, tips feed the next day's planning — ETAs get more accurate, rounds run tighter.</p>
-        <div class="loop__ex">
-          <b>Next plan</b>
-          <span>Every visit to Kollwitzstraße 18 gets its two extra minutes — the ETA stays honest.</span>
-        </div>
-      </div>
-      <div class="loop__step">
-        <span class="loop__num">04</span>
-        <h3>The next driver inherits it</h3>
-        <p>Whoever drives to that stop next hears the tip on the way in.</p>
-        <div class="loop__ex">
-          <b>Otto · on the way in</b>
-          <span>“Heads up — Kollwitzstraße 18: road closed, park on Sredzkistraße and walk in.”</span>
-        </div>
-      </div>
-    </div>
-    <a class="deep-link" href="/driver-report.html">The driver report in detail →</a>
-  </div>
-</section>
-
-<!-- ======================= SDK · FITS THE STACK ======================= -->
-<section class="sec on-dark uc" id="sdk">
+<!-- ======================= DRIVER REPORT (the product) ======================= -->
+<section class="sec on-dark uc" id="report">
   <div class="wrap">
     <div class="uc__copy">
-      <span class="kicker">The SDK</span>
-      <h2>Otto plugs into the stack you already run.</h2>
-      <p class="lead">No new device, no extra app to log into. ParcelVox ships as an SDK inside your driver app and works with the systems your operation already runs on.</p>
+      <span class="kicker">Driver report</span>
+      <h2>Ten minutes lost, stop after stop. Never again.</h2>
+      <p class="lead">The gate code has changed. There's a dog at the door. Scaffolding covers the entrance. Today, what a driver learns leaves with them.</p>
+      <p class="body-p">With ParcelVox, your driver presses Otto, says what happened and moves on. Otto asks what the next driver needs to know, three questions at most. He files the tip against the address. The next time anyone drives to that stop, Otto reads the tip to them on the way in.</p>
       <div class="uc__cols">
         <div class="uc__col">
-          <h3>In the driver app</h3>
+          <h3>For your drivers</h3>
           <ul>
-            <li>The SDK adds the voice layer to the app your drivers already carry.</li>
-            <li>One press and Otto listens — hands-free from there.</li>
+            <li>They report in a few sentences, by voice. No forms, no typing.</li>
+            <li>They hear what earlier drivers found before they reach the door.</li>
+            <li>Any route feels like their own route.</li>
           </ul>
         </div>
         <div class="uc__col">
-          <h3>Reads your operation</h3>
+          <h3>For your operation</h3>
           <ul>
-            <li>Stops, time windows and customer instructions come in from your planning and order systems.</li>
-            <li>Otto knows the round before the first door.</li>
-          </ul>
-        </div>
-        <div class="uc__col">
-          <h3>Writes back, structured</h3>
-          <ul>
-            <li>Tips, call outcomes and delays go back as structured data, filed against the address.</li>
-            <li>After an AI review, they feed the next day's plan.</li>
+            <li>The depot keeps what drivers know about each stop, not one driver.</li>
+            <li>Drivers spend less time searching at the door.</li>
+            <li>Cover drivers start with what the regular driver knows.</li>
           </ul>
         </div>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- ======================= WHAT ELSE OTTO CAN DO ======================= -->
-<section class="sec on-light more" id="more">
-  <div class="wrap">
-    <div class="sec-head">
-      <span class="kicker">Beyond the driver report</span>
-      <h2>What else Otto can do for you.</h2>
-      <p class="lead">The driver report is where ParcelVox starts. These come next — each one by voice, each one inside your rules, and the final say stays with you.</p>
+    <div class="uc__media" aria-hidden="true">
+      <div class="phone">
+        <div class="phone__bar"><span>17:42</span><span>Report · stop 12</span></div>
+        <div class="phone__stage">
+          <span class="otto"><span class="otto__ring"></span><span class="otto__ring otto__ring--2"></span><span class="otto__blob"><span class="otto__eye"></span><span class="otto__eye"></span></span></span>
+          <span class="wave"><i></i><i></i><i></i><i></i><i></i></span>
+          <span class="pv-live"><i></i>Voice · 0:14</span>
+        </div>
+        <div class="transcript">
+          <div class="turn"><span>Driver · 0:02</span><p>“Road's closed, couldn't get to the address.”</p></div>
+          <div class="turn turn--otto"><span>Otto · 0:05</span><p>“Got it. Was there a way round?”</p></div>
+          <div class="turn"><span>Driver · 0:08</span><p>“Parked on Sredzkistraße and walked. Two minutes.”</p></div>
+          <div class="turn turn--otto"><span>Otto · 0:12 · speaking</span><p>“Thanks. I'll tell the next driver: road closed, park on Sredzkistraße and walk in.”</p></div>
+        </div>
+        <div class="controls">
+          <span class="ctrl"><i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg></i>Mute</span>
+          <span class="ctrl"><i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></i>Speaker</span>
+          <span class="ctrl"><i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate(135deg)"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></i>End</span>
+        </div>
+      </div>
+      <div class="readout">
+        <div class="readout__kick"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>Otto reads out · on the way in</div>
+        <p>Heads up — Kollwitzstraße 18, coming up. A driver reported: road closed, park on Sredzkistraße.</p>
+      </div>
     </div>
-    <div class="more-grid">
-      <article class="more-card">
-        <h3>Customer call</h3>
-        <p>Otto calls your customer before the van arrives, checks someone will be home and agrees a time. Fewer stairs climbed for nothing, more deliveries that succeed on the first attempt.</p>
-        <p class="says"><b>Otto · to your customer</b>“Understood. Your driver will come after six and hand it to you in person.”</p>
-      </article>
-      <article class="more-card">
-        <h3>Help from the office</h3>
-        <p>Stuck at the door, your driver tells Otto once. Otto reaches the office with the stop and the problem already filled in, and comes back with the answer — even in the weeks when dispatch can't take another call.</p>
-        <p class="says"><b>Otto · to your driver</b>“The new code is 4711. It's on file for the next driver.”</p>
-      </article>
-      <article class="more-card">
-        <h3>Driver check-in</h3>
-        <p>Otto calls your driver for the office, one reason per call, and lets them drive. You decide when: trigger a check-in yourself, or set the rules and Otto makes the call for you.</p>
-        <p class="says"><b>Otto · to your driver</b>“The customer at Kollwitzstraße 71 is away until tomorrow. Skip that stop today.”</p>
-      </article>
-    </div>
-  </div>
-</section>
-
-<!-- ======================= TRY OTTO (hidden until agent ids are filled in) ======================= -->
-<section class="sec on-dark try" id="try" hidden>
-  <div class="wrap">
-    <div class="sec-head">
-      <span class="kicker">Try it yourself</span>
-      <h2>Talk to Otto.</h2>
-      <p class="lead">Pick a call and talk to Otto, live from your browser. Your microphone turns on only when you start the call, and off when you end it.</p>
-    </div>
-    <div class="try__btns" role="group" aria-label="Choose a call to try"></div>
-    <p class="try__note"></p>
-  </div>
-</section>
-
-<!-- demo-intro overlay, opened by the Talk-to-Otto buttons -->
-<div class="demo-modal" id="demo-modal" hidden>
-  <div class="demo-modal__back" data-close></div>
-  <div class="demo-modal__card on-light" role="dialog" aria-modal="true" aria-labelledby="demo-modal-title">
-    <span class="kicker" id="demo-modal-kick">Live demo</span>
-    <h3 id="demo-modal-title">You play the driver.</h3>
-    <p class="demo-modal__scene" id="demo-modal-scene"></p>
-    <ol class="demo-modal__steps">
-      <li>Press start — Otto appears in the corner of the page.</li>
-      <li><strong>Press the phone button in Otto's window</strong> and allow your microphone.</li>
-      <li id="demo-modal-task"></li>
-    </ol>
-    <div class="demo-modal__row">
-      <button class="pv-btn" data-v="primary" data-size="lg" type="button" id="demo-modal-start">Start the demo</button>
-      <button class="demo-modal__later" type="button" data-close>Maybe later</button>
-    </div>
-    <p class="demo-modal__fine">A live demo — no real depot behind it. Your microphone is used only during the call, and you can type instead of talking.</p>
-  </div>
-</div>
-
-<!-- ======================= DEMO (kept from the live site) ======================= -->
-<section class="sec on-deep demo" id="demo">
-  <div class="wrap">
-    <div class="sec-head">
-      <h2>Otto, on the road.</h2>
-    </div>
-    <div class="demo__frame">
-      <iframe src="https://www.youtube-nocookie.com/embed/RBD_jzFBiNk?rel=0" title="ParcelVox demo video" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-    </div>
-  </div>
-</section>
-
-<!-- ======================= ON THE DRIVER'S SIDE ======================= -->
-<section class="sec on-dark statement" id="drivers">
-  <div class="wrap">
-    <span class="kicker">On the driver's side</span>
-    <h2>A colleague, not a supervisor.</h2>
-    <p class="lead">Otto counts what your drivers share, never how fast they drive. There's no tracking of pace and no stops-per-hour league table. Drivers who feel watched stop talking. Drivers who feel helped tell Otto everything.</p>
-  </div>
-</section>
-
-<!-- ======================= CLOSE ======================= -->
-<section class="sec on-light close" id="pilot">
-  <div class="wrap">
-    <span class="kicker">Start with one route</span>
-    <h2>Give one route a voice. Keep everything it learns.</h2>
-    <p class="lead">Run ParcelVox on one depot route. We measure what matters to you:</p>
-    <ul>
-      <li>how many deliveries succeed on the first attempt</li>
-      <li>how long drivers spend at the door</li>
-      <li>how fast cover drivers find their way</li>
-    </ul>
-    <div class="cta"><a class="pv-btn" data-v="primary" data-size="lg" data-on="light" href="mailto:vincenzo@beamberlin.com?subject=ParcelVox%20demo">Book a demo</a></div>
   </div>
 </section>
 
 </main>
-
-<script>
-  // Try-Otto: one ElevenLabs agent per use case. Paste each agent id from
-  // the ElevenLabs dashboard (agent → Widget tab) into AGENTS below. A
-  // button appears only for a filled-in id, and the whole section stays
-  // hidden while every id is empty — so this ships dormant. The ElevenLabs
-  // script loads on the first click, never on page load.
-  (function(){
-    var AGENTS = [
-      ['Driver report', 'agent_1901m4be21bbf56r9fhm17j2fk2x'],
-      ['Customer call', ''],
-      ['Help from the office', ''],
-      ['Driver check-in', '']
-    ];
-    var sec = document.getElementById('try');
-    var row = sec.querySelector('.try__btns');
-    var note = sec.querySelector('.try__note');
-    var live = AGENTS.filter(function(a){ return a[1]; });
-    if (!live.length) return;
-    sec.hidden = false;
-
-    var loaded = false;
-    function mount(id){
-      if (!loaded) {
-        loaded = true;
-        var s = document.createElement('script');
-        s.async = true;
-        s.src = 'https://unpkg.com/@elevenlabs/convai-widget-embed';
-        document.head.appendChild(s);
-      }
-      var old = document.querySelector('elevenlabs-convai');
-      if (old) old.remove();
-      var el = document.createElement('elevenlabs-convai');
-      el.setAttribute('agent-id', id);
-      document.body.appendChild(el);
-      if (!document.getElementById('otto-ctl')) {
-        var wrap = document.createElement('div');
-        wrap.id = 'otto-ctl';
-        wrap.className = 'otto-ctl';
-        var info = document.createElement('button');
-        info.className = 'otto-pill';
-        info.type = 'button';
-        info.textContent = 'Instructions';
-        info.addEventListener('click', function(){ if (current) openModal(current[0], current[1]); });
-        var c = document.createElement('button');
-        c.id = 'otto-close';
-        c.className = 'otto-pill';
-        c.type = 'button';
-        c.innerHTML = 'Close Otto <span aria-hidden="true">\u2715</span>';
-        c.addEventListener('click', closeOtto);
-        wrap.appendChild(info);
-        wrap.appendChild(c);
-        document.body.appendChild(wrap);
-        placeTimer = setInterval(placeClose, 400);
-        placeClose();
-      }
-    }
-
-    // Pin the pill just above the widget's top-right corner. The widget UI
-    // lives in the element's shadow root behind a full-viewport wrapper, so
-    // take the largest sized box that is NOT near-viewport-sized: that is
-    // the panel (or the launcher bubble when collapsed). If every sized box
-    // covers the viewport, the widget is fullscreen (phones). If nothing is
-    // measurable yet, the CSS fallback applies.
-    var placeTimer = null;
-    function placeClose(){
-      var c = document.getElementById('otto-ctl');
-      var w = document.querySelector('elevenlabs-convai');
-      if (!c || !w) { if (placeTimer) { clearInterval(placeTimer); placeTimer = null; } return; }
-      var best = null, bestArea = 0, sized = 0;
-      var viewA = innerWidth * innerHeight;
-      var els = [w];
-      if (w.shadowRoot) els = els.concat(Array.prototype.slice.call(w.shadowRoot.querySelectorAll('div')));
-      for (var i = 0; i < els.length; i++) {
-        var b = els[i].getBoundingClientRect();
-        if (b.width < 44 || b.height < 44) continue;
-        sized++;
-        var a = b.width * b.height;
-        if (a > viewA * 0.9) continue; // full-viewport wrapper, not the panel
-        if (a > bestArea) { bestArea = a; best = b; }
-      }
-      if (!sized) { c.style.top = ''; c.style.right = ''; c.style.bottom = ''; return; }
-      if (best && best.top >= 54) {
-        c.style.top = (best.top - 46) + 'px';
-        c.style.bottom = 'auto';
-        c.style.right = Math.max(10, innerWidth - best.right) + 'px';
-      } else {
-        // widget fills the screen (phones): keep the pill reachable top-right
-        c.style.top = '10px';
-        c.style.bottom = 'auto';
-        c.style.right = '10px';
-      }
-    }
-
-    function closeOtto(){
-      var w = document.querySelector('elevenlabs-convai');
-      if (w) w.remove();
-      var c = document.getElementById('otto-ctl');
-      if (c) c.remove();
-      row.querySelectorAll('.try-btn').forEach(function(x){ x.setAttribute('aria-pressed', 'false'); });
-      note.textContent = '';
-    }
-
-    // The intro overlay: who you play and how to start, once per use case.
-    var SCENARIOS = {
-      'Driver report': {
-        title: 'You play the driver.',
-        scene: "One of your drivers hits a problem at a stop — the gate code doesn't work, the road is closed, a dog guards the door. In this demo, that driver is you.",
-        task: "Tell Otto what went wrong, the way your driver would say it. He asks a couple of questions at most, then turns it into a tip for the next driver."
-      },
-      'Customer call': {
-        title: 'You play the customer.',
-        scene: "Before the van arrives, Otto calls the customer to make sure the trip won't be wasted. In this demo, the customer is you.",
-        task: "Take the call. Otto checks you'll be home and agrees a time — inside the rules your depot sets."
-      },
-      'Help from the office': {
-        title: 'You play the driver.',
-        scene: "Your driver is stuck at the door — the code on the label doesn't work. In this demo, that driver is you.",
-        task: "Tell Otto the problem once. He takes it to the office and comes back with the answer."
-      },
-      'Driver check-in': {
-        title: 'You play the driver.',
-        scene: "The office needs one thing from the van without pulling anyone over. In this demo, the driver is you.",
-        task: "Take Otto's call — one reason per call, one clear line, hands on the wheel."
-      }
-    };
-    var modal = document.getElementById('demo-modal');
-    var modalSeen = {};
-    var pending = null;
-    function openModal(a, b){
-      var s = SCENARIOS[a[0]] || SCENARIOS['Driver report'];
-      document.getElementById('demo-modal-kick').textContent = 'Live demo · ' + a[0];
-      document.getElementById('demo-modal-title').textContent = s.title;
-      document.getElementById('demo-modal-scene').textContent = s.scene;
-      document.getElementById('demo-modal-task').textContent = s.task;
-      pending = [a, b];
-      var open = document.querySelector('elevenlabs-convai');
-      document.getElementById('demo-modal-start').textContent =
-        (open && open.getAttribute('agent-id') === a[1]) ? 'Back to the demo' : 'Start the demo';
-      modal.hidden = false;
-      document.getElementById('demo-modal-start').focus();
-    }
-    function closeModal(){ modal.hidden = true; pending = null; }
-    modal.addEventListener('click', function(e){
-      if (e.target.closest('[data-close]')) closeModal();
-    });
-    document.addEventListener('keydown', function(e){
-      if (e.key === 'Escape' && !modal.hidden) closeModal();
-    });
-    document.getElementById('demo-modal-start').addEventListener('click', function(){
-      if (!pending) return;
-      var a = pending[0], b = pending[1];
-      modalSeen[a[0]] = true;
-      closeModal();
-      var open = document.querySelector('elevenlabs-convai');
-      if (open && open.getAttribute('agent-id') === a[1]) return; // re-read only: Otto keeps running
-      engage(a, b);
-    });
-
-    var current = null;
-    function engage(a, b){
-      current = [a, b];
-      row.querySelectorAll('.try-btn').forEach(function(x){ x.setAttribute('aria-pressed', 'false'); });
-      if (b) b.setAttribute('aria-pressed', 'true');
-      mount(a[1]);
-      note.textContent = a[0] + " is ready — press the phone button in Otto's window to start the call.";
-    }
-
-    function pick(a, b){
-      var open = document.querySelector('elevenlabs-convai');
-      // clicking the active use case again closes Otto instead of remounting
-      if (open && open.getAttribute('agent-id') === a[1]) { closeOtto(); return; }
-      // first time on this use case: set the scene before mounting
-      if (!open && !modalSeen[a[0]]) { openModal(a, b); return; }
-      engage(a, b);
-    }
-
-    live.forEach(function(a){
-      var b = document.createElement('button');
-      b.type = 'button';
-      b.className = 'try-btn';
-      b.textContent = a[0];
-      b.setAttribute('aria-pressed', 'false');
-      b.addEventListener('click', function(){ pick(a, b); });
-      row.appendChild(b);
-    });
-
-    // Hero button: launches the first live agent on the spot. While Otto is
-    // live, the hero's coral hit belongs to him; Book a demo steps back to
-    // the outline style (one coral accent per surface).
-    var demoBtn = document.getElementById('hero-demo');
-    if (demoBtn) demoBtn.setAttribute('data-v', 'outline');
-    document.querySelectorAll('[data-talk-otto]').forEach(function(h){
-      h.hidden = false;
-      h.addEventListener('click', function(){
-        pick(live[0], row.querySelector('.try-btn'));
-      });
-    });
-  })();
-</script>
 
 <script>
   // Google Analytics (G-53R087K5V2), loaded only once the visitor accepts
@@ -874,7 +505,6 @@
   })();
 </script>
 
-<!-- ======================= FOOTER ======================= -->
 <footer class="site-foot on-deep">
   <div class="wrap">
     <a class="wordmark wordmark--sm" href="#top">Parcel<b>Vox</b></a>

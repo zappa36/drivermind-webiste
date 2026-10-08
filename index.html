@@ -257,19 +257,6 @@
     font:500 11px/1 var(--font-display);letter-spacing:.09em;text-transform:uppercase;color:var(--coral-ink);
   }
 
-  /* try Otto — one ElevenLabs agent per use case, mounted on demand */
-  .try .wrap{display:grid;gap:32px;grid-template-columns:minmax(0,1fr)}
-  .try__btns{display:flex;gap:12px;flex-wrap:wrap}
-  .try-btn{
-    font:600 14px/1 var(--font-display);letter-spacing:.01em;cursor:pointer;
-    padding:10px 18px;border-radius:var(--radius-sm);
-    background:transparent;color:var(--oat);border:var(--border-dark);
-    transition:border-color var(--dur-fast) var(--ease),
-      color var(--dur-fast) var(--ease),background var(--dur-fast) var(--ease);
-  }
-  .try-btn:hover{border-color:var(--oat)}
-  .try-btn[aria-pressed="true"]{background:var(--coral);border-color:var(--coral);color:var(--ink-blue-deep)}
-  .try__note{margin:0;color:var(--oat-muted);font-size:14px;min-height:22px}
   /* demo-intro overlay: sets the scene before Otto mounts */
   .demo-modal{position:fixed;inset:0;z-index:2147483646;display:flex;align-items:center;justify-content:center;padding:20px}
   .demo-modal[hidden]{display:none}
@@ -559,19 +546,6 @@
   </div>
 </section>
 
-<!-- ======================= TRY OTTO (hidden until agent ids are filled in) ======================= -->
-<section class="sec on-dark try" id="try" hidden>
-  <div class="wrap">
-    <div class="sec-head">
-      <span class="kicker">Try it yourself</span>
-      <h2>Talk to Otto.</h2>
-      <p class="lead">Pick a call and talk to Otto, live from your browser. Your microphone turns on only when you start the call, and off when you end it.</p>
-    </div>
-    <div class="try__btns" role="group" aria-label="Choose a call to try"></div>
-    <p class="try__note"></p>
-  </div>
-</section>
-
 <!-- demo-intro overlay, opened by the Talk-to-Otto buttons -->
 <div class="demo-modal" id="demo-modal" hidden>
   <div class="demo-modal__back" data-close></div>
@@ -620,9 +594,10 @@
     <h2>Give one route a voice. Keep everything it learns.</h2>
     <p class="lead">Run ParcelVox on one depot route. We measure what matters to you:</p>
     <ul>
-      <li>how many deliveries succeed on the first attempt</li>
-      <li>how long drivers spend at the door</li>
-      <li>how fast cover drivers find their way</li>
+      <li>how many stops your drivers make an hour</li>
+      <li>how closely rounds follow the plan</li>
+      <li>how fast new and cover drivers come up to speed</li>
+      <li>whether your drivers actually want Otto on the route</li>
     </ul>
     <div class="cta"><a class="pv-btn" data-v="primary" data-size="lg" data-on="light" href="mailto:vincenzo@beamberlin.com?subject=ParcelVox%20demo">Book a demo</a></div>
   </div>
@@ -631,11 +606,11 @@
 </main>
 
 <script>
-  // Try-Otto: one ElevenLabs agent per use case. Paste each agent id from
-  // the ElevenLabs dashboard (agent → Widget tab) into AGENTS below. A
-  // button appears only for a filled-in id, and the whole section stays
-  // hidden while every id is empty — so this ships dormant. The ElevenLabs
-  // script loads on the first click, never on page load.
+  // Talk to Otto: ElevenLabs agents behind the hero button. Paste agent ids
+  // from the ElevenLabs dashboard (agent → Widget tab) into AGENTS below;
+  // the hero button stays hidden while every id is empty, so this ships
+  // dormant. The ElevenLabs script loads on the first click, never on page
+  // load. The hero button launches the first live agent.
   (function(){
     var AGENTS = [
       ['Driver report', 'agent_1901m4be21bbf56r9fhm17j2fk2x'],
@@ -643,12 +618,8 @@
       ['Help from the office', ''],
       ['Driver check-in', '']
     ];
-    var sec = document.getElementById('try');
-    var row = sec.querySelector('.try__btns');
-    var note = sec.querySelector('.try__note');
     var live = AGENTS.filter(function(a){ return a[1]; });
     if (!live.length) return;
-    sec.hidden = false;
 
     var loaded = false;
     function mount(id){
@@ -728,8 +699,6 @@
       if (w) w.remove();
       var c = document.getElementById('otto-ctl');
       if (c) c.remove();
-      row.querySelectorAll('.try-btn').forEach(function(x){ x.setAttribute('aria-pressed', 'false'); });
-      note.textContent = '';
     }
 
     // The intro overlay: who you play and how to start, once per use case.
@@ -791,10 +760,7 @@
     var current = null;
     function engage(a, b){
       current = [a, b];
-      row.querySelectorAll('.try-btn').forEach(function(x){ x.setAttribute('aria-pressed', 'false'); });
-      if (b) b.setAttribute('aria-pressed', 'true');
       mount(a[1]);
-      note.textContent = a[0] + " is ready — press the phone button in Otto's window to start the call.";
     }
 
     function pick(a, b){
@@ -806,16 +772,6 @@
       engage(a, b);
     }
 
-    live.forEach(function(a){
-      var b = document.createElement('button');
-      b.type = 'button';
-      b.className = 'try-btn';
-      b.textContent = a[0];
-      b.setAttribute('aria-pressed', 'false');
-      b.addEventListener('click', function(){ pick(a, b); });
-      row.appendChild(b);
-    });
-
     // Hero button: launches the first live agent on the spot. While Otto is
     // live, the hero's coral hit belongs to him; Book a demo steps back to
     // the outline style (one coral accent per surface).
@@ -823,9 +779,7 @@
     if (demoBtn) demoBtn.setAttribute('data-v', 'outline');
     document.querySelectorAll('[data-talk-otto]').forEach(function(h){
       h.hidden = false;
-      h.addEventListener('click', function(){
-        pick(live[0], row.querySelector('.try-btn'));
-      });
+      h.addEventListener('click', function(){ pick(live[0], null); });
     });
   })();
 </script>

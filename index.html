@@ -227,6 +227,10 @@
   .loop__num{font:700 15px/1 var(--font-display);color:var(--coral-ink);font-variant-numeric:tabular-nums}
   .loop__step h3{font-size:18px}
   .loop__step p{margin:0;color:var(--ink-muted)}
+  .loop__ex{margin-top:4px;padding-top:12px;border-top:var(--border-light);display:grid;gap:6px;font-size:13.5px;color:var(--ink)}
+  .loop__ex b{font:500 11px/1 var(--font-display);letter-spacing:.09em;text-transform:uppercase;color:var(--coral-ink)}
+  .loop__ex--tip span{display:flex;gap:10px}
+  .loop__ex--tip i{font-style:normal;flex:0 0 76px;color:var(--ink-muted)}
 
   /* what else Otto can do — compact cards for the next use cases */
   .more .wrap{display:grid;gap:48px;grid-template-columns:minmax(0,1fr)}
@@ -447,16 +451,39 @@
         <span class="loop__num">01</span>
         <h3>The driver reports</h3>
         <p>Your driver presses Otto, says what they found and moves on.</p>
+        <div class="loop__ex">
+          <b>Driver · at the door</b>
+          <span>“Road's closed, couldn't get to the address. Parked on Sredzkistraße and walked. Two minutes.”</span>
+        </div>
       </div>
       <div class="loop__step">
         <span class="loop__num">02</span>
         <h3>Otto files it</h3>
-        <p>The tip is filed against the address — it belongs to the depot now, not one driver.</p>
+        <p>The tip is structured and filed against the address — it belongs to the depot now, not one driver.</p>
+        <div class="loop__ex loop__ex--tip">
+          <b>Tip on file</b>
+          <span><i>Stop</i>Kollwitzstraße 18</span>
+          <span><i>Problem</i>Road closed</span>
+          <span><i>Way round</i>Park on Sredzkistraße, walk two minutes</span>
+        </div>
       </div>
       <div class="loop__step">
         <span class="loop__num">03</span>
         <h3>The next driver inherits it</h3>
         <p>Whoever drives to that stop next hears the tip on the way in.</p>
+        <div class="loop__ex">
+          <b>Otto · on the way in</b>
+          <span>“Heads up — Kollwitzstraße 18: road closed, park on Sredzkistraße and walk in.”</span>
+        </div>
+      </div>
+      <div class="loop__step">
+        <span class="loop__num">04</span>
+        <h3>The plan learns it</h3>
+        <p>After an AI review, tips feed the next day's planning — ETAs get more accurate, rounds run tighter.</p>
+        <div class="loop__ex">
+          <b>Next plan</b>
+          <span>Every visit to Kollwitzstraße 18 gets its two extra minutes — the ETA stays honest.</span>
+        </div>
       </div>
     </div>
   </div>

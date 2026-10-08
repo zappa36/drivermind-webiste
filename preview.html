@@ -610,7 +610,7 @@
     if (!live.length) return;
 
     var loaded = false;
-    function mount(id){
+    function mount(id, expanded){
       if (!loaded) {
         loaded = true;
         var s = document.createElement('script');
@@ -622,9 +622,10 @@
       if (old) old.remove();
       var el = document.createElement('elevenlabs-convai');
       el.setAttribute('agent-id', id);
-      // start collapsed: counter the published always_expanded config
+      // the published config says always_expanded, so state is set here:
+      // collapsed on page load, expanded when the visitor starts the demo
       el.setAttribute('always-expanded', 'false');
-      el.setAttribute('default-expanded', 'false');
+      el.setAttribute('default-expanded', expanded ? 'true' : 'false');
       el.setAttribute('dismissible', 'true');
       document.body.appendChild(el);
       if (!document.getElementById('otto-ctl')) {
@@ -743,14 +744,34 @@
       var a = pending[0], b = pending[1];
       closeModal();
       var open = document.querySelector('elevenlabs-convai');
-      if (open && open.getAttribute('agent-id') === a[1]) return; // re-read only: Otto keeps running
-      engage(a, b);
+      if (open && open.getAttribute('agent-id') === a[1]) {
+        // already mounted: expand it unless it is already open (a running
+        // call stays untouched — remounting would end it)
+        if (!ottoExpanded()) mount(a[1], true);
+        return;
+      }
+      engage(a, b, true);
     });
 
     var current = null;
-    function engage(a, b){
+    function engage(a, b, expanded){
       current = [a, b];
-      mount(a[1]);
+      mount(a[1], expanded);
+    }
+
+    // the widget's open panel is tall; the collapsed bar is not
+    function ottoExpanded(){
+      var w = document.querySelector('elevenlabs-convai');
+      if (!w || !w.shadowRoot) return false;
+      var els = w.shadowRoot.querySelectorAll('div');
+      var vA = innerWidth * innerHeight, best = 0;
+      for (var i = 0; i < els.length; i++) {
+        var b = els[i].getBoundingClientRect();
+        if (b.width < 44 || b.height < 44) continue;
+        if (b.width * b.height > vA * 0.9) continue;
+        if (b.height > best) best = b.height;
+      }
+      return best > 250;
     }
 
     function pick(a, b){
@@ -767,8 +788,9 @@
       h.addEventListener('click', function(){ pick(live[0], null); });
     });
 
-    // Otto is always on the page: mount the first live agent on load.
-    engage(live[0], null);
+    // Otto is always on the page: mount the first live agent on load,
+    // collapsed to the corner bar.
+    engage(live[0], null, false);
   })();
 </script>
 

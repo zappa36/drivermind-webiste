@@ -220,6 +220,11 @@
   .intro .lead{max-width:560px}
   .loop{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:32px}
   .loop__step{display:grid;gap:10px;grid-template-rows:auto auto 1fr auto;border-top:2px solid var(--ink-blue);padding-top:18px}
+  /* steps share row heights, so the example strips start on the same line
+     (the rule above is the fallback: bottom-aligned examples) */
+  @supports (grid-template-rows:subgrid){
+    .loop__step{grid-template-rows:subgrid;grid-row:span 4}
+  }
   .loop__num{font:700 15px/1 var(--font-display);color:var(--coral-ink);font-variant-numeric:tabular-nums}
   .loop__step h3{font-size:18px}
   .loop__step p{margin:0;color:var(--ink-muted)}

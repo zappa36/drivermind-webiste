@@ -559,7 +559,7 @@
       <li id="demo-modal-task"></li>
     </ol>
     <div class="demo-modal__row">
-      <button class="pv-btn" data-v="primary" data-size="lg" type="button" id="demo-modal-start">Start the demo</button>
+      <button class="pv-btn" data-v="primary" data-size="lg" type="button" id="demo-modal-start">Talk to Otto</button>
       <button class="demo-modal__later" type="button" data-close>Maybe later</button>
     </div>
     <p class="demo-modal__fine">A live demo — no real depot behind it. Your microphone is used only during the call, and you can type instead of talking.</p>
@@ -635,6 +635,12 @@
       el.setAttribute('default-expanded', expanded ? 'true' : 'false');
       el.setAttribute('dismissible', 'true');
       document.body.appendChild(el);
+      // the pills belong to the open panel; the collapsed bar stands alone
+      if (!expanded) {
+        var ctl = document.getElementById('otto-ctl');
+        if (ctl) ctl.remove();
+        return;
+      }
       if (!document.getElementById('otto-ctl')) {
         var wrap = document.createElement('div');
         wrap.id = 'otto-ctl';
@@ -733,9 +739,6 @@
       document.getElementById('demo-modal-scene').textContent = s.scene;
       document.getElementById('demo-modal-task').textContent = s.task;
       pending = [a, b];
-      var open = document.querySelector('elevenlabs-convai');
-      document.getElementById('demo-modal-start').textContent =
-        (open && open.getAttribute('agent-id') === a[1]) ? 'Back to the demo' : 'Start the demo';
       modal.hidden = false;
       document.getElementById('demo-modal-start').focus();
     }

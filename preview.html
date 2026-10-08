@@ -255,6 +255,26 @@
   .try-btn:hover{border-color:var(--oat)}
   .try-btn[aria-pressed="true"]{background:var(--coral);border-color:var(--coral);color:var(--ink-blue-deep)}
   .try__note{margin:0;color:var(--oat-muted);font-size:14px;min-height:22px}
+  /* demo-intro overlay: sets the scene before Otto mounts */
+  .demo-modal{position:fixed;inset:0;z-index:2147483646;display:flex;align-items:center;justify-content:center;padding:20px}
+  .demo-modal[hidden]{display:none}
+  .demo-modal__back{position:absolute;inset:0;background:rgba(10,23,48,.6)}
+  .demo-modal__card{
+    position:relative;max-width:460px;width:100%;
+    border-radius:var(--radius-md);padding:28px;display:grid;gap:14px;
+    border:var(--border-light);box-shadow:0 10px 40px rgba(10,23,48,.45);
+  }
+  .demo-modal__card h3{font-size:24px}
+  .demo-modal__scene{margin:0;color:var(--ink-muted)}
+  .demo-modal__steps{margin:0;padding-left:20px;display:grid;gap:8px}
+  .demo-modal__row{display:flex;align-items:center;gap:18px;margin-top:4px}
+  .demo-modal__later{
+    background:none;border:none;cursor:pointer;padding:6px 2px;
+    font:inherit;color:var(--ink-muted);text-decoration:underline;
+  }
+  .demo-modal__later:hover{color:var(--ink)}
+  .demo-modal__fine{margin:0;font-size:12.5px;color:var(--ink-muted)}
+
   /* floating close control while Otto is open — the widget itself has none.
      JS keeps it pinned just above the widget's top-right corner. */
   .otto-close{
@@ -532,6 +552,26 @@
   </div>
 </section>
 
+<!-- demo-intro overlay, opened by the Talk-to-Otto buttons -->
+<div class="demo-modal" id="demo-modal" hidden>
+  <div class="demo-modal__back" data-close></div>
+  <div class="demo-modal__card on-light" role="dialog" aria-modal="true" aria-labelledby="demo-modal-title">
+    <span class="kicker" id="demo-modal-kick">Live demo</span>
+    <h3 id="demo-modal-title">You play the driver.</h3>
+    <p class="demo-modal__scene" id="demo-modal-scene"></p>
+    <ol class="demo-modal__steps">
+      <li>Press start — Otto appears in the corner of the page.</li>
+      <li><strong>Press the phone button in Otto's window</strong> and allow your microphone.</li>
+      <li id="demo-modal-task"></li>
+    </ol>
+    <div class="demo-modal__row">
+      <button class="pv-btn" data-v="primary" data-size="lg" type="button" id="demo-modal-start">Start the demo</button>
+      <button class="demo-modal__later" type="button" data-close>Maybe later</button>
+    </div>
+    <p class="demo-modal__fine">A live demo — no real depot behind it. Your microphone is used only during the call, and you can type instead of talking.</p>
+  </div>
+</div>
+
 <!-- ======================= DEMO (kept from the live site) ======================= -->
 <section class="sec on-deep demo" id="demo">
   <div class="wrap">
@@ -662,14 +702,71 @@
       note.textContent = '';
     }
 
+    // The intro overlay: who you play and how to start, once per use case.
+    var SCENARIOS = {
+      'Driver report': {
+        title: 'You play the driver.',
+        scene: "One of your drivers hits a problem at a stop — the gate code doesn't work, the road is closed, a dog guards the door. In this demo, that driver is you.",
+        task: "Tell Otto what went wrong, the way your driver would say it. He asks a couple of questions at most, then turns it into a tip for the next driver."
+      },
+      'Customer call': {
+        title: 'You play the customer.',
+        scene: "Before the van arrives, Otto calls the customer to make sure the trip won't be wasted. In this demo, the customer is you.",
+        task: "Take the call. Otto checks you'll be home and agrees a time — inside the rules your depot sets."
+      },
+      'Help from the office': {
+        title: 'You play the driver.',
+        scene: "Your driver is stuck at the door — the code on the label doesn't work. In this demo, that driver is you.",
+        task: "Tell Otto the problem once. He takes it to the office and comes back with the answer."
+      },
+      'Driver check-in': {
+        title: 'You play the driver.',
+        scene: "The office needs one thing from the van without pulling anyone over. In this demo, the driver is you.",
+        task: "Take Otto's call — one reason per call, one clear line, hands on the wheel."
+      }
+    };
+    var modal = document.getElementById('demo-modal');
+    var modalSeen = {};
+    var pending = null;
+    function openModal(a, b){
+      var s = SCENARIOS[a[0]] || SCENARIOS['Driver report'];
+      document.getElementById('demo-modal-kick').textContent = 'Live demo · ' + a[0];
+      document.getElementById('demo-modal-title').textContent = s.title;
+      document.getElementById('demo-modal-scene').textContent = s.scene;
+      document.getElementById('demo-modal-task').textContent = s.task;
+      pending = [a, b];
+      modal.hidden = false;
+      document.getElementById('demo-modal-start').focus();
+    }
+    function closeModal(){ modal.hidden = true; pending = null; }
+    modal.addEventListener('click', function(e){
+      if (e.target.closest('[data-close]')) closeModal();
+    });
+    document.addEventListener('keydown', function(e){
+      if (e.key === 'Escape' && !modal.hidden) closeModal();
+    });
+    document.getElementById('demo-modal-start').addEventListener('click', function(){
+      if (!pending) return;
+      var a = pending[0], b = pending[1];
+      modalSeen[a[0]] = true;
+      closeModal();
+      engage(a, b);
+    });
+
+    function engage(a, b){
+      row.querySelectorAll('.try-btn').forEach(function(x){ x.setAttribute('aria-pressed', 'false'); });
+      if (b) b.setAttribute('aria-pressed', 'true');
+      mount(a[1]);
+      note.textContent = a[0] + " is ready — press the phone button in Otto's window to start the call.";
+    }
+
     function pick(a, b){
       var open = document.querySelector('elevenlabs-convai');
       // clicking the active use case again closes Otto instead of remounting
       if (open && open.getAttribute('agent-id') === a[1]) { closeOtto(); return; }
-      row.querySelectorAll('.try-btn').forEach(function(x){ x.setAttribute('aria-pressed', 'false'); });
-      if (b) b.setAttribute('aria-pressed', 'true');
-      mount(a[1]);
-      note.textContent = a[0] + ' is ready — Otto picks up in the bottom-right corner.';
+      // first time on this use case: set the scene before mounting
+      if (!open && !modalSeen[a[0]]) { openModal(a, b); return; }
+      engage(a, b);
     }
 
     live.forEach(function(a){

@@ -622,9 +622,10 @@
       if (old) old.remove();
       var el = document.createElement('elevenlabs-convai');
       el.setAttribute('agent-id', id);
-      // the published config says always_expanded, so state is set here:
-      // collapsed on page load, expanded when the visitor starts the demo
-      el.setAttribute('always-expanded', 'false');
+      // the widget demonstrably honors always-expanded, so the state is
+      // driven with it: collapsed bar on page load, forced open when the
+      // visitor starts the demo
+      el.setAttribute('always-expanded', expanded ? 'true' : 'false');
       el.setAttribute('default-expanded', expanded ? 'true' : 'false');
       el.setAttribute('dismissible', 'true');
       document.body.appendChild(el);

@@ -279,16 +279,16 @@
   .demo-modal__later:hover{color:var(--ink)}
   .demo-modal__fine{margin:0;font-size:12.5px;color:var(--ink-muted)}
 
-  /* floating close control while Otto is open — the widget itself has none.
-     JS keeps it pinned just above the widget's top-right corner. */
-  .otto-close{
-    position:fixed;bottom:96px;right:14px;z-index:2147483647;
+  /* floating controls while Otto is open (instructions + close) — the
+     widget itself has neither. JS pins them above its top-right corner. */
+  .otto-ctl{position:fixed;bottom:96px;right:14px;z-index:2147483647;display:flex;gap:8px}
+  .otto-pill{
     display:flex;align-items:center;gap:8px;cursor:pointer;
     background:#fff;color:var(--ink);
     border:1px solid rgba(27,37,54,.2);border-radius:var(--radius-pill);padding:8px 16px;
     font:600 13px/1 var(--font-display);box-shadow:var(--shadow-card);
   }
-  .otto-close:hover{border-color:var(--ink)}
+  .otto-pill:hover{border-color:var(--ink)}
 
   /* use-case sections */
   .uc .wrap{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:64px;align-items:start}
@@ -671,14 +671,24 @@
       var el = document.createElement('elevenlabs-convai');
       el.setAttribute('agent-id', id);
       document.body.appendChild(el);
-      if (!document.getElementById('otto-close')) {
+      if (!document.getElementById('otto-ctl')) {
+        var wrap = document.createElement('div');
+        wrap.id = 'otto-ctl';
+        wrap.className = 'otto-ctl';
+        var info = document.createElement('button');
+        info.className = 'otto-pill';
+        info.type = 'button';
+        info.textContent = 'Instructions';
+        info.addEventListener('click', function(){ if (current) openModal(current[0], current[1]); });
         var c = document.createElement('button');
         c.id = 'otto-close';
-        c.className = 'otto-close';
+        c.className = 'otto-pill';
         c.type = 'button';
         c.innerHTML = 'Close Otto <span aria-hidden="true">\u2715</span>';
         c.addEventListener('click', closeOtto);
-        document.body.appendChild(c);
+        wrap.appendChild(info);
+        wrap.appendChild(c);
+        document.body.appendChild(wrap);
         placeTimer = setInterval(placeClose, 400);
         placeClose();
       }
@@ -692,7 +702,7 @@
     // measurable yet, the CSS fallback applies.
     var placeTimer = null;
     function placeClose(){
-      var c = document.getElementById('otto-close');
+      var c = document.getElementById('otto-ctl');
       var w = document.querySelector('elevenlabs-convai');
       if (!c || !w) { if (placeTimer) { clearInterval(placeTimer); placeTimer = null; } return; }
       var best = null, bestArea = 0, sized = 0;
@@ -723,7 +733,7 @@
     function closeOtto(){
       var w = document.querySelector('elevenlabs-convai');
       if (w) w.remove();
-      var c = document.getElementById('otto-close');
+      var c = document.getElementById('otto-ctl');
       if (c) c.remove();
       row.querySelectorAll('.try-btn').forEach(function(x){ x.setAttribute('aria-pressed', 'false'); });
       note.textContent = '';
@@ -762,6 +772,9 @@
       document.getElementById('demo-modal-scene').textContent = s.scene;
       document.getElementById('demo-modal-task').textContent = s.task;
       pending = [a, b];
+      var open = document.querySelector('elevenlabs-convai');
+      document.getElementById('demo-modal-start').textContent =
+        (open && open.getAttribute('agent-id') === a[1]) ? 'Back to the demo' : 'Start the demo';
       modal.hidden = false;
       document.getElementById('demo-modal-start').focus();
     }
@@ -777,10 +790,14 @@
       var a = pending[0], b = pending[1];
       modalSeen[a[0]] = true;
       closeModal();
+      var open = document.querySelector('elevenlabs-convai');
+      if (open && open.getAttribute('agent-id') === a[1]) return; // re-read only: Otto keeps running
       engage(a, b);
     });
 
+    var current = null;
     function engage(a, b){
+      current = [a, b];
       row.querySelectorAll('.try-btn').forEach(function(x){ x.setAttribute('aria-pressed', 'false'); });
       if (b) b.setAttribute('aria-pressed', 'true');
       mount(a[1]);

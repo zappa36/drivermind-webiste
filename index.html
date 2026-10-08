@@ -628,6 +628,8 @@
       if (old) old.remove();
       var el = document.createElement('elevenlabs-convai');
       el.setAttribute('agent-id', id);
+      // start minimized: the launcher bubble, not the opened panel
+      el.setAttribute('variant', 'full');
       document.body.appendChild(el);
       if (!document.getElementById('otto-ctl')) {
         var wrap = document.createElement('div');

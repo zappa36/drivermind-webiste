@@ -599,11 +599,12 @@
 </main>
 
 <script>
-  // Talk to Otto: ElevenLabs agents behind the hero button. Paste agent ids
+  // Talk to Otto: ElevenLabs agents, always on the page. Paste agent ids
   // from the ElevenLabs dashboard (agent → Widget tab) into AGENTS below;
-  // the hero button stays hidden while every id is empty, so this ships
-  // dormant. The ElevenLabs script loads on the first click, never on page
-  // load. The hero button launches the first live agent.
+  // while every id is empty nothing mounts and the hero button stays
+  // hidden, so this ships dormant. With an id, the first live agent mounts
+  // on load, and the hero button opens the instructions overlay (which can
+  // also revive Otto after the Close pill removed him).
   (function(){
     var AGENTS = [
       ['Driver report', 'agent_1901m4be21bbf56r9fhm17j2fk2x'],
@@ -718,7 +719,6 @@
       }
     };
     var modal = document.getElementById('demo-modal');
-    var modalSeen = {};
     var pending = null;
     function openModal(a, b){
       var s = SCENARIOS[a[0]] || SCENARIOS['Driver report'];
@@ -743,7 +743,6 @@
     document.getElementById('demo-modal-start').addEventListener('click', function(){
       if (!pending) return;
       var a = pending[0], b = pending[1];
-      modalSeen[a[0]] = true;
       closeModal();
       var open = document.querySelector('elevenlabs-convai');
       if (open && open.getAttribute('agent-id') === a[1]) return; // re-read only: Otto keeps running
@@ -757,12 +756,7 @@
     }
 
     function pick(a, b){
-      var open = document.querySelector('elevenlabs-convai');
-      // clicking the active use case again closes Otto instead of remounting
-      if (open && open.getAttribute('agent-id') === a[1]) { closeOtto(); return; }
-      // first time on this use case: set the scene before mounting
-      if (!open && !modalSeen[a[0]]) { openModal(a, b); return; }
-      engage(a, b);
+      openModal(a, b);
     }
 
     // Hero button: launches the first live agent on the spot. While Otto is
@@ -774,6 +768,9 @@
       h.hidden = false;
       h.addEventListener('click', function(){ pick(live[0], null); });
     });
+
+    // Otto is always on the page: mount the first live agent on load.
+    engage(live[0], null);
   })();
 </script>
 

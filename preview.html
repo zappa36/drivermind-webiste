@@ -746,9 +746,9 @@
       closeModal();
       var open = document.querySelector('elevenlabs-convai');
       if (open && open.getAttribute('agent-id') === a[1]) {
-        // already mounted: expand it unless it is already open (a running
-        // call stays untouched — remounting would end it)
-        if (!ottoExpanded()) mount(a[1], true);
+        // mounted collapsed: remount expanded. Already expanded (a running
+        // call, say): leave it untouched — remounting would end the call.
+        if (open.getAttribute('always-expanded') !== 'true') mount(a[1], true);
         return;
       }
       engage(a, b, true);
@@ -760,20 +760,6 @@
       mount(a[1], expanded);
     }
 
-    // the widget's open panel is tall; the collapsed bar is not
-    function ottoExpanded(){
-      var w = document.querySelector('elevenlabs-convai');
-      if (!w || !w.shadowRoot) return false;
-      var els = w.shadowRoot.querySelectorAll('div');
-      var vA = innerWidth * innerHeight, best = 0;
-      for (var i = 0; i < els.length; i++) {
-        var b = els[i].getBoundingClientRect();
-        if (b.width < 44 || b.height < 44) continue;
-        if (b.width * b.height > vA * 0.9) continue;
-        if (b.height > best) best = b.height;
-      }
-      return best > 250;
-    }
 
     function pick(a, b){
       openModal(a, b);

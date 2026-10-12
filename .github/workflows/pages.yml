@@ -26,7 +26,7 @@ jobs:
       - name: Assemble site
         run: |
           mkdir -p _site
-          cp index.html driver-report.html _site/
+          cp index.html driver-report.html try-otto.html _site/
           touch _site/.nojekyll
 
       - uses: actions/configure-pages@v5

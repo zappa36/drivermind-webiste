@@ -231,7 +231,9 @@
   }
   .ctrl i{width:40px;height:40px;border-radius:999px;background:var(--wash-on-dark);display:inline-flex;align-items:center;justify-content:center;color:var(--oat);font-style:normal;transition:background var(--dur-fast) var(--ease)}
   button.ctrl{cursor:pointer}
-  button.ctrl:hover i{background:var(--line-on-dark)}
+  button.ctrl:disabled{cursor:default}
+  button.ctrl:not(:disabled):hover i{background:var(--line-on-dark)}
+  .ctrl[aria-pressed="true"] i{background:var(--oat);color:var(--ink-blue-deep)}
   .again{display:flex;justify-content:center;gap:12px;border-top:var(--border-dark);padding-top:14px}
 
   /* the record — what Otto writes down */
@@ -354,7 +356,7 @@
           </form>
         </div>
         <div class="controls" id="controls" hidden>
-          <span class="ctrl" aria-hidden="true"><i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg></i>Mute</span>
+          <button class="ctrl" type="button" id="mute" aria-pressed="false" disabled><i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg></i><span id="mute-label">Mute</span></button>
           <span class="ctrl" aria-hidden="true"><i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></i>Speaker</span>
           <button class="ctrl" type="button" id="end-call" aria-label="End call"><i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate(135deg)" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></i>End</button>
         </div>
@@ -398,8 +400,21 @@
   // fails — Otto follows each scenario's short script, so the demo never
   // stalls. The function holds the prompts; keep its SCENARIOS in step with
   // the openings and ledgers below.
+  //
+  // Voice calls: scenarios with an ElevenLabs agent in VOICE run as a real
+  // call instead (agent → Widget tab in the ElevenLabs dashboard for the id).
+  // The agent speaks its own first message; the transcript comes from the
+  // call. The record panel fills in only if the agent has a client tool
+  // `write_down` with parameters `field` and `value` (field = one of the
+  // scenario's record ids below). If the call can't start — no microphone,
+  // no connection — the scripted call runs instead.
   (function(){
     var OTTO_URL = '';
+    var VOICE = {
+      report: 'agent_1901m4be21bbf56r9fhm17j2fk2x',
+      customer: 'agent_0001m4qwm0gjep1sqhyd3svbfzhf'
+    };
+    var EL_SDK = 'https://unpkg.com/@elevenlabs/client@1.25.0/dist/lib.iife.js';
     var CARRIER = 'Kiezpost';
     var DRV = 'Ayşe';
     var WORD_MS = 130;
@@ -530,7 +545,7 @@
     }
     function renderPhase(){
       var p = st.phase, last = st.turns[st.turns.length - 1];
-      var speaking = !!(last && last.who === 'otto' && last.speaking);
+      var speaking = st.voiceSpeaking || !!(last && last.who === 'otto' && last.speaking);
       $('rings').hidden = !(p === 'ring' || speaking);
       $('wave').hidden = !speaking;
       $('ring').hidden = p !== 'ring';
@@ -541,6 +556,9 @@
       $('again-wrap').hidden = p !== 'ended';
       $('transcript').hidden = !(st.turns.length || st.busy);
       $('reply').hidden = !(st.canReply && p === 'live');
+      $('mute').disabled = !st.conv;
+      $('mute').setAttribute('aria-pressed', st.muted ? 'true' : 'false');
+      $('mute-label').textContent = st.muted ? 'Muted' : 'Mute';
       renderBusy();
     }
     function renderTimer(){
@@ -588,9 +606,16 @@
     }
 
     // ---- the call ----
+    function aiNote(sc){
+      if (VOICE[sc.id]) return 'This call is live voice: allow your microphone, then just talk.';
+      return OTTO_URL ? "Otto's replies are live, so say anything." : 'This run is scripted.';
+    }
     function select(sc){
       stopTimers();
+      hangUp();
       st = fresh(sc, st ? st.callId + 1 : 0);
+      $('ai-note').textContent = aiNote(sc);
+      $('answer').disabled = false;
       $('blurb').textContent = sc.blurb;
       $('stop').textContent = sc.stop;
       $('ring-title').textContent = sc.ring.title;
@@ -605,13 +630,20 @@
       renderPhase();
     }
     function answer(){
-      if (st.phase !== 'ring') return;
-      var id = st.callId;
+      if (st.phase !== 'ring' || st.connecting) return;
+      if (VOICE[st.sc.id]) return answerVoice(VOICE[st.sc.id]);
+      answerScripted();
+    }
+    function startLive(){
       st.phase = 'live';
       st.elapsed = 0;
       renderTimer();
       renderPhase();
       tick = setInterval(function(){ st.elapsed++; renderTimer(); }, 1000);
+    }
+    function answerScripted(){
+      var id = st.callId;
+      startLive();
       speak(st.sc.opening, id).then(function(){
         if (st.callId !== id || st.phase !== 'live') return;
         st.canReply = true;
@@ -638,6 +670,16 @@
     function send(raw){
       var text = String(raw || '').trim();
       if (!text || !st.canReply || st.phase !== 'live') return;
+      if (st.conv) {
+        // typed line into the live call; the call echoes it back as a user
+        // message, which onMessage skips
+        st.echo = text;
+        addTurn({ who: 'you', text: text, shown: text, at: st.elapsed });
+        st.conv.sendUserMessage(text);
+        $('draft').value = '';
+        renderSuggestions([]);
+        return;
+      }
       var id = st.callId;
       st.youTexts.push(text);
       var n = st.youTexts.length, youTexts = st.youTexts.slice();
@@ -665,6 +707,7 @@
     function end(){
       if (st.phase !== 'live') return;
       stopTimers();
+      hangUp();
       st.phase = 'ended';
       st.canReply = false;
       st.busy = false;
@@ -674,6 +717,85 @@
       renderSuggestions([]);
       renderPhase();
     }
+    // ---- voice calls (ElevenLabs) ----
+    var sdk = null;
+    function loadSdk(){
+      if (sdk) return sdk;
+      sdk = new Promise(function(res, rej){
+        var s = document.createElement('script');
+        s.src = EL_SDK;
+        s.async = true;
+        s.onload = function(){ window.ElevenLabsClient ? res(window.ElevenLabsClient) : rej(new Error('SDK missing')); };
+        s.onerror = function(){ sdk = null; rej(new Error('SDK failed to load')); };
+        document.head.appendChild(s);
+      });
+      return sdk;
+    }
+    function hangUp(){
+      if (!st || !st.conv) return;
+      var c = st.conv;
+      st.conv = null;
+      st.voiceSpeaking = false;
+      st.muted = false;
+      c.endSession().catch(function(){});
+    }
+    function answerVoice(agentId){
+      var id = st.callId, sc = st.sc;
+      var mine = function(){ return st.callId === id; };
+      st.connecting = true;
+      $('answer').disabled = true;
+      $('ring-sub').textContent = 'Connecting… allow your microphone';
+      loadSdk().then(function(EL){
+        return EL.Conversation.startSession({
+          agentId: agentId,
+          clientTools: {
+            write_down: function(p){
+              if (!mine() || !p || !rowEls[p.field]) return 'Unknown field';
+              var rec = {};
+              rec[p.field] = String(p.value || '').trim().slice(0, 160);
+              fillRecord(fillTokens(rec, st.youTexts));
+              return 'Written down';
+            }
+          },
+          onMessage: function(m){
+            if (!mine() || !m || !m.message) return;
+            var who = (m.role || (m.source === 'ai' ? 'agent' : 'user')) === 'agent' ? 'otto' : 'you';
+            if (who === 'you') {
+              if (st.echo && st.echo === m.message.trim()) { st.echo = null; return; }
+              st.youTexts.push(m.message);
+              renderSuggestions([]);
+            }
+            addTurn({ who: who, text: m.message, shown: m.message, at: st.elapsed });
+          },
+          onModeChange: function(m){
+            if (!mine()) return;
+            st.voiceSpeaking = m.mode === 'speaking';
+            renderPhase();
+          },
+          onDisconnect: function(){
+            if (!mine() || !st.conv) return;
+            st.conv = null;
+            end();
+          },
+          onError: function(msg){ if (window.console) console.warn('Otto voice call:', msg); }
+        });
+      }).then(function(conv){
+        if (!mine()) { conv.endSession().catch(function(){}); return; }
+        st.connecting = false;
+        st.conv = conv;
+        startLive();
+        st.canReply = true;
+        renderSuggestions(sc.suggestions);
+        renderPhase();
+      }).catch(function(e){
+        if (window.console) console.warn('Otto voice call failed, running the script', e);
+        if (!mine()) return;
+        st.connecting = false;
+        $('ai-note').textContent = "The voice call couldn't start, so this run is scripted.";
+        answerScripted();
+      });
+    }
+
     function fillTokens(rec, youTexts){
       var out = {};
       if (!rec || typeof rec !== 'object') return out;
@@ -718,9 +840,14 @@
 
     $('answer').addEventListener('click', answer);
     $('end-call').addEventListener('click', end);
+    $('mute').addEventListener('click', function(){
+      if (!st.conv) return;
+      st.muted = !st.muted;
+      st.conv.setMicMuted(st.muted);
+      renderPhase();
+    });
     $('again').addEventListener('click', function(){ select(st.sc); });
     $('reply-form').addEventListener('submit', function(e){ e.preventDefault(); send($('draft').value); });
-    $('ai-note').textContent = OTTO_URL ? "Otto's replies are live, so say anything." : 'This run is scripted.';
     $('clock').textContent = now();
     setInterval(function(){ $('clock').textContent = now(); }, 30000);
 

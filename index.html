@@ -252,6 +252,7 @@
   .more-card h3{font-size:20px}
   .more-card p{margin:0;color:var(--ink-muted)}
   .more-card .says{margin-top:4px;padding-top:14px;border-top:var(--border-light);font-size:14px;color:var(--ink)}
+  .more-card .pv-btn{justify-self:start;margin-top:4px}
   .more-card .says b{
     display:block;margin-bottom:6px;
     font:500 11px/1 var(--font-display);letter-spacing:.09em;text-transform:uppercase;color:var(--coral-ink);
@@ -531,6 +532,7 @@
         <h3>Customer call</h3>
         <p>Otto calls your customer before the van arrives, checks someone will be home and agrees a time. Fewer stairs climbed for nothing, more deliveries that succeed on the first attempt.</p>
         <p class="says"><b>Otto · to your customer</b>“Understood. Your driver will come after six and hand it to you in person.”</p>
+        <button class="pv-btn" data-v="primary" data-size="sm" data-on="light" type="button" data-talk-otto="Customer call" hidden>Talk to Otto</button>
       </article>
       <article class="more-card">
         <h3>Help from the office</h3>
@@ -601,10 +603,13 @@
 <script>
   // Talk to Otto: ElevenLabs agents, always on the page. Paste agent ids
   // from the ElevenLabs dashboard (agent → Widget tab) into AGENTS below;
-  // while every id is empty nothing mounts and the hero button stays
-  // hidden, so this ships dormant. With an id, the first live agent mounts
-  // on load, and the hero button opens the instructions overlay (which can
-  // also revive Otto after the Close pill removed him).
+  // while every id is empty nothing mounts and every Talk-to-Otto button
+  // stays hidden, so this ships dormant. With an id, the first live agent
+  // mounts on load. Each [data-talk-otto] button names the use case it
+  // launches (the hero's, unnamed, takes the first live agent) and opens
+  // the instructions overlay for it, which can also revive Otto after the
+  // Close pill removed him. Starting a second use case remounts the widget
+  // with that agent, so one Otto is on the page at a time.
   (function(){
     var AGENTS = [
       ['Driver report', 'agent_1901m4be21bbf56r9fhm17j2fk2x'],
@@ -781,14 +786,18 @@
       openModal(a, b);
     }
 
-    // Hero button: launches the first live agent on the spot. While Otto is
-    // live, the hero's coral hit belongs to him; Book a demo steps back to
-    // the outline style (one coral accent per surface).
+    // Talk-to-Otto buttons: the hero's launches the first live agent, the
+    // use-case cards' launch their own. While Otto is live, the hero's coral
+    // hit belongs to him; Book a demo steps back to the outline style (one
+    // coral accent per surface).
     var demoBtn = document.getElementById('hero-demo');
     if (demoBtn) demoBtn.setAttribute('data-v', 'outline');
     document.querySelectorAll('[data-talk-otto]').forEach(function(h){
+      var name = h.getAttribute('data-talk-otto');
+      var agent = name ? live.filter(function(a){ return a[0] === name; })[0] : live[0];
+      if (!agent) return;
       h.hidden = false;
-      h.addEventListener('click', function(){ pick(live[0], null); });
+      h.addEventListener('click', function(){ pick(agent, null); });
     });
 
     // Otto is always on the page: mount the first live agent on load,

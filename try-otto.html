@@ -256,6 +256,15 @@
 
   [hidden]{display:none !important}
 
+  /* access code gate — the sandbox opens once the code matches */
+  .gate{min-height:calc(100vh - 160px)}
+  .gate .wrap{padding-top:96px;padding-bottom:120px}
+  .gate__card{display:grid;gap:18px;justify-items:start;max-width:560px}
+  .gate h1{font-size:clamp(34px,4.2vw,48px);color:var(--oat)}
+  .gate__row{display:flex;gap:8px;width:100%;max-width:360px;margin-top:6px}
+  .gate__row .pv-input{flex:1;min-width:0;letter-spacing:.2em}
+  .gate__err{margin:0;font:400 14px/1.5 var(--font-body);color:var(--coral)}
+
   /* close + footer */
   .close .wrap{padding-top:72px;padding-bottom:88px;display:grid;gap:18px;justify-items:start}
   .close h2{max-width:720px;font-size:clamp(30px,3.6vw,44px);color:var(--ink)}
@@ -314,7 +323,23 @@
   </div>
 </header>
 
-<main id="main">
+<!-- ======================= ACCESS CODE ======================= -->
+<section class="on-dark gate" id="gate">
+  <div class="wrap">
+    <form class="gate__card" id="gate-form">
+      <span class="kicker">Try Otto</span>
+      <h1>Enter your access code.</h1>
+      <p class="lead">The sandbox is open to people we've shared it with. No code yet? Book a demo and we'll walk you through it.</p>
+      <div class="gate__row">
+        <input class="pv-input" id="gate-code" type="password" inputmode="numeric" autocomplete="off" placeholder="Access code" aria-label="Access code" aria-describedby="gate-err" required>
+        <button class="pv-btn" data-v="primary" data-size="md" data-on="dark" type="submit">Open</button>
+      </div>
+      <p class="gate__err" id="gate-err" role="alert" hidden>That code isn't right.</p>
+    </form>
+  </div>
+</section>
+
+<main id="main" hidden>
 
 <!-- ======================= INTRO ======================= -->
 <section class="on-dark try-head" id="try">
@@ -389,6 +414,51 @@
 </section>
 
 </main>
+
+<script>
+  // Access code. GitHub Pages serves static files only, so this is a
+  // browser-side lock: it keeps the sandbox from casual visitors, not from
+  // someone reading the page source. Only the code's SHA-256 is stored; to
+  // change the code, replace CODE_HASH with the hash of the new one
+  // (printf '%s' NEWCODE | sha256sum). An opened browser is remembered
+  // until the code changes.
+  (function(){
+    var CODE_HASH = 'd387d8f016a1e8dd471de17fd837ce101676156ab7d2ec1e395a67d46f3472b0';
+    var gate = document.getElementById('gate');
+    var main = document.getElementById('main');
+    function open(){
+      gate.remove();
+      main.hidden = false;
+    }
+    var saved = null;
+    try { saved = localStorage.getItem('pv-otto-access'); } catch (e) {}
+    if (saved === CODE_HASH) return open();
+
+    var form = document.getElementById('gate-form');
+    var input = document.getElementById('gate-code');
+    var err = document.getElementById('gate-err');
+    function sha256(text){
+      return crypto.subtle.digest('SHA-256', new TextEncoder().encode(text)).then(function(buf){
+        return Array.prototype.map.call(new Uint8Array(buf), function(b){ return b.toString(16).padStart(2, '0'); }).join('');
+      });
+    }
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      sha256(input.value.trim()).then(function(h){
+        if (h !== CODE_HASH) {
+          err.hidden = false;
+          input.select();
+          return;
+        }
+        try { localStorage.setItem('pv-otto-access', h); } catch (e2) {}
+        open();
+        var first = document.querySelector('.try-btn[aria-pressed="true"]');
+        if (first) first.focus({ preventScroll: true });
+      });
+    });
+    input.focus({ preventScroll: true });
+  })();
+</script>
 
 <script>
   // Talk to Otto: four scripted calls, one per use case. The visitor plays

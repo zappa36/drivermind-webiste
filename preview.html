@@ -34,6 +34,7 @@
     --container:1120px;
   }
   *{box-sizing:border-box}
+  [hidden]{display:none !important}
   body{
     margin:0;background:var(--ink-blue);color:var(--ink);
     font:400 15px/1.6 var(--font-body);
@@ -84,6 +85,11 @@
   .pv-btn[data-v="primary"]:hover{background:var(--coral-deep);color:var(--oat)}
   .pv-btn[data-v="outline"]{border:var(--border-dark);color:var(--oat)}
   .pv-btn[data-v="outline"]:hover{border-color:var(--oat)}
+  .pv-btn[data-v="outline-light"]{border:1px solid rgba(27,37,54,.25);color:var(--ink)}
+  .pv-btn[data-v="outline-light"]:hover{border-color:var(--ink)}
+  .more-card .pv-btn{justify-self:start;align-self:end;margin-top:4px}
+  .more-card .pv-btn:disabled{cursor:default;color:var(--ink-muted)}
+  .more-card .pv-btn:disabled:hover{border-color:rgba(27,37,54,.25)}
 
   .pv-pill{
     display:inline-flex;align-items:center;padding:4px 12px;
@@ -246,14 +252,22 @@
     border:var(--border-light);border-radius:var(--radius-md);
     box-shadow:var(--shadow-card);padding:24px;
   }
+  .more-card{grid-template-rows:auto auto auto 1fr}
   .more-card h3{font-size:20px}
   .more-card p{margin:0;color:var(--ink-muted)}
   .more-card .says{margin-top:4px;padding-top:14px;border-top:var(--border-light);font-size:14px;color:var(--ink)}
-  .more-card .pv-btn{justify-self:start;margin-top:4px}
   .more-card .says b{
     display:block;margin-bottom:6px;
     font:500 11px/1 var(--font-display);letter-spacing:.09em;text-transform:uppercase;color:var(--coral-ink);
   }
+  /* on the dark ground the cards become deep panels, like the phone frames */
+  .on-dark .more-card{background:var(--ink-blue-deep);border:var(--border-dark);box-shadow:none}
+  .on-dark .more-card p{color:var(--oat-muted)}
+  .on-dark .more-card .says{border-top:var(--border-dark);color:var(--oat)}
+  .on-dark .more-card .says b{color:var(--coral)}
+  .on-dark .pv-btn[data-v="outline-light"]{border:1px solid var(--line-on-dark);color:var(--oat-muted)}
+  .on-dark .more-card .pv-btn:disabled{color:var(--oat-muted)}
+  .on-dark .more-card .pv-btn:disabled:hover{border-color:var(--line-on-dark)}
 
   /* demo-intro overlay: sets the scene before Otto mounts */
   .demo-modal{position:fixed;inset:0;z-index:2147483646;display:flex;align-items:center;justify-content:center;padding:20px}
@@ -481,8 +495,59 @@
   </div>
 </section>
 
+<!-- ======================= WHAT ELSE OTTO CAN DO ======================= -->
+<section class="sec on-dark more" id="more">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="kicker">Beyond the driver report</span>
+      <h2>What else Otto can do for you.</h2>
+      <p class="lead">The driver report is where ParcelVox starts. These come next — each one by voice, each one inside your rules, and the final say stays with you.</p>
+    </div>
+    <div class="more-grid">
+      <article class="more-card">
+        <h3>Customer call</h3>
+        <p>Otto calls your customer before the van arrives, checks someone will be home and agrees a time. Fewer stairs climbed for nothing, more deliveries that succeed on the first attempt.</p>
+        <p class="says"><b>Otto · to your customer</b>“Understood. Your driver will come after six and hand it to you in person.”</p>
+        <button class="pv-btn" data-v="primary" data-size="sm" data-on="light" type="button" data-try-agent="Customer call" hidden>Talk to Otto</button>
+      </article>
+      <article class="more-card">
+        <h3>Help from the office</h3>
+        <p>Stuck at the door, your driver tells Otto once. Otto reaches the office with the stop and the problem already filled in, and comes back with the answer — even in the weeks when dispatch can't take another call.</p>
+        <p class="says"><b>Otto · to your driver</b>“The new code is 4711. It's on file for the next driver.”</p>
+        <button class="pv-btn" data-v="primary" data-size="sm" data-on="light" type="button" data-try-agent="Help from the office" hidden>Talk to Otto</button>
+      </article>
+      <article class="more-card">
+        <h3>Driver check-in</h3>
+        <p>Otto calls your driver for the office, one reason per call, and lets them drive. You decide when: trigger a check-in yourself, or set the rules and Otto makes the call for you.</p>
+        <p class="says"><b>Otto · to your driver</b>“The customer at Kollwitzstraße 71 is away until tomorrow. Skip that stop today.”</p>
+        <button class="pv-btn" data-v="primary" data-size="sm" data-on="light" type="button" data-try-agent="Driver check-in" hidden>Talk to Otto</button>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- demo-intro overlay, opened by the Talk-to-Otto buttons -->
+<div class="demo-modal" id="demo-modal" hidden>
+  <div class="demo-modal__back" data-close></div>
+  <div class="demo-modal__card on-light" role="dialog" aria-modal="true" aria-labelledby="demo-modal-title">
+    <span class="kicker" id="demo-modal-kick">Live demo</span>
+    <h3 id="demo-modal-title">You play the driver.</h3>
+    <p class="demo-modal__scene" id="demo-modal-scene"></p>
+    <ol class="demo-modal__steps">
+      <li>Press start — Otto appears in the corner of the page.</li>
+      <li><strong>Press the phone button in Otto's window</strong> and allow your microphone.</li>
+      <li id="demo-modal-task"></li>
+    </ol>
+    <div class="demo-modal__row">
+      <button class="pv-btn" data-v="primary" data-size="lg" type="button" id="demo-modal-start">Talk to Otto</button>
+      <button class="demo-modal__later" type="button" data-close>Maybe later</button>
+    </div>
+    <p class="demo-modal__fine">A live demo — no real depot behind it. Your microphone is used only during the call, and you can type instead of talking.</p>
+  </div>
+</div>
+
 <!-- ======================= SDK · FITS THE STACK ======================= -->
-<section class="sec on-dark uc" id="sdk">
+<section class="sec on-light uc" id="sdk">
   <div class="wrap">
     <div class="uc__copy">
       <span class="kicker">The SDK</span>
@@ -514,55 +579,6 @@
     </div>
   </div>
 </section>
-
-<!-- ======================= WHAT ELSE OTTO CAN DO ======================= -->
-<section class="sec on-light more" id="more">
-  <div class="wrap">
-    <div class="sec-head">
-      <span class="kicker">Beyond the driver report</span>
-      <h2>What else Otto can do for you.</h2>
-      <p class="lead">The driver report is where ParcelVox starts. These come next — each one by voice, each one inside your rules, and the final say stays with you.</p>
-    </div>
-    <div class="more-grid">
-      <article class="more-card">
-        <h3>Customer call</h3>
-        <p>Otto calls your customer before the van arrives, checks someone will be home and agrees a time. Fewer stairs climbed for nothing, more deliveries that succeed on the first attempt.</p>
-        <p class="says"><b>Otto · to your customer</b>“Understood. Your driver will come after six and hand it to you in person.”</p>
-        <button class="pv-btn" data-v="primary" data-size="sm" data-on="light" type="button" data-talk-otto="Customer call" hidden>Talk to Otto</button>
-      </article>
-      <article class="more-card">
-        <h3>Help from the office</h3>
-        <p>Stuck at the door, your driver tells Otto once. Otto reaches the office with the stop and the problem already filled in, and comes back with the answer — even in the weeks when dispatch can't take another call.</p>
-        <p class="says"><b>Otto · to your driver</b>“The new code is 4711. It's on file for the next driver.”</p>
-      </article>
-      <article class="more-card">
-        <h3>Driver check-in</h3>
-        <p>Otto calls your driver for the office, one reason per call, and lets them drive. You decide when: trigger a check-in yourself, or set the rules and Otto makes the call for you.</p>
-        <p class="says"><b>Otto · to your driver</b>“The customer at Kollwitzstraße 71 is away until tomorrow. Skip that stop today.”</p>
-      </article>
-    </div>
-  </div>
-</section>
-
-<!-- demo-intro overlay, opened by the Talk-to-Otto buttons -->
-<div class="demo-modal" id="demo-modal" hidden>
-  <div class="demo-modal__back" data-close></div>
-  <div class="demo-modal__card on-light" role="dialog" aria-modal="true" aria-labelledby="demo-modal-title">
-    <span class="kicker" id="demo-modal-kick">Live demo</span>
-    <h3 id="demo-modal-title">You play the driver.</h3>
-    <p class="demo-modal__scene" id="demo-modal-scene"></p>
-    <ol class="demo-modal__steps">
-      <li>Press start — Otto appears in the corner of the page.</li>
-      <li><strong>Press the phone button in Otto's window</strong> and allow your microphone.</li>
-      <li id="demo-modal-task"></li>
-    </ol>
-    <div class="demo-modal__row">
-      <button class="pv-btn" data-v="primary" data-size="lg" type="button" id="demo-modal-start">Talk to Otto</button>
-      <button class="demo-modal__later" type="button" data-close>Maybe later</button>
-    </div>
-    <p class="demo-modal__fine">A live demo — no real depot behind it. Your microphone is used only during the call, and you can type instead of talking.</p>
-  </div>
-</div>
 
 <!-- ======================= DEMO (kept from the live site) ======================= -->
 <section class="sec on-deep demo" id="demo">
@@ -599,13 +615,10 @@
 <script>
   // Talk to Otto: ElevenLabs agents, always on the page. Paste agent ids
   // from the ElevenLabs dashboard (agent → Widget tab) into AGENTS below;
-  // while every id is empty nothing mounts and every Talk-to-Otto button
-  // stays hidden, so this ships dormant. With an id, the first live agent
-  // mounts on load. Each [data-talk-otto] button names the use case it
-  // launches (the hero's, unnamed, takes the first live agent) and opens
-  // the instructions overlay for it, which can also revive Otto after the
-  // Close pill removed him. Starting a second use case remounts the widget
-  // with that agent, so one Otto is on the page at a time.
+  // while every id is empty nothing mounts and the hero button stays
+  // hidden, so this ships dormant. With an id, the first live agent mounts
+  // on load, and the hero button opens the instructions overlay (which can
+  // also revive Otto after the Close pill removed him).
   (function(){
     var AGENTS = [
       ['Driver report', ''],
@@ -782,18 +795,30 @@
       openModal(a, b);
     }
 
-    // Talk-to-Otto buttons: the hero's launches the first live agent, the
-    // use-case cards' launch their own. While Otto is live, the hero's coral
-    // hit belongs to him; Book a demo steps back to the outline style (one
-    // coral accent per surface).
+    // Hero button: launches the first live agent on the spot. While Otto is
+    // live, the hero's coral hit belongs to him; Book a demo steps back to
+    // the outline style (one coral accent per surface).
     var demoBtn = document.getElementById('hero-demo');
     if (demoBtn) demoBtn.setAttribute('data-v', 'outline');
     document.querySelectorAll('[data-talk-otto]').forEach(function(h){
-      var name = h.getAttribute('data-talk-otto');
-      var agent = name ? live.filter(function(a){ return a[0] === name; })[0] : live[0];
-      if (!agent) return;
       h.hidden = false;
-      h.addEventListener('click', function(){ pick(agent, null); });
+      h.addEventListener('click', function(){ pick(live[0], null); });
+    });
+
+    // Try-Otto buttons on the use-case cards: shown only when that use
+    // case's agent id is filled in, opening its own scenario overlay.
+    document.querySelectorAll('[data-try-agent]').forEach(function(btn){
+      var label = btn.getAttribute('data-try-agent');
+      var entry = null;
+      for (var i = 0; i < live.length; i++) if (live[i][0] === label) entry = live[i];
+      btn.hidden = false;
+      if (entry) {
+        btn.addEventListener('click', function(){ pick(entry, null); });
+      } else {
+        btn.textContent = 'Coming soon';
+        btn.disabled = true;
+        btn.setAttribute('data-v', 'outline-light');
+      }
     });
 
     // Otto is always on the page: mount the first live agent on load,

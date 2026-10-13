@@ -433,32 +433,30 @@
       checkin: ''
     };
     var WIDGET_SRC = 'https://unpkg.com/@elevenlabs/convai-widget-embed';
-    var CARRIER = 'Kiezpost';
-    var DRV = 'Ayşe';
 
     var SCENARIOS = [
       { id: 'report', title: 'Driver report & briefing',
         blurb: "You're the driver. Otto briefs you on the way in to the stop, then files what you found at the door for whoever drives there next.",
         hint: "Press the phone button in Otto's window, allow your microphone, and tell him what you found at the door.",
-        ledger: { title: 'Address record · Kollwitzstraße 18', groups: [
+        ledger: { title: 'Address record', groups: [
           { label: 'From you · today', rows: [{ k: 'Found at the door', id: 'found' }, { k: 'Filed', id: 'filed' }] } ] } },
 
       { id: 'customer', title: 'Customer call',
-        blurb: "You're the customer. Otto calls before the van arrives — confirms someone's home, agrees a time, and stays inside " + CARRIER + "'s rules.",
+        blurb: "You're the customer. Otto calls before the van arrives — confirms someone's home, agrees a time, and stays inside your rules.",
         hint: "Press the phone button in Otto's window, allow your microphone, and take the call as the customer would.",
-        ledger: { title: 'Customer call · Rykestraße 12', groups: [
+        ledger: { title: 'Customer call', groups: [
           { label: 'Call outcome', rows: [{ k: 'Someone home?', id: 'home' }, { k: 'Agreed time', id: 'time' }, { k: 'Handover', id: 'handover' }, { k: 'Note to driver', id: 'note' }] } ] } },
 
       { id: 'office', title: 'Help from the office',
         blurb: "You're dispatch. A stuck driver told Otto once; Otto reaches you with everything pre-filled and brings your answer back to the van.",
         hint: "Press the phone button in Otto's window, allow your microphone, and answer as dispatch would.",
-        ledger: { title: 'Dispatch ticket · Kollwitzstraße 48', groups: [
+        ledger: { title: 'Dispatch ticket', groups: [
           { label: 'Your answer', rows: [{ k: 'Answer', id: 'answer' }, { k: 'Fallback', id: 'fallback' }, { k: 'Back to the driver', id: 'relay' }, { k: 'Filed to address', id: 'filed' }] } ] } },
 
       { id: 'checkin', title: 'Driver check-in',
         blurb: "You're the driver. Otto calls you for the office — one reason per call, on their trigger or their rules — and lets you drive.",
         hint: "Press the phone button in Otto's window, allow your microphone, and take the call with your hands on the wheel.",
-        ledger: { title: 'Check-in · ' + DRV + ' · route 12', groups: [
+        ledger: { title: 'Driver check-in', groups: [
           { label: 'Outcome', rows: [{ k: 'Driver confirmed', id: 'confirmed' }, { k: 'Passed back to the office', id: 'back' }, { k: 'Route change', id: 'route' }] } ] } }
     ];
 

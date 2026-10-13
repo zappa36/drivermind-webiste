@@ -416,11 +416,12 @@
   // 32px overlay padding; .line is sized to fit it.
   //
   // The record: the widget hands its session config to the page through the
-  // `elevenlabs-convai:call` event, which is where the page registers the
-  // client tool `write_down`. The agent must carry that tool in the
-  // ElevenLabs dashboard (agent → Tools → client tool `write_down`, with
-  // parameters `field` and `value`; field = one of the scenario's row ids
-  // below). Without it the record stays empty — the call itself still works.
+  // `elevenlabs-convai:call` event, which is where the page registers its
+  // client tools. Two are understood: `report_incident`, which the agents
+  // already carry (its `content` is the tip, `kind` the category), and
+  // `write_down` (parameters `field` and `value`; field = one of the
+  // scenario's row ids below) for agents told to fill rows one by one.
+  // Without either the record stays empty — the call itself still works.
   //
   // Paste agent ids from the ElevenLabs dashboard (agent → Widget tab) into
   // AGENTS. A use case without an id shows its empty outcome rows and says
@@ -438,29 +439,34 @@
       { id: 'report', title: 'Driver report & briefing',
         blurb: "You're the driver. Otto briefs you on the way in to the stop, then files what you found at the door for whoever drives there next.",
         hint: "Press the phone button in Otto's window, allow your microphone, and tell him what you found at the door.",
+        report: { text: 'found', stamp: 'filed' },
         ledger: { title: 'Address record', groups: [
           { label: 'From you · today', rows: [{ k: 'Found at the door', id: 'found' }, { k: 'Filed', id: 'filed' }] } ] } },
 
       { id: 'customer', title: 'Customer call',
         blurb: "You're the customer. Otto calls before the van arrives — confirms someone's home, agrees a time, and stays inside your rules.",
         hint: "Press the phone button in Otto's window, allow your microphone, and take the call as the customer would.",
+        report: { text: 'note' },
         ledger: { title: 'Customer call', groups: [
           { label: 'Call outcome', rows: [{ k: 'Someone home?', id: 'home' }, { k: 'Agreed time', id: 'time' }, { k: 'Handover', id: 'handover' }, { k: 'Note to driver', id: 'note' }] } ] } },
 
       { id: 'office', title: 'Help from the office',
         blurb: "You're dispatch. A stuck driver told Otto once; Otto reaches you with everything pre-filled and brings your answer back to the van.",
         hint: "Press the phone button in Otto's window, allow your microphone, and answer as dispatch would.",
+        report: { text: 'answer', stamp: 'filed' },
         ledger: { title: 'Dispatch ticket', groups: [
           { label: 'Your answer', rows: [{ k: 'Answer', id: 'answer' }, { k: 'Fallback', id: 'fallback' }, { k: 'Back to the driver', id: 'relay' }, { k: 'Filed to address', id: 'filed' }] } ] } },
 
       { id: 'checkin', title: 'Driver check-in',
         blurb: "You're the driver. Otto calls you for the office — one reason per call, on their trigger or their rules — and lets you drive.",
         hint: "Press the phone button in Otto's window, allow your microphone, and take the call with your hands on the wheel.",
+        report: { text: 'back' },
         ledger: { title: 'Driver check-in', groups: [
           { label: 'Outcome', rows: [{ k: 'Driver confirmed', id: 'confirmed' }, { k: 'Passed back to the office', id: 'back' }, { k: 'Route change', id: 'route' }] } ] } }
     ];
 
     var $ = function(id){ return document.getElementById(id); };
+    var now = function(){ var d = new Date(); return d.getHours() + ':' + String(d.getMinutes()).padStart(2, '0'); };
     var el = function(tag, cls, text){
       var n = document.createElement(tag);
       if (cls) n.className = cls;
@@ -510,7 +516,7 @@
     }
     function writeDown(field, value){
       var t = rowEls[field];
-      var v = String(value == null ? '' : value).trim().slice(0, 160);
+      var v = String(value == null ? '' : value).replace(/\[[a-z ]+\]/gi, '').replace(/\s+/g, ' ').trim().slice(0, 160);
       if (!t || !v || record[field] === v) return !!t;
       record[field] = v;
       t.textContent = v;
@@ -554,6 +560,15 @@
           // visible in the browser console while testing the agent's tool
           if (window.console) console[ok ? 'info' : 'warn']('Otto write_down', ok ? 'ok' : 'unknown field', p);
           return ok ? 'Written down' : 'Unknown field';
+        };
+        // The agents' own tool: an incident report whose `content` is the
+        // tip. It lands in the scenario's text row; the stamp row, where
+        // there is one, records when and what kind.
+        cfg.clientTools.report_incident = function(p){
+          var map = sc.report, ok = current === sc && !!p && !!map && writeDown(map.text, p.content);
+          if (ok && map.stamp) writeDown(map.stamp, 'Today ' + now() + (p.kind ? ' · ' + String(p.kind).replace(/_/g, ' ') : ''));
+          if (window.console) console[ok ? 'info' : 'warn']('Otto report_incident', ok ? 'ok' : 'ignored', p);
+          return ok ? 'Filed' : 'Nothing to file';
         };
         // a new call on the same line starts a fresh record
         renderLedger(sc);

@@ -559,8 +559,10 @@
         if (!cfg) return;
         cfg.clientTools = cfg.clientTools || {};
         cfg.clientTools.write_down = function(p){
-          if (current !== sc || !p) return 'Unknown field';
-          return writeDown(p.field, p.value) ? 'Written down' : 'Unknown field';
+          var ok = current === sc && !!p && writeDown(p.field, p.value);
+          // visible in the browser console while testing the agent's tool
+          if (window.console) console[ok ? 'info' : 'warn']('Otto write_down', ok ? 'ok' : 'unknown field', p);
+          return ok ? 'Written down' : 'Unknown field';
         };
         // a new call on the same line starts a fresh record
         renderLedger(sc);

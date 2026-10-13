@@ -87,6 +87,9 @@
   .pv-btn[data-v="primary"]:hover{background:var(--coral-deep);color:var(--oat)}
   .pv-btn[data-v="outline"]{border:var(--border-dark);color:var(--oat)}
   .pv-btn[data-v="outline"]:hover{border-color:var(--oat)}
+  .pv-btn[data-v="outline-light"]{border:1px solid rgba(27,37,54,.25);color:var(--ink)}
+  .pv-btn[data-v="outline-light"]:hover{border-color:var(--ink)}
+  .more-card .pv-btn{justify-self:start;margin-top:4px}
 
   .pv-pill{
     display:inline-flex;align-items:center;padding:4px 12px;
@@ -532,16 +535,19 @@
         <h3>Customer call</h3>
         <p>Otto calls your customer before the van arrives, checks someone will be home and agrees a time. Fewer stairs climbed for nothing, more deliveries that succeed on the first attempt.</p>
         <p class="says"><b>Otto · to your customer</b>“Understood. Your driver will come after six and hand it to you in person.”</p>
+        <button class="pv-btn" data-v="outline-light" data-size="sm" type="button" data-try-agent="Customer call" hidden>Try Otto</button>
       </article>
       <article class="more-card">
         <h3>Help from the office</h3>
         <p>Stuck at the door, your driver tells Otto once. Otto reaches the office with the stop and the problem already filled in, and comes back with the answer — even in the weeks when dispatch can't take another call.</p>
         <p class="says"><b>Otto · to your driver</b>“The new code is 4711. It's on file for the next driver.”</p>
+        <button class="pv-btn" data-v="outline-light" data-size="sm" type="button" data-try-agent="Help from the office" hidden>Try Otto</button>
       </article>
       <article class="more-card">
         <h3>Driver check-in</h3>
         <p>Otto calls your driver for the office, one reason per call, and lets them drive. You decide when: trigger a check-in yourself, or set the rules and Otto makes the call for you.</p>
         <p class="says"><b>Otto · to your driver</b>“The customer at Kollwitzstraße 71 is away until tomorrow. Skip that stop today.”</p>
+        <button class="pv-btn" data-v="outline-light" data-size="sm" type="button" data-try-agent="Driver check-in" hidden>Try Otto</button>
       </article>
     </div>
   </div>
@@ -790,6 +796,17 @@
     document.querySelectorAll('[data-talk-otto]').forEach(function(h){
       h.hidden = false;
       h.addEventListener('click', function(){ pick(live[0], null); });
+    });
+
+    // Try-Otto buttons on the use-case cards: shown only when that use
+    // case's agent id is filled in, opening its own scenario overlay.
+    document.querySelectorAll('[data-try-agent]').forEach(function(btn){
+      var label = btn.getAttribute('data-try-agent');
+      var entry = null;
+      for (var i = 0; i < live.length; i++) if (live[i][0] === label) entry = live[i];
+      if (!entry) return;
+      btn.hidden = false;
+      btn.addEventListener('click', function(){ pick(entry, null); });
     });
 
     // Otto is always on the page: mount the first live agent on load,

@@ -85,7 +85,9 @@
   .pv-btn[data-v="outline"]:hover{border-color:var(--oat)}
   .pv-btn[data-v="outline-light"]{border:1px solid rgba(27,37,54,.25);color:var(--ink)}
   .pv-btn[data-v="outline-light"]:hover{border-color:var(--ink)}
-  .more-card .pv-btn{justify-self:start;margin-top:4px}
+  .more-card .pv-btn{justify-self:start;align-self:end;margin-top:4px}
+  .more-card .pv-btn:disabled{cursor:default;color:var(--ink-muted)}
+  .more-card .pv-btn:disabled:hover{border-color:rgba(27,37,54,.25)}
 
   .pv-pill{
     display:inline-flex;align-items:center;padding:4px 12px;
@@ -248,6 +250,7 @@
     border:var(--border-light);border-radius:var(--radius-md);
     box-shadow:var(--shadow-card);padding:24px;
   }
+  .more-card{grid-template-rows:auto auto auto 1fr}
   .more-card h3{font-size:20px}
   .more-card p{margin:0;color:var(--ink-muted)}
   .more-card .says{margin-top:4px;padding-top:14px;border-top:var(--border-light);font-size:14px;color:var(--ink)}
@@ -798,9 +801,14 @@
       var label = btn.getAttribute('data-try-agent');
       var entry = null;
       for (var i = 0; i < live.length; i++) if (live[i][0] === label) entry = live[i];
-      if (!entry) return;
       btn.hidden = false;
-      btn.addEventListener('click', function(){ pick(entry, null); });
+      if (entry) {
+        btn.addEventListener('click', function(){ pick(entry, null); });
+      } else {
+        btn.textContent = 'Coming soon';
+        btn.disabled = true;
+        btn.setAttribute('data-v', 'outline-light');
+      }
     });
 
     // Otto is always on the page: mount the first live agent on load,

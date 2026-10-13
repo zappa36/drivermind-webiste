@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ParcelVox — Talk to Otto</title>
+<meta name="description" content="Try Otto yourself. Pick a call, take the other end of the line — the customer, the office, the driver — and watch what Otto writes down as he goes.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Source+Sans+3:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  /* ============ ParcelVox design system tokens (Coral · Ink Blue) ============ */
+  :root{
+    --ink-blue:#0E2138;
+    --ink-blue-deep:#0A1730;
+    --coral:#FF4D3A;
+    --coral-deep:#BE3E24;      /* brand coral-on-light: large text, hover grounds */
+    --coral-ink:#B23A22;       /* darkened one step: small coral text needs 4.5:1 on cream */
+    --cream:#EFE9DC;
+    --ink:#1B2536;
+    --oat:#F4F1E8;
+    --ink-muted:rgba(27,37,54,.70);   /* DS ships .62 = 4.1:1; .70 = 5.3:1 on cream */
+    --oat-muted:rgba(244,241,232,.64);
+    --line-on-light:rgba(27,37,54,.16);
+    --line-on-dark:rgba(244,241,232,.16);
+    --wash-on-light:rgba(14,33,56,.06);
+    --wash-on-dark:rgba(244,241,232,.07);
+    --coral-wash:rgba(255,77,58,.12);
+    --font-display:'Space Grotesk',system-ui,-apple-system,sans-serif;
+    --font-body:'Source Sans 3',system-ui,-apple-system,sans-serif;
+    --radius-xs:3px;--radius-sm:6px;--radius-md:10px;--radius-pill:999px;
+    --border-light:1px solid var(--line-on-light);
+    --border-dark:1px solid var(--line-on-dark);
+    --shadow-card:0 1px 2px rgba(14,33,56,.06),0 6px 20px rgba(14,33,56,.08);
+    --ease:cubic-bezier(.2,.7,.3,1);
+    --dur-fast:120ms;
+    --focus:0 0 0 2px var(--cream),0 0 0 4px var(--coral);
+    --focus-on-dark:0 0 0 2px var(--ink-blue),0 0 0 4px var(--coral);
+    --container:1120px;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;background:var(--ink-blue);color:var(--oat);
+    font:400 15px/1.6 var(--font-body);
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--coral);color:var(--oat)}
+  :focus-visible{outline:none;box-shadow:var(--focus-on-dark)}
+  .on-light :focus-visible{box-shadow:var(--focus)}
+
+  .wrap{max-width:var(--container);margin:0 auto;padding:0 32px}
+
+  .kicker{font:500 12px/1.4 var(--font-display);letter-spacing:.09em;text-transform:uppercase}
+  .on-dark .kicker{color:var(--oat-muted)}
+  .on-light .kicker{color:var(--ink-muted)}
+
+  h1,h2{margin:0;font-family:var(--font-display);font-weight:700;letter-spacing:-0.01em;line-height:1.06;text-wrap:balance}
+  .lead{margin:0;font:400 17px/1.6 var(--font-body);text-wrap:pretty}
+  .on-dark .lead{color:var(--oat-muted)}
+  .on-light .lead{color:var(--ink-muted)}
+
+  /* ============ components (verbatim from the design-system bundle) ============ */
+  .wordmark{font:700 22px/1 var(--font-display);letter-spacing:-0.01em;white-space:nowrap;text-decoration:none;color:var(--oat)}
+  .wordmark b{font-weight:700;color:var(--coral)}
+  .wordmark--sm{font-size:17px}
+
+  .pv-btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    border-radius:var(--radius-sm);font-family:var(--font-display);font-weight:600;
+    letter-spacing:.01em;cursor:pointer;border:1px solid transparent;background:transparent;
+    transition:background var(--dur-fast) var(--ease),color var(--dur-fast) var(--ease),
+      border-color var(--dur-fast) var(--ease),transform var(--dur-fast) var(--ease);
+    text-decoration:none;white-space:nowrap;
+  }
+  .pv-btn:focus-visible{outline:none;box-shadow:var(--focus)}
+  .pv-btn[data-on="dark"]:focus-visible{box-shadow:var(--focus-on-dark)}
+  .pv-btn:active{transform:translateY(1px)}
+  .pv-btn[data-size="sm"]{font-size:13px;padding:5px 12px}
+  .pv-btn[data-size="md"]{font-size:14px;padding:8px 16px}
+  .pv-btn[data-size="lg"]{font-size:15px;padding:11px 22px}
+  .pv-btn[data-v="primary"]{background:var(--coral);color:var(--ink-blue-deep)}
+  .pv-btn[data-v="primary"]:hover{background:var(--coral-deep);color:var(--oat)}
+  .pv-btn[data-v="secondary"]{border-color:var(--line-on-dark);color:var(--oat)}
+  .pv-btn[data-v="secondary"]:hover{background:var(--wash-on-dark)}
+
+  .pv-input{
+    appearance:none;width:100%;background:var(--wash-on-dark);
+    border:var(--border-dark);border-radius:var(--radius-sm);padding:9px 12px;
+    font:400 15px/1.4 var(--font-body);color:var(--oat);
+    transition:border-color var(--dur-fast) var(--ease),box-shadow var(--dur-fast) var(--ease);
+  }
+  .pv-input::placeholder{color:var(--oat-muted)}
+  .pv-input:focus,.pv-input:focus-visible{outline:none;border-color:var(--coral);box-shadow:0 0 0 3px var(--coral-wash)}
+
+  .pv-live{
+    display:inline-flex;align-items:center;gap:7px;padding:4px 12px;
+    border:var(--border-dark);border-radius:var(--radius-pill);
+    font:500 11px/1 var(--font-display);letter-spacing:.09em;text-transform:uppercase;
+    color:var(--oat);
+  }
+  .pv-live i{width:6px;height:6px;border-radius:999px;background:var(--coral);animation:pvLivePulse 2.4s var(--ease) infinite}
+  .pv-live--ended{color:var(--oat-muted)}
+  .ledger .pv-live{border:var(--border-light);color:var(--ink)}
+  .ledger .kicker{color:var(--ink-muted)}
+
+  /* Otto — coral palette (design-system component, CSS rendition) */
+  .otto{position:relative;width:64px;height:64px;display:flex;align-items:center;justify-content:center}
+  .otto__ring{
+    position:absolute;left:50%;top:50%;width:96%;height:96%;border-radius:50%;
+    border:1.5px solid rgba(255,77,58,.55);transform:translate(-50%,-50%);
+    animation:ottoRing 1.9s ease-out infinite;
+  }
+  .otto__ring--2{border-color:rgba(255,77,58,.3);animation-delay:.95s}
+  .otto__blob{
+    position:relative;width:86%;height:86%;background:var(--coral);
+    border-radius:42% 58% 56% 44%/48% 42% 58% 52%;
+    animation:ottoMorph 8s ease-in-out infinite;
+    display:flex;align-items:center;justify-content:center;gap:14%;
+  }
+  .otto__eye{
+    position:relative;width:17%;height:22%;border-radius:50%;background:var(--oat);display:block;
+    animation:ottoBlink 3.6s ease-in-out infinite;transform-origin:center;
+  }
+  .otto__eye::after{
+    content:"";position:absolute;left:16%;top:18%;width:43%;height:33%;border-radius:50%;background:var(--ink-blue-deep);
+  }
+
+  .skip-link{
+    position:absolute;left:-9999px;top:0;z-index:100;
+    background:var(--coral);color:var(--ink-blue-deep);padding:10px 16px;
+    border-radius:0 0 var(--radius-sm) 0;font:600 14px/1 var(--font-display);text-decoration:none;
+  }
+  .skip-link:focus{left:0}
+
+  /* ============ header ============ */
+  .site-head{background:var(--ink-blue);border-bottom:var(--border-dark)}
+  .site-head .wrap{display:flex;align-items:center;gap:28px;min-height:64px;flex-wrap:wrap;padding-top:8px;padding-bottom:8px}
+  .site-nav{display:flex;gap:22px;margin-left:16px;flex-wrap:wrap}
+  .site-nav a{font:600 14px/1 var(--font-display);color:var(--oat-muted);text-decoration:none}
+  .site-nav a:hover,.site-nav a[aria-current="page"]{color:var(--oat)}
+  .site-head .cta{margin-left:auto;display:flex}
+  @media (max-width:720px){
+    .site-head .wrap{
+      display:grid;grid-template-columns:1fr auto;align-items:center;
+      gap:10px 16px;padding-top:12px;padding-bottom:14px;
+    }
+    .site-head .cta{display:none}
+    .site-nav{
+      grid-row:2;grid-column:1 / -1;margin-left:0;gap:16px;
+      flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;
+      -webkit-overflow-scrolling:touch;padding-bottom:2px;
+    }
+    .site-nav::-webkit-scrollbar{display:none}
+    .site-nav a{font-size:12px;white-space:nowrap}
+  }
+  @media (max-width:480px){
+    .wrap{padding:0 20px}
+  }
+
+  /* ============ sections ============ */
+  .on-dark{background:var(--ink-blue);color:var(--oat)}
+  .on-deep{background:var(--ink-blue-deep);color:var(--oat)}
+  .on-light{background:var(--cream);color:var(--ink)}
+
+  .try-head .wrap{padding-top:72px;padding-bottom:44px;display:grid;gap:18px;justify-items:start}
+  .try-head h1{max-width:720px;font-size:clamp(38px,4.8vw,56px);color:var(--oat)}
+  .try-head .lead{max-width:600px}
+  .try-head__note{margin:0;font:400 14px/1.5 var(--font-body);color:var(--oat-muted)}
+
+  .sandbox .wrap{padding-bottom:96px;display:grid;gap:36px;grid-template-columns:minmax(0,1fr)}
+  .picker{display:grid;gap:14px}
+  .picker__btns{display:flex;gap:12px;flex-wrap:wrap}
+  .try-btn{
+    font:600 14px/1 var(--font-display);letter-spacing:.01em;cursor:pointer;
+    padding:10px 18px;border-radius:var(--radius-sm);
+    background:transparent;color:var(--oat);border:var(--border-dark);
+    transition:border-color var(--dur-fast) var(--ease),
+      color var(--dur-fast) var(--ease),background var(--dur-fast) var(--ease);
+  }
+  .try-btn:hover{border-color:var(--oat)}
+  .try-btn[aria-pressed="true"]{background:var(--coral);border-color:var(--coral);color:var(--ink-blue-deep)}
+  .picker__blurb{margin:0;max-width:640px;font:400 15px/1.6 var(--font-body);color:var(--oat-muted);text-wrap:pretty}
+
+  .bench{display:flex;flex-wrap:wrap;gap:40px;align-items:flex-start}
+
+  /* the handset — Otto's side of the call */
+  .handset{
+    flex:0 1 360px;min-width:280px;width:100%;background:var(--ink-blue-deep);
+    border:var(--border-dark);border-radius:var(--radius-md);
+    padding:14px 16px 16px;display:grid;gap:16px;color:var(--oat);
+  }
+  .handset__bar{display:flex;justify-content:space-between;gap:12px;font:500 11px/1 var(--font-display);letter-spacing:.09em;text-transform:uppercase;color:var(--oat-muted)}
+  .handset__stage{display:grid;justify-items:center;gap:10px;padding:8px 0 4px;text-align:center}
+  .handset__who{font:600 16px/1.3 var(--font-display);color:var(--oat)}
+  .handset__sub{font:400 14px/1.4 var(--font-body);color:var(--oat-muted)}
+  .handset__cta{margin-top:8px}
+  .wave{display:inline-flex;align-items:center;gap:3px;height:16px}
+  .wave i{width:3px;height:16px;border-radius:999px;background:var(--oat);animation:pvWave 1.1s var(--ease) infinite}
+  .wave i:nth-child(2){animation-delay:.15s}
+  .wave i:nth-child(3){animation-delay:.3s}
+  .wave i:nth-child(4){animation-delay:.45s}
+  .wave i:nth-child(5){animation-delay:.6s}
+
+  .transcript{
+    display:grid;gap:14px;align-content:start;border-top:var(--border-dark);padding-top:16px;
+    max-height:320px;overflow-y:auto;
+  }
+  .turn{display:grid;gap:3px;animation:fadeUp .2s var(--ease)}
+  .turn span{font:500 10px/1 var(--font-display);letter-spacing:.09em;text-transform:uppercase;color:var(--oat-muted)}
+  .turn--otto span{color:var(--coral)}
+  .turn p{margin:0;font:400 15px/1.5 var(--font-body);color:var(--oat);text-wrap:pretty}
+  .turn--busy{animation:none}
+  .turn--busy p{font-weight:700;color:var(--oat-muted);animation:pvLivePulse 1.2s ease-in-out infinite}
+
+  .reply{display:grid;gap:10px;border-top:var(--border-dark);padding-top:14px}
+  .reply__sugs{display:flex;flex-wrap:wrap;gap:8px}
+  .reply__sugs:empty{display:none}
+  .sug{
+    cursor:pointer;background:transparent;border:var(--border-dark);border-radius:var(--radius-sm);
+    padding:7px 12px;font:400 14px/1.3 var(--font-body);color:var(--oat);text-align:left;
+    transition:background var(--dur-fast) var(--ease),border-color var(--dur-fast) var(--ease);
+  }
+  .sug:hover{background:var(--wash-on-dark);border-color:rgba(244,241,232,.4)}
+  .reply__row{display:flex;gap:8px;align-items:center}
+  .reply__row .pv-input{flex:1;min-width:0}
+
+  .controls{display:flex;justify-content:center;gap:28px;border-top:var(--border-dark);padding-top:14px}
+  .ctrl{
+    display:grid;justify-items:center;gap:6px;background:none;border:0;padding:0;
+    font:500 10px/1 var(--font-display);letter-spacing:.09em;text-transform:uppercase;color:var(--oat-muted);
+  }
+  .ctrl i{width:40px;height:40px;border-radius:999px;background:var(--wash-on-dark);display:inline-flex;align-items:center;justify-content:center;color:var(--oat);font-style:normal;transition:background var(--dur-fast) var(--ease)}
+  button.ctrl{cursor:pointer}
+  button.ctrl:disabled{cursor:default}
+  button.ctrl:not(:disabled):hover i{background:var(--line-on-dark)}
+  .ctrl[aria-pressed="true"] i{background:var(--oat);color:var(--ink-blue-deep)}
+  .again{display:flex;justify-content:center;gap:12px;border-top:var(--border-dark);padding-top:14px}
+
+  /* the record — what Otto writes down */
+  .ledger{
+    flex:1 1 340px;min-width:0;background:var(--oat);
+    border:var(--border-light);border-radius:var(--radius-md);box-shadow:var(--shadow-card);
+    padding:22px 24px 26px;display:grid;gap:16px;align-content:start;color:var(--ink);
+  }
+  .ledger__head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  .ledger h2{font:600 20px/1.25 var(--font-display);letter-spacing:0;color:var(--ink)}
+  .ledger__group{display:grid;gap:10px;border-top:var(--border-light);padding-top:14px}
+  .ledger__label{font:500 11px/1.3 var(--font-display);letter-spacing:.09em;text-transform:uppercase;color:var(--ink-muted)}
+  .row{display:grid;grid-template-columns:minmax(96px,124px) minmax(0,1fr);gap:4px 14px;align-items:baseline}
+  .row__k{font:600 13px/1.45 var(--font-display);color:var(--ink-muted)}
+  .row__v{display:grid;gap:3px}
+  .row__text{font:400 15px/1.45 var(--font-body);color:var(--ink);text-wrap:pretty}
+  .row__text--new{font-weight:700;color:var(--coral-ink);animation:fadeUp .2s var(--ease)}
+  .row__text--pending{color:var(--ink-muted)}
+  .row__meta{font:500 10px/1.3 var(--font-display);letter-spacing:.09em;text-transform:uppercase;color:var(--ink-muted)}
+
+  [hidden]{display:none !important}
+
+  /* access code gate — the sandbox opens once the code matches */
+  .gate{min-height:calc(100vh - 160px)}
+  .gate .wrap{padding-top:96px;padding-bottom:120px}
+  .gate__card{display:grid;gap:18px;justify-items:start;max-width:560px}
+  .gate h1{font-size:clamp(34px,4.2vw,48px);color:var(--oat)}
+  .gate__row{display:flex;gap:8px;width:100%;max-width:360px;margin-top:6px}
+  .gate__row .pv-input{flex:1;min-width:0;letter-spacing:.2em}
+  .gate__err{margin:0;font:400 14px/1.5 var(--font-body);color:var(--coral)}
+
+  /* close + footer */
+  .close .wrap{padding-top:72px;padding-bottom:88px;display:grid;gap:18px;justify-items:start}
+  .close h2{max-width:720px;font-size:clamp(30px,3.6vw,44px);color:var(--ink)}
+  .close .lead{max-width:560px}
+  .close__ctas{display:flex;align-items:center;gap:24px;flex-wrap:wrap;margin-top:6px}
+  .close__link{font:600 15px/1 var(--font-display);color:var(--coral-deep);text-decoration:none}
+  .close__link:hover{text-decoration:underline}
+  .close{border-top:var(--border-light)}
+
+  .site-foot{background:var(--ink-blue-deep);padding:36px 0}
+  .site-foot .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  .site-foot span{font:400 13px/1 var(--font-body);color:var(--oat-muted)}
+
+  /* cookie bar — Google Analytics loads only after Accept */
+  .consent{
+    position:fixed;left:0;right:0;bottom:0;z-index:60;
+    display:flex;align-items:center;justify-content:center;gap:8px 20px;flex-wrap:wrap;
+    padding:14px 16px;background:var(--ink-blue-deep);color:var(--oat);
+    border-top:var(--border-dark);font-size:14px;text-align:center;
+  }
+  .consent p{margin:0}
+  .consent__no{
+    background:none;border:none;cursor:pointer;padding:6px 4px;
+    font:inherit;color:var(--oat-muted);text-decoration:underline;
+  }
+  .consent__no:hover{color:var(--oat)}
+
+  /* ============ motion ============ */
+  @keyframes pvWave{0%,100%{transform:scaleY(.25)}50%{transform:scaleY(1)}}
+  @keyframes pvLivePulse{0%,100%{opacity:1}50%{opacity:.35}}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+  @keyframes ottoMorph{0%,100%{border-radius:42% 58% 56% 44%/48% 42% 58% 52%}33%{border-radius:58% 42% 44% 56%/56% 58% 42% 44%}66%{border-radius:46% 54% 62% 38%/40% 56% 44% 60%}}
+  @keyframes ottoBlink{0%,92%,100%{transform:scaleY(1)}96%{transform:scaleY(.1)}}
+  @keyframes ottoRing{0%{transform:translate(-50%,-50%) scale(.55);opacity:.7}100%{transform:translate(-50%,-50%) scale(1.7);opacity:0}}
+  @media (prefers-reduced-motion: reduce){
+    .wave i,.otto__blob,.otto__eye,.pv-live i,.turn,.turn--busy p,.row__text--new{animation:none}
+    .otto__ring{display:none}
+  }
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<!-- ======================= HEADER ======================= -->
+<header class="site-head on-dark">
+  <div class="wrap">
+    <a class="wordmark" href="/">Parcel<b>Vox</b></a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="/#how">How it works</a>
+      <a href="/#more">What else Otto does</a>
+      <a href="/#drivers">On the driver's side</a>
+      <a href="#try" aria-current="page">Try Otto</a>
+    </nav>
+    <div class="cta"><a class="pv-btn" data-v="primary" data-size="sm" data-on="dark" href="https://calendar.app.google/5S3FCp4oPnLXNt9L7" target="_blank" rel="noopener">Book a demo</a></div>
+  </div>
+</header>
+
+<!-- ======================= ACCESS CODE ======================= -->
+<section class="on-dark gate" id="gate">
+  <div class="wrap">
+    <form class="gate__card" id="gate-form">
+      <span class="kicker">Try Otto</span>
+      <h1>Enter your access code.</h1>
+      <p class="lead">The sandbox is open to people we've shared it with. No code yet? Book a demo and we'll walk you through it.</p>
+      <div class="gate__row">
+        <input class="pv-input" id="gate-code" type="password" inputmode="numeric" autocomplete="off" placeholder="Access code" aria-label="Access code" aria-describedby="gate-err" required>
+        <button class="pv-btn" data-v="primary" data-size="md" data-on="dark" type="submit">Open</button>
+      </div>
+      <p class="gate__err" id="gate-err" role="alert" hidden>That code isn't right.</p>
+    </form>
+  </div>
+</section>
+
+<main id="main" hidden>
+
+<!-- ======================= INTRO ======================= -->
+<section class="on-dark try-head" id="try">
+  <div class="wrap">
+    <span class="kicker">Try it yourself</span>
+    <h1>Talk to Otto.</h1>
+    <p class="lead">Pick a call. You take the other end of the line — the customer, the office, the driver — and Otto does his job. Watch what he writes down as he goes.</p>
+    <p class="try-head__note">Here you type what you'd say; on the route it's all voice. <span id="ai-note">This run is scripted.</span></p>
+  </div>
+</section>
+
+<!-- ======================= SANDBOX (handset layout) ======================= -->
+<section class="on-dark sandbox" aria-label="Otto sandbox">
+  <div class="wrap">
+    <div class="picker">
+      <div class="picker__btns" role="group" aria-label="Choose a call" id="picker"></div>
+      <p class="picker__blurb" id="blurb"></p>
+    </div>
+    <div class="bench">
+      <div class="handset">
+        <div class="handset__bar"><span id="clock"></span><span id="stop"></span></div>
+        <div class="handset__stage">
+          <span class="otto" aria-hidden="true"><span id="rings"><span class="otto__ring"></span><span class="otto__ring otto__ring--2"></span></span><span class="otto__blob"><span class="otto__eye"></span><span class="otto__eye"></span></span></span>
+          <span class="wave" id="wave" aria-hidden="true" hidden><i></i><i></i><i></i><i></i><i></i></span>
+          <div id="ring" style="display:contents">
+            <span class="handset__who" id="ring-title"></span>
+            <span class="handset__sub" id="ring-sub"></span>
+            <div class="handset__cta"><button class="pv-btn" data-v="primary" data-size="lg" data-on="dark" type="button" id="answer"></button></div>
+          </div>
+          <span class="pv-live" id="live-pill" hidden><i></i>Voice · <span class="js-timer">0:00</span></span>
+          <span class="pv-live pv-live--ended" id="ended-pill" hidden>Call ended · <span class="js-timer">0:00</span></span>
+        </div>
+        <div class="transcript" id="transcript" aria-live="polite" hidden></div>
+        <div class="reply" id="reply" hidden>
+          <div class="reply__sugs" id="sugs"></div>
+          <form class="reply__row" id="reply-form">
+            <input class="pv-input" id="draft" type="text" autocomplete="off" placeholder="Type what you'd say…" aria-label="Your reply" maxlength="400">
+            <button class="pv-btn" data-v="primary" data-size="md" data-on="dark" type="submit">Say it</button>
+          </form>
+        </div>
+        <div class="controls" id="controls" hidden>
+          <button class="ctrl" type="button" id="mute" aria-pressed="false" disabled><i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg></i><span id="mute-label">Mute</span></button>
+          <span class="ctrl" aria-hidden="true"><i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></i>Speaker</span>
+          <button class="ctrl" type="button" id="end-call" aria-label="End call"><i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate(135deg)" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></i>End</button>
+        </div>
+        <div class="again" id="again-wrap" hidden><button class="pv-btn" data-v="secondary" data-size="md" data-on="dark" type="button" id="again">Run it again</button></div>
+      </div>
+
+      <div class="ledger">
+        <div class="ledger__head">
+          <span class="kicker">What Otto writes down</span>
+          <span class="pv-live" id="ledger-live" hidden><i></i>Live</span>
+        </div>
+        <h2 id="ledger-title"></h2>
+        <div id="ledger-groups" style="display:contents"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= CLOSE ======================= -->
+<section class="on-light close" id="pilot">
+  <div class="wrap">
+    <span class="kicker">Start with one route</span>
+    <h2>Heard enough? Give one route a voice.</h2>
+    <p class="lead">Run ParcelVox on one depot route. We measure how many deliveries succeed first time, how long drivers spend at the door and how fast cover drivers find their way.</p>
+    <div class="close__ctas">
+      <a class="pv-btn" data-v="primary" data-size="lg" data-on="light" href="https://calendar.app.google/5S3FCp4oPnLXNt9L7" target="_blank" rel="noopener">Book a demo</a>
+      <a class="close__link" href="/#how">See how it works →</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<script>
+  // Access code. GitHub Pages serves static files only, so this is a
+  // browser-side lock: it keeps the sandbox from casual visitors, not from
+  // someone reading the page source. Only the code's SHA-256 is stored; to
+  // change the code, replace CODE_HASH with the hash of the new one
+  // (printf '%s' NEWCODE | sha256sum). An opened browser is remembered
+  // until the code changes.
+  (function(){
+    var CODE_HASH = '5ad0e75a5119ff6de36d3fab783202c0224e685aa48461aed16aa72aa3960d21';
+    var gate = document.getElementById('gate');
+    var main = document.getElementById('main');
+    function open(){
+      gate.remove();
+      main.hidden = false;
+    }
+    var saved = null;
+    try { saved = localStorage.getItem('pv-otto-access'); } catch (e) {}
+    if (saved === CODE_HASH) return open();
+
+    var form = document.getElementById('gate-form');
+    var input = document.getElementById('gate-code');
+    var err = document.getElementById('gate-err');
+    function sha256(text){
+      return crypto.subtle.digest('SHA-256', new TextEncoder().encode(text)).then(function(buf){
+        return Array.prototype.map.call(new Uint8Array(buf), function(b){ return b.toString(16).padStart(2, '0'); }).join('');
+      });
+    }
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      sha256(input.value.trim()).then(function(h){
+        if (h !== CODE_HASH) {
+          err.hidden = false;
+          input.select();
+          return;
+        }
+        try { localStorage.setItem('pv-otto-access', h); } catch (e2) {}
+        open();
+        var first = document.querySelector('.try-btn[aria-pressed="true"]');
+        if (first) first.focus({ preventScroll: true });
+      });
+    });
+    input.focus({ preventScroll: true });
+  })();
+</script>
+
+<script>
+  // Talk to Otto: four scripted calls, one per use case. The visitor plays
+  // whoever Otto is talking to; Otto speaks first, word by word, and the
+  // record panel fills in as the call settles things.
+  //
+  // Live replies: set OTTO_URL to the deployed `otto` Supabase function
+  // (supabase/functions/otto). While it is empty — or whenever a live reply
+  // fails — Otto follows each scenario's short script, so the demo never
+  // stalls. The function holds the prompts; keep its SCENARIOS in step with
+  // the openings and ledgers below.
+  //
+  // Voice calls: scenarios with an ElevenLabs agent in VOICE run as a real
+  // call instead (agent → Widget tab in the ElevenLabs dashboard for the id).
+  // The agent speaks its own first message; the transcript comes from the
+  // call. The record panel fills in only if the agent has a client tool
+  // `write_down` with parameters `field` and `value` (field = one of the
+  // scenario's record ids below). If the call can't start — no microphone,
+  // no connection — the scripted call runs instead.
+  (function(){
+    var OTTO_URL = '';
+    var VOICE = {
+      report: 'agent_1901m4be21bbf56r9fhm17j2fk2x',
+      customer: 'agent_0001m4qwm0gjep1sqhyd3svbfzhf'
+    };
+    var EL_SDK = 'https://unpkg.com/@elevenlabs/client@1.25.0/dist/lib.iife.js';
+    var CARRIER = 'Kiezpost';
+    var DRV = 'Ayşe';
+    var WORD_MS = 130;
+
+    var SCENARIOS = [
+      { id: 'report', title: 'Driver report & briefing', youLabel: 'You · driver',
+        blurb: "You're the driver. Otto briefs you on the way in to the stop, then files what you found at the door for whoever drives there next.",
+        stop: 'Stop 12 · Kollwitzstraße 18',
+        ring: { title: 'Kollwitzstraße 18 coming up', sub: 'Otto comes on two minutes before the stop', cta: 'Drive in' },
+        opening: "Kollwitzstraße 18, two minutes out. From the order: consignee M. Keller, hand over in person, use the side entrance. Earlier drivers say the road's closed at the north end — park on Sredzkistraße and walk in. The office added this morning: Keller's home until twelve. When you've been to the door, tell me what you found.",
+        suggestions: ["The buzzer's broken, I had to knock on the window", 'Side entrance is behind the bins now', 'All fine, nothing new'],
+        fallback: [
+          { say: 'Got it. Anything else the next driver should know about getting to the door?', suggestions: ["No, that's it", "Parking's fine after ten", "The dog's friendly, ignore the sign"] },
+          { say: 'Thanks. Filed for Kollwitzstraße 18 — the next driver hears it on the way in. Safe trip.', record: { found: '$you1', filed: 'Today $now · next driver hears it on the way in' }, end: true }
+        ],
+        ledger: { title: 'Address record · Kollwitzstraße 18', groups: [
+          { label: 'From the order', rows: [{ k: 'Consignee', v: 'M. Keller' }, { k: 'Instructions', v: 'Hand over in person' }, { k: 'Preferences', v: 'Side entrance, not the shop' }] },
+          { label: 'From earlier drivers', rows: [{ k: 'Access', v: 'Road closed at the north end — park on Sredzkistraße, walk 2 min', meta: 'K. Yilmaz · 3 days ago' }] },
+          { label: 'From the office', rows: [{ k: 'Customer call', v: 'Home until 12:00 today', meta: 'Office · 09:12' }] },
+          { label: 'From you · today', rows: [{ k: 'Found at the door', id: 'found' }, { k: 'Filed', id: 'filed' }] } ] } },
+
+      { id: 'customer', title: 'Customer call', youLabel: 'You · customer',
+        blurb: "You're the customer. Otto calls before the van arrives — confirms someone's home, agrees a time, and stays inside " + CARRIER + "'s rules.",
+        stop: 'Rykestraße 12 · Brandt',
+        ring: { title: 'Incoming call', sub: 'Otto · for ' + CARRIER, cta: 'Answer' },
+        opening: "Hello, this is Otto calling for " + CARRIER + ". I've got a parcel for you today — " + DRV + " is planned between two and four and it needs a signature. Will someone be home?",
+        suggestions: ["No, I'm at work until six", "Yes, I'll be here all afternoon", 'Can you leave it with a neighbour?'],
+        fallback: [
+          { say: 'Understood. ' + DRV + ' can come after six today, or tomorrow between ten and twelve. Which suits you?', suggestions: ['After six is fine', 'Tomorrow morning, please', 'Either works'] },
+          { say: 'Done. ' + DRV + ' will come after six and hand it to you in person. I’ll tell her now. Bye for now.', record: { home: 'Not before 18:00', time: 'Today after 18:00', handover: 'In person · signature', note: 'Brandt · home after six — hand over in person' }, end: true }
+        ],
+        ledger: { title: 'Customer call · Rykestraße 12', groups: [
+          { label: 'Your rules', rows: [{ k: 'Call window', v: '08:00–20:00' }, { k: 'Offer', v: 'Same day after 17:00 if the route allows, else next day' }, { k: 'Handover', v: 'In person — signature required' }, { k: 'Neighbours', v: 'Only if the customer names one' }, { k: 'Reschedules', v: 'Max 2 per parcel' }] },
+          { label: 'From the order', rows: [{ k: 'Consignee', v: 'T. Brandt' }, { k: 'Planned', v: 'Today 14:00–16:00' }, { k: 'Driver', v: DRV + ' · route 12' }] },
+          { label: 'Call outcome', rows: [{ k: 'Someone home?', id: 'home' }, { k: 'Agreed time', id: 'time' }, { k: 'Handover', id: 'handover' }, { k: 'Note to driver', id: 'note' }] } ] } },
+
+      { id: 'office', title: 'Help from the office', youLabel: 'You · dispatch',
+        blurb: "You're dispatch. A stuck driver told Otto once; Otto reaches you with everything pre-filled and brings your answer back to the van.",
+        stop: 'Stop 19 · Kollwitzstraße 48',
+        ring: { title: 'Incoming call', sub: 'Otto · for ' + DRV + ', route 12', cta: 'Answer' },
+        opening: 'Otto here for ' + DRV + " on route 12. She's at Kollwitzstraße 48, stop 19, a parcel for Weber with signature. The gate code on file, 2290, is refused and nobody answers the buzzer. She's tried both twice and waited six minutes. Do you have a new code, or should she move on?",
+        suggestions: ["The code changed — it's 4711 now", 'Tell her to try the side entrance', "Move on, we'll try tomorrow"],
+        fallback: [
+          { say: "Got it. If it still doesn't work, should she leave it somewhere or move on?", suggestions: ['Leave it at the Späti on the corner', 'Move on, retry tomorrow', 'Call me back if it fails'] },
+          { say: "Clear. I'll tell " + DRV + ' now and put the code on file for the next driver. Thanks.', record: { answer: '$you1', fallback: '$you2', relay: 'Told ' + DRV + ' · $now', filed: 'Kollwitzstraße 48 · access updated for the next driver' }, end: true }
+        ],
+        ledger: { title: 'Dispatch ticket · Kollwitzstraße 48', groups: [
+          { label: 'Pre-filled by Otto', rows: [{ k: 'Driver', v: DRV + ' · route 12 · van 07' }, { k: 'Stop', v: '19 of 41 · Kollwitzstraße 48' }, { k: 'Consignee', v: 'Weber · signature required' }, { k: 'Problem', v: 'Gate code 2290 refused, no answer on the buzzer' }, { k: 'Tried', v: 'Code ×2, buzzer ×2, 6 min waiting' }, { k: 'Asks', v: 'New code, or move on?' }] },
+          { label: 'Your answer', rows: [{ k: 'Answer', id: 'answer' }, { k: 'Fallback', id: 'fallback' }, { k: 'Back to the driver', id: 'relay' }, { k: 'Filed to address', id: 'filed' }] } ] } },
+
+      { id: 'checkin', title: 'Driver check-in', youLabel: 'You · driver',
+        blurb: "You're the driver. Otto calls you for the office — one reason per call, on their trigger or their rules — and lets you drive.",
+        stop: 'Route 12 · ' + DRV,
+        ring: { title: 'Incoming call', sub: 'Otto · for the office', cta: 'Answer' },
+        opening: DRV + ", Otto — one thing from the office. The customer at Kollwitzstraße 71 is away until tomorrow, so skip that stop today; it's re-planned for tomorrow. Anything you want me to pass back?",
+        suggestions: ["Fine. Tell them I'm 20 minutes behind after the roadworks", 'Okay, nothing to pass on', 'Ask them to call Weber at 48 for me'],
+        fallback: [
+          { say: "Noted, I'll pass that on. Anything else before I let you drive?", suggestions: ["No, that's all", 'Yes — I need a new scanner battery tonight', 'Remind them I finish at four today'] },
+          { say: 'Will do. Drive safe.', record: { confirmed: 'Yes · $now', back: '$you1', route: 'Stop 23 · Kollwitzstraße 71 skipped, re-planned for tomorrow' }, end: true }
+        ],
+        ledger: { title: 'Check-in · ' + DRV + ' · route 12', groups: [
+          { label: 'Trigger', rows: [{ k: 'Triggered by', v: 'Office · 11:04' }, { k: 'Reason', v: 'Kollwitzstraße 71 — customer called, away until tomorrow' }, { k: 'Rules', v: 'One reason per call · only while the van is stopped · retry after 10 min if no answer' }] },
+          { label: 'Outcome', rows: [{ k: 'Driver confirmed', id: 'confirmed' }, { k: 'Passed back to the office', id: 'back' }, { k: 'Route change', id: 'route' }] } ] } }
+    ];
+
+    var $ = function(id){ return document.getElementById(id); };
+    var el = function(tag, cls, text){
+      var n = document.createElement(tag);
+      if (cls) n.className = cls;
+      if (text != null) n.textContent = text;
+      return n;
+    };
+    var now = function(){ var d = new Date(); return d.getHours() + ':' + String(d.getMinutes()).padStart(2, '0'); };
+    var fmt = function(s){ return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); };
+
+    // One call at a time; callId fences off timers and replies from a call
+    // the visitor already left.
+    var st, tick, speakTimer, endTimer, rowEls;
+    function fresh(sc, callId){
+      return { sc: sc, phase: 'ring', turns: [], elapsed: 0, record: {}, youTexts: [], busy: false, canReply: false, callId: callId };
+    }
+    function stopTimers(){ clearInterval(tick); clearInterval(speakTimer); clearTimeout(endTimer); }
+
+    // ---- rendering ----
+    function renderPicker(){
+      var box = $('picker');
+      box.textContent = '';
+      SCENARIOS.forEach(function(sc){
+        var b = el('button', 'try-btn', sc.title);
+        b.type = 'button';
+        b.setAttribute('aria-pressed', sc === st.sc ? 'true' : 'false');
+        b.addEventListener('click', function(){ select(sc); });
+        box.appendChild(b);
+      });
+    }
+    function renderLedger(){
+      var sc = st.sc, box = $('ledger-groups');
+      $('ledger-title').textContent = sc.ledger.title;
+      box.textContent = '';
+      rowEls = {};
+      sc.ledger.groups.forEach(function(g){
+        var grp = el('div', 'ledger__group');
+        grp.appendChild(el('span', 'ledger__label', g.label));
+        g.rows.forEach(function(r){
+          var row = el('div', 'row');
+          row.appendChild(el('span', 'row__k', r.k));
+          var v = el('div', 'row__v');
+          var t = el('span', 'row__text' + (r.v ? '' : ' row__text--pending'), r.v || '—');
+          if (!r.v) t.setAttribute('aria-label', 'Not yet');
+          v.appendChild(t);
+          if (r.meta) v.appendChild(el('span', 'row__meta', r.meta));
+          row.appendChild(v);
+          grp.appendChild(row);
+          if (r.id) rowEls[r.id] = t;
+        });
+        box.appendChild(grp);
+      });
+    }
+    function fillRecord(rec){
+      Object.keys(rec).forEach(function(k){
+        var t = rowEls[k];
+        if (!t || st.record[k] === rec[k]) return;
+        st.record[k] = rec[k];
+        t.textContent = rec[k];
+        t.removeAttribute('aria-label');
+        t.className = 'row__text row__text--new';
+      });
+    }
+    function renderPhase(){
+      var p = st.phase, last = st.turns[st.turns.length - 1];
+      var speaking = st.voiceSpeaking || !!(last && last.who === 'otto' && last.speaking);
+      $('rings').hidden = !(p === 'ring' || speaking);
+      $('wave').hidden = !speaking;
+      $('ring').hidden = p !== 'ring';
+      $('live-pill').hidden = p !== 'live';
+      $('ended-pill').hidden = p !== 'ended';
+      $('ledger-live').hidden = p !== 'live';
+      $('controls').hidden = p !== 'live';
+      $('again-wrap').hidden = p !== 'ended';
+      $('transcript').hidden = !(st.turns.length || st.busy);
+      $('reply').hidden = !(st.canReply && p === 'live');
+      $('mute').disabled = !st.conv;
+      $('mute').setAttribute('aria-pressed', st.muted ? 'true' : 'false');
+      $('mute-label').textContent = st.muted ? 'Muted' : 'Mute';
+      renderBusy();
+    }
+    function renderTimer(){
+      document.querySelectorAll('.js-timer').forEach(function(n){ n.textContent = fmt(st.elapsed); });
+    }
+    function turnLabel(t){
+      return (t.who === 'otto' ? 'Otto' : st.sc.youLabel) + ' · ' + fmt(t.at) + (t.speaking ? ' · speaking' : '');
+    }
+    function addTurn(t){
+      st.turns.push(t);
+      var n = el('div', 'turn' + (t.who === 'otto' ? ' turn--otto' : ''));
+      t.labelEl = n.appendChild(el('span', '', turnLabel(t)));
+      t.textEl = n.appendChild(el('p', '', t.shown));
+      var box = $('transcript'), busy = $('busy-turn');
+      box.insertBefore(n, busy);
+      renderPhase();
+      scrollDown();
+    }
+    function updateTurn(t){
+      t.labelEl.textContent = turnLabel(t);
+      t.textEl.textContent = t.shown;
+      scrollDown();
+    }
+    function renderBusy(){
+      var box = $('transcript'), b = $('busy-turn');
+      if (st.busy && !b) {
+        b = el('div', 'turn turn--otto turn--busy');
+        b.id = 'busy-turn';
+        b.appendChild(el('span', '', 'Otto'));
+        b.appendChild(el('p', '', '…'));
+        box.appendChild(b);
+        scrollDown();
+      } else if (!st.busy && b) b.remove();
+    }
+    function scrollDown(){ var box = $('transcript'); box.scrollTop = box.scrollHeight; }
+    function renderSuggestions(list){
+      var box = $('sugs');
+      box.textContent = '';
+      (list || []).forEach(function(s){
+        var b = el('button', 'sug', '“' + s + '”');
+        b.type = 'button';
+        b.addEventListener('click', function(){ send(s); });
+        box.appendChild(b);
+      });
+    }
+
+    // ---- the call ----
+    function aiNote(sc){
+      if (VOICE[sc.id]) return 'This call is live voice: allow your microphone, then just talk.';
+      return OTTO_URL ? "Otto's replies are live, so say anything." : 'This run is scripted.';
+    }
+    function select(sc){
+      stopTimers();
+      hangUp();
+      st = fresh(sc, st ? st.callId + 1 : 0);
+      $('ai-note').textContent = aiNote(sc);
+      $('answer').disabled = false;
+      $('blurb').textContent = sc.blurb;
+      $('stop').textContent = sc.stop;
+      $('ring-title').textContent = sc.ring.title;
+      $('ring-sub').textContent = sc.ring.sub;
+      $('answer').textContent = sc.ring.cta;
+      $('transcript').textContent = '';
+      $('draft').value = '';
+      renderSuggestions([]);
+      renderPicker();
+      renderLedger();
+      renderTimer();
+      renderPhase();
+    }
+    function answer(){
+      if (st.phase !== 'ring' || st.connecting) return;
+      if (VOICE[st.sc.id]) return answerVoice(VOICE[st.sc.id]);
+      answerScripted();
+    }
+    function startLive(){
+      st.phase = 'live';
+      st.elapsed = 0;
+      renderTimer();
+      renderPhase();
+      tick = setInterval(function(){ st.elapsed++; renderTimer(); }, 1000);
+    }
+    function answerScripted(){
+      var id = st.callId;
+      startLive();
+      speak(st.sc.opening, id).then(function(){
+        if (st.callId !== id || st.phase !== 'live') return;
+        st.canReply = true;
+        renderSuggestions(st.sc.suggestions);
+        renderPhase();
+      });
+    }
+    function speak(text, id){
+      return new Promise(function(res){
+        var words = String(text).split(/\s+/).filter(Boolean), i = 0;
+        var t = { who: 'otto', text: text, shown: '', at: st.elapsed, speaking: true };
+        addTurn(t);
+        clearInterval(speakTimer);
+        speakTimer = setInterval(function(){
+          if (st.callId !== id || st.phase !== 'live') { clearInterval(speakTimer); return res(); }
+          i++;
+          t.shown = words.slice(0, i).join(' ');
+          if (i >= words.length) { t.speaking = false; clearInterval(speakTimer); }
+          updateTurn(t);
+          if (!t.speaking) { renderPhase(); res(); }
+        }, WORD_MS);
+      });
+    }
+    function send(raw){
+      var text = String(raw || '').trim();
+      if (!text || !st.canReply || st.phase !== 'live') return;
+      if (st.conv) {
+        // typed line into the live call; the call echoes it back as a user
+        // message, which onMessage skips
+        st.echo = text;
+        addTurn({ who: 'you', text: text, shown: text, at: st.elapsed });
+        st.conv.sendUserMessage(text);
+        $('draft').value = '';
+        renderSuggestions([]);
+        return;
+      }
+      var id = st.callId;
+      st.youTexts.push(text);
+      var n = st.youTexts.length, youTexts = st.youTexts.slice();
+      addTurn({ who: 'you', text: text, shown: text, at: st.elapsed });
+      $('draft').value = '';
+      renderSuggestions([]);
+      st.canReply = false;
+      st.busy = true;
+      renderPhase();
+      askOtto(n).then(function(reply){
+        if (st.callId !== id || st.phase !== 'live') return;
+        st.busy = false;
+        fillRecord(fillTokens(reply.record, youTexts));
+        renderPhase();
+        return speak(reply.say, id).then(function(){
+          if (st.callId !== id || st.phase !== 'live') return;
+          if (reply.end) { endTimer = setTimeout(end, 1200); return; }
+          st.canReply = true;
+          renderSuggestions(reply.suggestions);
+          renderPhase();
+          $('draft').focus({ preventScroll: true });
+        });
+      });
+    }
+    function end(){
+      if (st.phase !== 'live') return;
+      stopTimers();
+      hangUp();
+      st.phase = 'ended';
+      st.canReply = false;
+      st.busy = false;
+      st.turns.forEach(function(t){
+        if (t.speaking || t.shown !== t.text) { t.speaking = false; t.shown = t.text; updateTurn(t); }
+      });
+      renderSuggestions([]);
+      renderPhase();
+    }
+    // ---- voice calls (ElevenLabs) ----
+    var sdk = null;
+    function loadSdk(){
+      if (sdk) return sdk;
+      sdk = new Promise(function(res, rej){
+        var s = document.createElement('script');
+        s.src = EL_SDK;
+        s.async = true;
+        s.onload = function(){ window.ElevenLabsClient ? res(window.ElevenLabsClient) : rej(new Error('SDK missing')); };
+        s.onerror = function(){ sdk = null; rej(new Error('SDK failed to load')); };
+        document.head.appendChild(s);
+      });
+      return sdk;
+    }
+    function hangUp(){
+      if (!st || !st.conv) return;
+      var c = st.conv;
+      st.conv = null;
+      st.voiceSpeaking = false;
+      st.muted = false;
+      c.endSession().catch(function(){});
+    }
+    function answerVoice(agentId){
+      var id = st.callId, sc = st.sc;
+      var mine = function(){ return st.callId === id; };
+      st.connecting = true;
+      $('answer').disabled = true;
+      $('ring-sub').textContent = 'Connecting… allow your microphone';
+      loadSdk().then(function(EL){
+        return EL.Conversation.startSession({
+          agentId: agentId,
+          clientTools: {
+            write_down: function(p){
+              if (!mine() || !p || !rowEls[p.field]) return 'Unknown field';
+              var rec = {};
+              rec[p.field] = String(p.value || '').trim().slice(0, 160);
+              fillRecord(fillTokens(rec, st.youTexts));
+              return 'Written down';
+            }
+          },
+          onMessage: function(m){
+            if (!mine() || !m || !m.message) return;
+            var who = (m.role || (m.source === 'ai' ? 'agent' : 'user')) === 'agent' ? 'otto' : 'you';
+            if (who === 'you') {
+              if (st.echo && st.echo === m.message.trim()) { st.echo = null; return; }
+              st.youTexts.push(m.message);
+              renderSuggestions([]);
+            }
+            addTurn({ who: who, text: m.message, shown: m.message, at: st.elapsed });
+          },
+          onModeChange: function(m){
+            if (!mine()) return;
+            st.voiceSpeaking = m.mode === 'speaking';
+            renderPhase();
+          },
+          onDisconnect: function(){
+            if (!mine() || !st.conv) return;
+            st.conv = null;
+            end();
+          },
+          onError: function(msg){ if (window.console) console.warn('Otto voice call:', msg); }
+        });
+      }).then(function(conv){
+        if (!mine()) { conv.endSession().catch(function(){}); return; }
+        st.connecting = false;
+        st.conv = conv;
+        startLive();
+        st.canReply = true;
+        renderSuggestions(sc.suggestions);
+        renderPhase();
+      }).catch(function(e){
+        if (window.console) console.warn('Otto voice call failed, running the script', e);
+        if (!mine()) return;
+        st.connecting = false;
+        $('ai-note').textContent = "The voice call couldn't start, so this run is scripted.";
+        answerScripted();
+      });
+    }
+
+    function fillTokens(rec, youTexts){
+      var out = {};
+      if (!rec || typeof rec !== 'object') return out;
+      var t = now();
+      Object.keys(rec).forEach(function(k){
+        var v = rec[k];
+        if (typeof v !== 'string' || !v.trim()) return;
+        out[k] = v.replace('$you1', youTexts[0] || '').replace('$you2', youTexts[1] || youTexts[0] || '').replace('$now', t);
+      });
+      return out;
+    }
+    function scripted(n){
+      var f = st.sc.fallback[Math.min(n - 1, st.sc.fallback.length - 1)];
+      return { say: f.say, suggestions: f.suggestions || [], record: f.record || null, end: !!f.end };
+    }
+    // Live reply from the otto function, or the script. The function gets the
+    // conversation after Otto's opening (which it already knows) and answers
+    // with the same {say, suggestions, record, end} shape the script uses.
+    function askOtto(n){
+      var wait = function(ms){ return new Promise(function(r){ setTimeout(r, ms); }); };
+      if (!OTTO_URL) return wait(700).then(function(){ return scripted(n); });
+      var turns = st.turns.slice(1).map(function(t){ return { who: t.who, text: t.text }; });
+      return fetch(OTTO_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ scenario: st.sc.id, turns: turns, time: now() })
+      }).then(function(r){ if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+        .then(function(p){
+          if (!p || typeof p.say !== 'string' || !p.say.trim()) throw new Error('empty reply');
+          return {
+            say: p.say.trim(),
+            suggestions: Array.isArray(p.suggestions) ? p.suggestions.filter(function(x){ return typeof x === 'string' && x.trim(); }).slice(0, 3) : [],
+            record: p.record && typeof p.record === 'object' ? p.record : null,
+            end: !!p.end
+          };
+        })
+        .catch(function(e){
+          if (window.console) console.warn('Otto live reply failed, using the script', e);
+          return scripted(n);
+        });
+    }
+
+    $('answer').addEventListener('click', answer);
+    $('end-call').addEventListener('click', end);
+    $('mute').addEventListener('click', function(){
+      if (!st.conv) return;
+      st.muted = !st.muted;
+      st.conv.setMicMuted(st.muted);
+      renderPhase();
+    });
+    $('again').addEventListener('click', function(){ select(st.sc); });
+    $('reply-form').addEventListener('submit', function(e){ e.preventDefault(); send($('draft').value); });
+    $('clock').textContent = now();
+    setInterval(function(){ $('clock').textContent = now(); }, 30000);
+
+    select(SCENARIOS[0]);
+  })();
+</script>
+
+<script>
+  // Google Analytics (G-53R087K5V2), loaded only once the visitor accepts
+  // the cookie bar: it sets cookies, so EU visitors have to opt in first.
+  // The choice is remembered in localStorage.
+  (function(){
+    var GA_ID = 'G-53R087K5V2';
+    if (!GA_ID) return; // the preview build blanks the id
+
+    function loadGA(){
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function(){ dataLayer.push(arguments); };
+      gtag('js', new Date());
+      gtag('config', GA_ID);
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
+      document.head.appendChild(s);
+    }
+
+    var choice = null;
+    try { choice = localStorage.getItem('pv-consent'); } catch (e) {}
+    if (choice === 'yes') return loadGA();
+    if (choice === 'no') return;
+
+    var bar = document.createElement('div');
+    bar.className = 'consent';
+    bar.setAttribute('role', 'region');
+    bar.setAttribute('aria-label', 'Cookie choice');
+    bar.innerHTML =
+      '<p>We use Google Analytics to see which parts of this page get read. It sets cookies, so it’s your call.</p>' +
+      '<button class="pv-btn" data-v="primary" data-size="sm" data-on="dark" type="button" data-c="yes">Accept</button>' +
+      '<button class="consent__no" type="button" data-c="no">No thanks</button>';
+    bar.addEventListener('click', function(e){
+      var b = e.target.closest('button[data-c]');
+      if (!b) return;
+      var v = b.getAttribute('data-c');
+      try { localStorage.setItem('pv-consent', v); } catch (e2) {}
+      bar.remove();
+      if (v === 'yes') loadGA();
+    });
+    document.body.appendChild(bar);
+  })();
+</script>
+
+<!-- ======================= FOOTER ======================= -->
+<footer class="site-foot on-deep">
+  <div class="wrap">
+    <a class="wordmark wordmark--sm" href="/">Parcel<b>Vox</b></a>
+    <span>parcelvox.com · The knowledge of the road, captured and handed on.</span>
+  </div>
+</footer>
+
+</body>
+</html>

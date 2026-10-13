@@ -34,6 +34,7 @@
     --container:1120px;
   }
   *{box-sizing:border-box}
+  [hidden]{display:none !important}
   body{
     margin:0;background:var(--ink-blue);color:var(--ink);
     font:400 15px/1.6 var(--font-body);
@@ -258,6 +259,14 @@
     display:block;margin-bottom:6px;
     font:500 11px/1 var(--font-display);letter-spacing:.09em;text-transform:uppercase;color:var(--coral-ink);
   }
+  /* on the dark ground the cards become deep panels, like the phone frames */
+  .on-dark .more-card{background:var(--ink-blue-deep);border:var(--border-dark);box-shadow:none}
+  .on-dark .more-card p{color:var(--oat-muted)}
+  .on-dark .more-card .says{border-top:var(--border-dark);color:var(--oat)}
+  .on-dark .more-card .says b{color:var(--coral)}
+  .on-dark .pv-btn[data-v="outline-light"]{border:1px solid var(--line-on-dark);color:var(--oat-muted)}
+  .on-dark .more-card .pv-btn:disabled{color:var(--oat-muted)}
+  .on-dark .more-card .pv-btn:disabled:hover{border-color:var(--line-on-dark)}
 
   /* demo-intro overlay: sets the scene before Otto mounts */
   .demo-modal{position:fixed;inset:0;z-index:2147483646;display:flex;align-items:center;justify-content:center;padding:20px}
@@ -486,7 +495,7 @@
 </section>
 
 <!-- ======================= WHAT ELSE OTTO CAN DO ======================= -->
-<section class="sec on-light more" id="more">
+<section class="sec on-dark more" id="more">
   <div class="wrap">
     <div class="sec-head">
       <span class="kicker">Beyond the driver report</span>
@@ -537,7 +546,7 @@
 </div>
 
 <!-- ======================= SDK · FITS THE STACK ======================= -->
-<section class="sec on-dark uc" id="sdk">
+<section class="sec on-light uc" id="sdk">
   <div class="wrap">
     <div class="uc__copy">
       <span class="kicker">The SDK</span>

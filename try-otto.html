@@ -99,7 +99,6 @@
     color:var(--oat);
   }
   .pv-live i{width:6px;height:6px;border-radius:999px;background:var(--coral);animation:pvLivePulse 2.4s var(--ease) infinite}
-  .pv-live--ended{color:var(--oat-muted)}
   .ledger .pv-live{border:var(--border-light);color:var(--ink)}
   .ledger .kicker{color:var(--ink-muted)}
 
@@ -183,58 +182,22 @@
 
   .bench{display:flex;flex-wrap:wrap;gap:40px;align-items:flex-start}
 
-  /* the handset — Otto's side of the call */
-  .handset{
-    flex:0 1 360px;min-width:280px;width:100%;background:var(--ink-blue-deep);
+  /* the line — Otto's window, the home-page widget pinned into the column.
+     transform makes .line the containing block of the widget's fixed
+     overlay; the size fits the expanded panel (400 x 496) plus its padding. */
+  .line-col{flex:0 1 464px;min-width:280px;width:100%;display:grid;gap:14px}
+  .line{
+    position:relative;transform:translateZ(0);overflow:hidden;
+    height:560px;background:var(--ink-blue-deep);
     border:var(--border-dark);border-radius:var(--radius-md);
-    padding:14px 16px 16px;display:grid;gap:16px;color:var(--oat);
   }
-  .handset__bar{display:flex;justify-content:space-between;gap:12px;font:500 11px/1 var(--font-display);letter-spacing:.09em;text-transform:uppercase;color:var(--oat-muted)}
-  .handset__stage{display:grid;justify-items:center;gap:10px;padding:8px 0 4px;text-align:center}
-  .handset__who{font:600 16px/1.3 var(--font-display);color:var(--oat)}
-  .handset__sub{font:400 14px/1.4 var(--font-body);color:var(--oat-muted)}
-  .handset__cta{margin-top:8px}
-  .wave{display:inline-flex;align-items:center;gap:3px;height:16px}
-  .wave i{width:3px;height:16px;border-radius:999px;background:var(--oat);animation:pvWave 1.1s var(--ease) infinite}
-  .wave i:nth-child(2){animation-delay:.15s}
-  .wave i:nth-child(3){animation-delay:.3s}
-  .wave i:nth-child(4){animation-delay:.45s}
-  .wave i:nth-child(5){animation-delay:.6s}
-
-  .transcript{
-    display:grid;gap:14px;align-content:start;border-top:var(--border-dark);padding-top:16px;
-    max-height:320px;overflow-y:auto;
+  .line__off{position:absolute;inset:0;display:grid;place-content:center;justify-items:center;gap:18px;text-align:center}
+  .line__off-text{font:600 16px/1.3 var(--font-display);color:var(--oat-muted)}
+  .hint{margin:0;font:400 14px/1.5 var(--font-body);color:var(--oat-muted);text-wrap:pretty}
+  .again{display:flex}
+  @media (max-width:640px){
+    .line{height:520px}
   }
-  .turn{display:grid;gap:3px;animation:fadeUp .2s var(--ease)}
-  .turn span{font:500 10px/1 var(--font-display);letter-spacing:.09em;text-transform:uppercase;color:var(--oat-muted)}
-  .turn--otto span{color:var(--coral)}
-  .turn p{margin:0;font:400 15px/1.5 var(--font-body);color:var(--oat);text-wrap:pretty}
-  .turn--busy{animation:none}
-  .turn--busy p{font-weight:700;color:var(--oat-muted);animation:pvLivePulse 1.2s ease-in-out infinite}
-
-  .reply{display:grid;gap:10px;border-top:var(--border-dark);padding-top:14px}
-  .reply__sugs{display:flex;flex-wrap:wrap;gap:8px}
-  .reply__sugs:empty{display:none}
-  .sug{
-    cursor:pointer;background:transparent;border:var(--border-dark);border-radius:var(--radius-sm);
-    padding:7px 12px;font:400 14px/1.3 var(--font-body);color:var(--oat);text-align:left;
-    transition:background var(--dur-fast) var(--ease),border-color var(--dur-fast) var(--ease);
-  }
-  .sug:hover{background:var(--wash-on-dark);border-color:rgba(244,241,232,.4)}
-  .reply__row{display:flex;gap:8px;align-items:center}
-  .reply__row .pv-input{flex:1;min-width:0}
-
-  .controls{display:flex;justify-content:center;gap:28px;border-top:var(--border-dark);padding-top:14px}
-  .ctrl{
-    display:grid;justify-items:center;gap:6px;background:none;border:0;padding:0;
-    font:500 10px/1 var(--font-display);letter-spacing:.09em;text-transform:uppercase;color:var(--oat-muted);
-  }
-  .ctrl i{width:40px;height:40px;border-radius:999px;background:var(--wash-on-dark);display:inline-flex;align-items:center;justify-content:center;color:var(--oat);font-style:normal;transition:background var(--dur-fast) var(--ease)}
-  button.ctrl{cursor:pointer}
-  button.ctrl:disabled{cursor:default}
-  button.ctrl:not(:disabled):hover i{background:var(--line-on-dark)}
-  .ctrl[aria-pressed="true"] i{background:var(--oat);color:var(--ink-blue-deep)}
-  .again{display:flex;justify-content:center;gap:12px;border-top:var(--border-dark);padding-top:14px}
 
   /* the record — what Otto writes down */
   .ledger{
@@ -293,14 +256,13 @@
   .consent__no:hover{color:var(--oat)}
 
   /* ============ motion ============ */
-  @keyframes pvWave{0%,100%{transform:scaleY(.25)}50%{transform:scaleY(1)}}
   @keyframes pvLivePulse{0%,100%{opacity:1}50%{opacity:.35}}
   @keyframes fadeUp{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
   @keyframes ottoMorph{0%,100%{border-radius:42% 58% 56% 44%/48% 42% 58% 52%}33%{border-radius:58% 42% 44% 56%/56% 58% 42% 44%}66%{border-radius:46% 54% 62% 38%/40% 56% 44% 60%}}
   @keyframes ottoBlink{0%,92%,100%{transform:scaleY(1)}96%{transform:scaleY(.1)}}
   @keyframes ottoRing{0%{transform:translate(-50%,-50%) scale(.55);opacity:.7}100%{transform:translate(-50%,-50%) scale(1.7);opacity:0}}
   @media (prefers-reduced-motion: reduce){
-    .wave i,.otto__blob,.otto__eye,.pv-live i,.turn,.turn--busy p,.row__text--new{animation:none}
+    .otto__blob,.otto__eye,.pv-live i,.row__text--new{animation:none}
     .otto__ring{display:none}
   }
 </style>
@@ -347,11 +309,11 @@
     <span class="kicker">Try it yourself</span>
     <h1>Talk to Otto.</h1>
     <p class="lead">Pick a call. You take the other end of the line — the customer, the office, the driver — and Otto does his job. Watch what he writes down as he goes.</p>
-    <p class="try-head__note">Here you type what you'd say; on the route it's all voice. <span id="ai-note">This run is scripted.</span></p>
+    <p class="try-head__note">It's a live voice call, the same Otto as on the home page: press the phone button in his window, allow your microphone, then just talk.</p>
   </div>
 </section>
 
-<!-- ======================= SANDBOX (handset layout) ======================= -->
+<!-- ======================= SANDBOX (Otto on the left, the record on the right) ======================= -->
 <section class="on-dark sandbox" aria-label="Otto sandbox">
   <div class="wrap">
     <div class="picker">
@@ -359,33 +321,15 @@
       <p class="picker__blurb" id="blurb"></p>
     </div>
     <div class="bench">
-      <div class="handset">
-        <div class="handset__bar"><span id="clock"></span><span id="stop"></span></div>
-        <div class="handset__stage">
-          <span class="otto" aria-hidden="true"><span id="rings"><span class="otto__ring"></span><span class="otto__ring otto__ring--2"></span></span><span class="otto__blob"><span class="otto__eye"></span><span class="otto__eye"></span></span></span>
-          <span class="wave" id="wave" aria-hidden="true" hidden><i></i><i></i><i></i><i></i><i></i></span>
-          <div id="ring" style="display:contents">
-            <span class="handset__who" id="ring-title"></span>
-            <span class="handset__sub" id="ring-sub"></span>
-            <div class="handset__cta"><button class="pv-btn" data-v="primary" data-size="lg" data-on="dark" type="button" id="answer"></button></div>
+      <div class="line-col">
+        <div class="line" id="line">
+          <div class="line__off" id="line-off" hidden>
+            <span class="otto" aria-hidden="true"><span class="otto__blob"><span class="otto__eye"></span><span class="otto__eye"></span></span></span>
+            <span class="line__off-text">Not on this line yet</span>
           </div>
-          <span class="pv-live" id="live-pill" hidden><i></i>Voice · <span class="js-timer">0:00</span></span>
-          <span class="pv-live pv-live--ended" id="ended-pill" hidden>Call ended · <span class="js-timer">0:00</span></span>
         </div>
-        <div class="transcript" id="transcript" aria-live="polite" hidden></div>
-        <div class="reply" id="reply" hidden>
-          <div class="reply__sugs" id="sugs"></div>
-          <form class="reply__row" id="reply-form">
-            <input class="pv-input" id="draft" type="text" autocomplete="off" placeholder="Type what you'd say…" aria-label="Your reply" maxlength="400">
-            <button class="pv-btn" data-v="primary" data-size="md" data-on="dark" type="submit">Say it</button>
-          </form>
-        </div>
-        <div class="controls" id="controls" hidden>
-          <button class="ctrl" type="button" id="mute" aria-pressed="false" disabled><i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg></i><span id="mute-label">Mute</span></button>
-          <span class="ctrl" aria-hidden="true"><i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></i>Speaker</span>
-          <button class="ctrl" type="button" id="end-call" aria-label="End call"><i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate(135deg)" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></i>End</button>
-        </div>
-        <div class="again" id="again-wrap" hidden><button class="pv-btn" data-v="secondary" data-size="md" data-on="dark" type="button" id="again">Run it again</button></div>
+        <p class="hint" id="hint"></p>
+        <div class="again"><button class="pv-btn" data-v="secondary" data-size="md" data-on="dark" type="button" id="again">Start over</button></div>
       </div>
 
       <div class="ledger">
@@ -461,90 +405,65 @@
 </script>
 
 <script>
-  // Talk to Otto: four scripted calls, one per use case. The visitor plays
-  // whoever Otto is talking to; Otto speaks first, word by word, and the
-  // record panel fills in as the call settles things.
+  // Talk to Otto: the same ElevenLabs widget as the home page, one agent per
+  // use case, pinned into the left column instead of the page corner. The
+  // visitor presses the phone button in Otto's window and talks; the record
+  // on the right fills in as Otto writes things down.
   //
-  // Live replies: set OTTO_URL to the deployed `otto` Supabase function
-  // (supabase/functions/otto). While it is empty — or whenever a live reply
-  // fails — Otto follows each scenario's short script, so the demo never
-  // stalls. The function holds the prompts; keep its SCENARIOS in step with
-  // the openings and ledgers below.
+  // Pinning: the widget renders into a position:fixed overlay. A transformed
+  // ancestor becomes that overlay's containing block, so the .line box holds
+  // the widget in place of the viewport. The expanded panel is 400 x 496 at
+  // 32px overlay padding; .line is sized to fit it.
   //
-  // Voice calls: scenarios with an ElevenLabs agent in VOICE run as a real
-  // call instead (agent → Widget tab in the ElevenLabs dashboard for the id).
-  // The agent speaks its own first message; the transcript comes from the
-  // call. The record panel fills in only if the agent has a client tool
-  // `write_down` with parameters `field` and `value` (field = one of the
-  // scenario's record ids below). If the call can't start — no microphone,
-  // no connection — the scripted call runs instead.
+  // The record: the widget hands its session config to the page through the
+  // `elevenlabs-convai:call` event, which is where the page registers the
+  // client tool `write_down`. The agent must carry that tool in the
+  // ElevenLabs dashboard (agent → Tools → client tool `write_down`, with
+  // parameters `field` and `value`; field = one of the scenario's row ids
+  // below). Without it the record stays empty — the call itself still works.
+  //
+  // Paste agent ids from the ElevenLabs dashboard (agent → Widget tab) into
+  // AGENTS. A use case without an id shows its record for context and says
+  // Otto isn't on that line yet.
   (function(){
-    var OTTO_URL = '';
-    var VOICE = {
+    var AGENTS = {
       report: 'agent_1901m4be21bbf56r9fhm17j2fk2x',
-      customer: 'agent_0001m4qwm0gjep1sqhyd3svbfzhf'
+      customer: 'agent_0001m4qwm0gjep1sqhyd3svbfzhf',
+      office: '',
+      checkin: ''
     };
-    var EL_SDK = 'https://unpkg.com/@elevenlabs/client@1.25.0/dist/lib.iife.js';
+    var WIDGET_SRC = 'https://unpkg.com/@elevenlabs/convai-widget-embed';
     var CARRIER = 'Kiezpost';
     var DRV = 'Ayşe';
-    var WORD_MS = 130;
 
     var SCENARIOS = [
-      { id: 'report', title: 'Driver report & briefing', youLabel: 'You · driver',
+      { id: 'report', title: 'Driver report & briefing',
         blurb: "You're the driver. Otto briefs you on the way in to the stop, then files what you found at the door for whoever drives there next.",
-        stop: 'Stop 12 · Kollwitzstraße 18',
-        ring: { title: 'Kollwitzstraße 18 coming up', sub: 'Otto comes on two minutes before the stop', cta: 'Drive in' },
-        opening: "Kollwitzstraße 18, two minutes out. From the order: consignee M. Keller, hand over in person, use the side entrance. Earlier drivers say the road's closed at the north end — park on Sredzkistraße and walk in. The office added this morning: Keller's home until twelve. When you've been to the door, tell me what you found.",
-        suggestions: ["The buzzer's broken, I had to knock on the window", 'Side entrance is behind the bins now', 'All fine, nothing new'],
-        fallback: [
-          { say: 'Got it. Anything else the next driver should know about getting to the door?', suggestions: ["No, that's it", "Parking's fine after ten", "The dog's friendly, ignore the sign"] },
-          { say: 'Thanks. Filed for Kollwitzstraße 18 — the next driver hears it on the way in. Safe trip.', record: { found: '$you1', filed: 'Today $now · next driver hears it on the way in' }, end: true }
-        ],
+        hint: "Press the phone button in Otto's window, allow your microphone, and tell him what you found at the door.",
         ledger: { title: 'Address record · Kollwitzstraße 18', groups: [
           { label: 'From the order', rows: [{ k: 'Consignee', v: 'M. Keller' }, { k: 'Instructions', v: 'Hand over in person' }, { k: 'Preferences', v: 'Side entrance, not the shop' }] },
           { label: 'From earlier drivers', rows: [{ k: 'Access', v: 'Road closed at the north end — park on Sredzkistraße, walk 2 min', meta: 'K. Yilmaz · 3 days ago' }] },
           { label: 'From the office', rows: [{ k: 'Customer call', v: 'Home until 12:00 today', meta: 'Office · 09:12' }] },
           { label: 'From you · today', rows: [{ k: 'Found at the door', id: 'found' }, { k: 'Filed', id: 'filed' }] } ] } },
 
-      { id: 'customer', title: 'Customer call', youLabel: 'You · customer',
+      { id: 'customer', title: 'Customer call',
         blurb: "You're the customer. Otto calls before the van arrives — confirms someone's home, agrees a time, and stays inside " + CARRIER + "'s rules.",
-        stop: 'Rykestraße 12 · Brandt',
-        ring: { title: 'Incoming call', sub: 'Otto · for ' + CARRIER, cta: 'Answer' },
-        opening: "Hello, this is Otto calling for " + CARRIER + ". I've got a parcel for you today — " + DRV + " is planned between two and four and it needs a signature. Will someone be home?",
-        suggestions: ["No, I'm at work until six", "Yes, I'll be here all afternoon", 'Can you leave it with a neighbour?'],
-        fallback: [
-          { say: 'Understood. ' + DRV + ' can come after six today, or tomorrow between ten and twelve. Which suits you?', suggestions: ['After six is fine', 'Tomorrow morning, please', 'Either works'] },
-          { say: 'Done. ' + DRV + ' will come after six and hand it to you in person. I’ll tell her now. Bye for now.', record: { home: 'Not before 18:00', time: 'Today after 18:00', handover: 'In person · signature', note: 'Brandt · home after six — hand over in person' }, end: true }
-        ],
+        hint: "Press the phone button in Otto's window, allow your microphone, and take the call as the customer would.",
         ledger: { title: 'Customer call · Rykestraße 12', groups: [
           { label: 'Your rules', rows: [{ k: 'Call window', v: '08:00–20:00' }, { k: 'Offer', v: 'Same day after 17:00 if the route allows, else next day' }, { k: 'Handover', v: 'In person — signature required' }, { k: 'Neighbours', v: 'Only if the customer names one' }, { k: 'Reschedules', v: 'Max 2 per parcel' }] },
           { label: 'From the order', rows: [{ k: 'Consignee', v: 'T. Brandt' }, { k: 'Planned', v: 'Today 14:00–16:00' }, { k: 'Driver', v: DRV + ' · route 12' }] },
           { label: 'Call outcome', rows: [{ k: 'Someone home?', id: 'home' }, { k: 'Agreed time', id: 'time' }, { k: 'Handover', id: 'handover' }, { k: 'Note to driver', id: 'note' }] } ] } },
 
-      { id: 'office', title: 'Help from the office', youLabel: 'You · dispatch',
+      { id: 'office', title: 'Help from the office',
         blurb: "You're dispatch. A stuck driver told Otto once; Otto reaches you with everything pre-filled and brings your answer back to the van.",
-        stop: 'Stop 19 · Kollwitzstraße 48',
-        ring: { title: 'Incoming call', sub: 'Otto · for ' + DRV + ', route 12', cta: 'Answer' },
-        opening: 'Otto here for ' + DRV + " on route 12. She's at Kollwitzstraße 48, stop 19, a parcel for Weber with signature. The gate code on file, 2290, is refused and nobody answers the buzzer. She's tried both twice and waited six minutes. Do you have a new code, or should she move on?",
-        suggestions: ["The code changed — it's 4711 now", 'Tell her to try the side entrance', "Move on, we'll try tomorrow"],
-        fallback: [
-          { say: "Got it. If it still doesn't work, should she leave it somewhere or move on?", suggestions: ['Leave it at the Späti on the corner', 'Move on, retry tomorrow', 'Call me back if it fails'] },
-          { say: "Clear. I'll tell " + DRV + ' now and put the code on file for the next driver. Thanks.', record: { answer: '$you1', fallback: '$you2', relay: 'Told ' + DRV + ' · $now', filed: 'Kollwitzstraße 48 · access updated for the next driver' }, end: true }
-        ],
+        hint: "Press the phone button in Otto's window, allow your microphone, and answer as dispatch would.",
         ledger: { title: 'Dispatch ticket · Kollwitzstraße 48', groups: [
           { label: 'Pre-filled by Otto', rows: [{ k: 'Driver', v: DRV + ' · route 12 · van 07' }, { k: 'Stop', v: '19 of 41 · Kollwitzstraße 48' }, { k: 'Consignee', v: 'Weber · signature required' }, { k: 'Problem', v: 'Gate code 2290 refused, no answer on the buzzer' }, { k: 'Tried', v: 'Code ×2, buzzer ×2, 6 min waiting' }, { k: 'Asks', v: 'New code, or move on?' }] },
           { label: 'Your answer', rows: [{ k: 'Answer', id: 'answer' }, { k: 'Fallback', id: 'fallback' }, { k: 'Back to the driver', id: 'relay' }, { k: 'Filed to address', id: 'filed' }] } ] } },
 
-      { id: 'checkin', title: 'Driver check-in', youLabel: 'You · driver',
+      { id: 'checkin', title: 'Driver check-in',
         blurb: "You're the driver. Otto calls you for the office — one reason per call, on their trigger or their rules — and lets you drive.",
-        stop: 'Route 12 · ' + DRV,
-        ring: { title: 'Incoming call', sub: 'Otto · for the office', cta: 'Answer' },
-        opening: DRV + ", Otto — one thing from the office. The customer at Kollwitzstraße 71 is away until tomorrow, so skip that stop today; it's re-planned for tomorrow. Anything you want me to pass back?",
-        suggestions: ["Fine. Tell them I'm 20 minutes behind after the roadworks", 'Okay, nothing to pass on', 'Ask them to call Weber at 48 for me'],
-        fallback: [
-          { say: "Noted, I'll pass that on. Anything else before I let you drive?", suggestions: ["No, that's all", 'Yes — I need a new scanner battery tonight', 'Remind them I finish at four today'] },
-          { say: 'Will do. Drive safe.', record: { confirmed: 'Yes · $now', back: '$you1', route: 'Stop 23 · Kollwitzstraße 71 skipped, re-planned for tomorrow' }, end: true }
-        ],
+        hint: "Press the phone button in Otto's window, allow your microphone, and take the call with your hands on the wheel.",
         ledger: { title: 'Check-in · ' + DRV + ' · route 12', groups: [
           { label: 'Trigger', rows: [{ k: 'Triggered by', v: 'Office · 11:04' }, { k: 'Reason', v: 'Kollwitzstraße 71 — customer called, away until tomorrow' }, { k: 'Rules', v: 'One reason per call · only while the van is stopped · retry after 10 min if no answer' }] },
           { label: 'Outcome', rows: [{ k: 'Driver confirmed', id: 'confirmed' }, { k: 'Passed back to the office', id: 'back' }, { k: 'Route change', id: 'route' }] } ] } }
@@ -557,16 +476,10 @@
       if (text != null) n.textContent = text;
       return n;
     };
-    var now = function(){ var d = new Date(); return d.getHours() + ':' + String(d.getMinutes()).padStart(2, '0'); };
-    var fmt = function(s){ return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); };
 
-    // One call at a time; callId fences off timers and replies from a call
-    // the visitor already left.
-    var st, tick, speakTimer, endTimer, rowEls;
-    function fresh(sc, callId){
-      return { sc: sc, phase: 'ring', turns: [], elapsed: 0, record: {}, youTexts: [], busy: false, canReply: false, callId: callId };
-    }
-    function stopTimers(){ clearInterval(tick); clearInterval(speakTimer); clearTimeout(endTimer); }
+    var current = null;   // the scenario on the line
+    var rowEls = {};      // record row id → text node
+    var record = {};      // what Otto has written down this call
 
     // ---- rendering ----
     function renderPicker(){
@@ -575,16 +488,17 @@
       SCENARIOS.forEach(function(sc){
         var b = el('button', 'try-btn', sc.title);
         b.type = 'button';
-        b.setAttribute('aria-pressed', sc === st.sc ? 'true' : 'false');
+        b.setAttribute('aria-pressed', sc === current ? 'true' : 'false');
         b.addEventListener('click', function(){ select(sc); });
         box.appendChild(b);
       });
     }
-    function renderLedger(){
-      var sc = st.sc, box = $('ledger-groups');
+    function renderLedger(sc){
+      var box = $('ledger-groups');
       $('ledger-title').textContent = sc.ledger.title;
       box.textContent = '';
       rowEls = {};
+      record = {};
       sc.ledger.groups.forEach(function(g){
         var grp = el('div', 'ledger__group');
         grp.appendChild(el('span', 'ledger__label', g.label));
@@ -603,324 +517,68 @@
         box.appendChild(grp);
       });
     }
-    function fillRecord(rec){
-      Object.keys(rec).forEach(function(k){
-        var t = rowEls[k];
-        if (!t || st.record[k] === rec[k]) return;
-        st.record[k] = rec[k];
-        t.textContent = rec[k];
-        t.removeAttribute('aria-label');
-        t.className = 'row__text row__text--new';
-      });
+    function writeDown(field, value){
+      var t = rowEls[field];
+      var v = String(value == null ? '' : value).trim().slice(0, 160);
+      if (!t || !v || record[field] === v) return !!t;
+      record[field] = v;
+      t.textContent = v;
+      t.removeAttribute('aria-label');
+      t.className = 'row__text row__text--new';
+      return true;
     }
-    function renderPhase(){
-      var p = st.phase, last = st.turns[st.turns.length - 1];
-      var speaking = st.voiceSpeaking || !!(last && last.who === 'otto' && last.speaking);
-      $('rings').hidden = !(p === 'ring' || speaking);
-      $('wave').hidden = !speaking;
-      $('ring').hidden = p !== 'ring';
-      $('live-pill').hidden = p !== 'live';
-      $('ended-pill').hidden = p !== 'ended';
-      $('ledger-live').hidden = p !== 'live';
-      $('controls').hidden = p !== 'live';
-      $('again-wrap').hidden = p !== 'ended';
-      $('transcript').hidden = !(st.turns.length || st.busy);
-      $('reply').hidden = !(st.canReply && p === 'live');
-      $('mute').disabled = !st.conv;
-      $('mute').setAttribute('aria-pressed', st.muted ? 'true' : 'false');
-      $('mute-label').textContent = st.muted ? 'Muted' : 'Mute';
-      renderBusy();
-    }
-    function renderTimer(){
-      document.querySelectorAll('.js-timer').forEach(function(n){ n.textContent = fmt(st.elapsed); });
-    }
-    function turnLabel(t){
-      return (t.who === 'otto' ? 'Otto' : st.sc.youLabel) + ' · ' + fmt(t.at) + (t.speaking ? ' · speaking' : '');
-    }
-    function addTurn(t){
-      st.turns.push(t);
-      var n = el('div', 'turn' + (t.who === 'otto' ? ' turn--otto' : ''));
-      t.labelEl = n.appendChild(el('span', '', turnLabel(t)));
-      t.textEl = n.appendChild(el('p', '', t.shown));
-      var box = $('transcript'), busy = $('busy-turn');
-      box.insertBefore(n, busy);
-      renderPhase();
-      scrollDown();
-    }
-    function updateTurn(t){
-      t.labelEl.textContent = turnLabel(t);
-      t.textEl.textContent = t.shown;
-      scrollDown();
-    }
-    function renderBusy(){
-      var box = $('transcript'), b = $('busy-turn');
-      if (st.busy && !b) {
-        b = el('div', 'turn turn--otto turn--busy');
-        b.id = 'busy-turn';
-        b.appendChild(el('span', '', 'Otto'));
-        b.appendChild(el('p', '', '…'));
-        box.appendChild(b);
-        scrollDown();
-      } else if (!st.busy && b) b.remove();
-    }
-    function scrollDown(){ var box = $('transcript'); box.scrollTop = box.scrollHeight; }
-    function renderSuggestions(list){
-      var box = $('sugs');
-      box.textContent = '';
-      (list || []).forEach(function(s){
-        var b = el('button', 'sug', '“' + s + '”');
-        b.type = 'button';
-        b.addEventListener('click', function(){ send(s); });
-        box.appendChild(b);
-      });
+    function setLive(on){
+      $('ledger-live').hidden = !on;
     }
 
-    // ---- the call ----
-    function aiNote(sc){
-      if (VOICE[sc.id]) return 'This call is live voice: allow your microphone, then just talk.';
-      return OTTO_URL ? "Otto's replies are live, so say anything." : 'This run is scripted.';
-    }
-    function select(sc){
-      stopTimers();
-      hangUp();
-      st = fresh(sc, st ? st.callId + 1 : 0);
-      $('ai-note').textContent = aiNote(sc);
-      $('answer').disabled = false;
-      $('blurb').textContent = sc.blurb;
-      $('stop').textContent = sc.stop;
-      $('ring-title').textContent = sc.ring.title;
-      $('ring-sub').textContent = sc.ring.sub;
-      $('answer').textContent = sc.ring.cta;
-      $('transcript').textContent = '';
-      $('draft').value = '';
-      renderSuggestions([]);
-      renderPicker();
-      renderLedger();
-      renderTimer();
-      renderPhase();
-    }
-    function answer(){
-      if (st.phase !== 'ring' || st.connecting) return;
-      if (VOICE[st.sc.id]) return answerVoice(VOICE[st.sc.id]);
-      answerScripted();
-    }
-    function startLive(){
-      st.phase = 'live';
-      st.elapsed = 0;
-      renderTimer();
-      renderPhase();
-      tick = setInterval(function(){ st.elapsed++; renderTimer(); }, 1000);
-    }
-    function answerScripted(){
-      var id = st.callId;
-      startLive();
-      speak(st.sc.opening, id).then(function(){
-        if (st.callId !== id || st.phase !== 'live') return;
-        st.canReply = true;
-        renderSuggestions(st.sc.suggestions);
-        renderPhase();
-      });
-    }
-    function speak(text, id){
-      return new Promise(function(res){
-        var words = String(text).split(/\s+/).filter(Boolean), i = 0;
-        var t = { who: 'otto', text: text, shown: '', at: st.elapsed, speaking: true };
-        addTurn(t);
-        clearInterval(speakTimer);
-        speakTimer = setInterval(function(){
-          if (st.callId !== id || st.phase !== 'live') { clearInterval(speakTimer); return res(); }
-          i++;
-          t.shown = words.slice(0, i).join(' ');
-          if (i >= words.length) { t.speaking = false; clearInterval(speakTimer); }
-          updateTurn(t);
-          if (!t.speaking) { renderPhase(); res(); }
-        }, WORD_MS);
-      });
-    }
-    function send(raw){
-      var text = String(raw || '').trim();
-      if (!text || !st.canReply || st.phase !== 'live') return;
-      if (st.conv) {
-        // typed line into the live call; the call echoes it back as a user
-        // message, which onMessage skips
-        st.echo = text;
-        addTurn({ who: 'you', text: text, shown: text, at: st.elapsed });
-        st.conv.sendUserMessage(text);
-        $('draft').value = '';
-        renderSuggestions([]);
-        return;
-      }
-      var id = st.callId;
-      st.youTexts.push(text);
-      var n = st.youTexts.length, youTexts = st.youTexts.slice();
-      addTurn({ who: 'you', text: text, shown: text, at: st.elapsed });
-      $('draft').value = '';
-      renderSuggestions([]);
-      st.canReply = false;
-      st.busy = true;
-      renderPhase();
-      askOtto(n).then(function(reply){
-        if (st.callId !== id || st.phase !== 'live') return;
-        st.busy = false;
-        fillRecord(fillTokens(reply.record, youTexts));
-        renderPhase();
-        return speak(reply.say, id).then(function(){
-          if (st.callId !== id || st.phase !== 'live') return;
-          if (reply.end) { endTimer = setTimeout(end, 1200); return; }
-          st.canReply = true;
-          renderSuggestions(reply.suggestions);
-          renderPhase();
-          $('draft').focus({ preventScroll: true });
-        });
-      });
-    }
-    function end(){
-      if (st.phase !== 'live') return;
-      stopTimers();
-      hangUp();
-      st.phase = 'ended';
-      st.canReply = false;
-      st.busy = false;
-      st.turns.forEach(function(t){
-        if (t.speaking || t.shown !== t.text) { t.speaking = false; t.shown = t.text; updateTurn(t); }
-      });
-      renderSuggestions([]);
-      renderPhase();
-    }
-    // ---- voice calls (ElevenLabs) ----
-    var sdk = null;
-    function loadSdk(){
-      if (sdk) return sdk;
-      sdk = new Promise(function(res, rej){
+    // ---- the widget ----
+    var loaded = false;
+    function mount(sc){
+      var line = $('line');
+      var old = line.querySelector('elevenlabs-convai');
+      if (old) old.remove();
+      var id = AGENTS[sc.id];
+      $('line-off').hidden = !!id;
+      $('hint').textContent = id ? sc.hint : "Otto isn't on this line yet. The driver report and the customer call are live — pick one of those.";
+      if (!id) return;
+      if (!loaded) {
+        loaded = true;
         var s = document.createElement('script');
-        s.src = EL_SDK;
         s.async = true;
-        s.onload = function(){ window.ElevenLabsClient ? res(window.ElevenLabsClient) : rej(new Error('SDK missing')); };
-        s.onerror = function(){ sdk = null; rej(new Error('SDK failed to load')); };
+        s.src = WIDGET_SRC;
         document.head.appendChild(s);
+      }
+      var w = document.createElement('elevenlabs-convai');
+      w.setAttribute('agent-id', id);
+      w.setAttribute('always-expanded', 'true');
+      w.setAttribute('default-expanded', 'true');
+      w.setAttribute('dismissible', 'false');
+      w.addEventListener('elevenlabs-convai:call', function(e){
+        if (current !== sc) return;
+        var cfg = e.detail && e.detail.config;
+        if (!cfg) return;
+        cfg.clientTools = cfg.clientTools || {};
+        cfg.clientTools.write_down = function(p){
+          if (current !== sc || !p) return 'Unknown field';
+          return writeDown(p.field, p.value) ? 'Written down' : 'Unknown field';
+        };
+        // a new call on the same line starts a fresh record
+        renderLedger(sc);
+        setLive(true);
       });
-      return sdk;
-    }
-    function hangUp(){
-      if (!st || !st.conv) return;
-      var c = st.conv;
-      st.conv = null;
-      st.voiceSpeaking = false;
-      st.muted = false;
-      c.endSession().catch(function(){});
-    }
-    function answerVoice(agentId){
-      var id = st.callId, sc = st.sc;
-      var mine = function(){ return st.callId === id; };
-      st.connecting = true;
-      $('answer').disabled = true;
-      $('ring-sub').textContent = 'Connecting… allow your microphone';
-      loadSdk().then(function(EL){
-        return EL.Conversation.startSession({
-          agentId: agentId,
-          clientTools: {
-            write_down: function(p){
-              if (!mine() || !p || !rowEls[p.field]) return 'Unknown field';
-              var rec = {};
-              rec[p.field] = String(p.value || '').trim().slice(0, 160);
-              fillRecord(fillTokens(rec, st.youTexts));
-              return 'Written down';
-            }
-          },
-          onMessage: function(m){
-            if (!mine() || !m || !m.message) return;
-            var who = (m.role || (m.source === 'ai' ? 'agent' : 'user')) === 'agent' ? 'otto' : 'you';
-            if (who === 'you') {
-              if (st.echo && st.echo === m.message.trim()) { st.echo = null; return; }
-              st.youTexts.push(m.message);
-              renderSuggestions([]);
-            }
-            addTurn({ who: who, text: m.message, shown: m.message, at: st.elapsed });
-          },
-          onModeChange: function(m){
-            if (!mine()) return;
-            st.voiceSpeaking = m.mode === 'speaking';
-            renderPhase();
-          },
-          onDisconnect: function(){
-            if (!mine() || !st.conv) return;
-            st.conv = null;
-            end();
-          },
-          onError: function(msg){ if (window.console) console.warn('Otto voice call:', msg); }
-        });
-      }).then(function(conv){
-        if (!mine()) { conv.endSession().catch(function(){}); return; }
-        st.connecting = false;
-        st.conv = conv;
-        startLive();
-        st.canReply = true;
-        renderSuggestions(sc.suggestions);
-        renderPhase();
-      }).catch(function(e){
-        if (window.console) console.warn('Otto voice call failed, running the script', e);
-        if (!mine()) return;
-        st.connecting = false;
-        $('ai-note').textContent = "The voice call couldn't start, so this run is scripted.";
-        answerScripted();
-      });
+      line.appendChild(w);
     }
 
-    function fillTokens(rec, youTexts){
-      var out = {};
-      if (!rec || typeof rec !== 'object') return out;
-      var t = now();
-      Object.keys(rec).forEach(function(k){
-        var v = rec[k];
-        if (typeof v !== 'string' || !v.trim()) return;
-        out[k] = v.replace('$you1', youTexts[0] || '').replace('$you2', youTexts[1] || youTexts[0] || '').replace('$now', t);
-      });
-      return out;
-    }
-    function scripted(n){
-      var f = st.sc.fallback[Math.min(n - 1, st.sc.fallback.length - 1)];
-      return { say: f.say, suggestions: f.suggestions || [], record: f.record || null, end: !!f.end };
-    }
-    // Live reply from the otto function, or the script. The function gets the
-    // conversation after Otto's opening (which it already knows) and answers
-    // with the same {say, suggestions, record, end} shape the script uses.
-    function askOtto(n){
-      var wait = function(ms){ return new Promise(function(r){ setTimeout(r, ms); }); };
-      if (!OTTO_URL) return wait(700).then(function(){ return scripted(n); });
-      var turns = st.turns.slice(1).map(function(t){ return { who: t.who, text: t.text }; });
-      return fetch(OTTO_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ scenario: st.sc.id, turns: turns, time: now() })
-      }).then(function(r){ if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
-        .then(function(p){
-          if (!p || typeof p.say !== 'string' || !p.say.trim()) throw new Error('empty reply');
-          return {
-            say: p.say.trim(),
-            suggestions: Array.isArray(p.suggestions) ? p.suggestions.filter(function(x){ return typeof x === 'string' && x.trim(); }).slice(0, 3) : [],
-            record: p.record && typeof p.record === 'object' ? p.record : null,
-            end: !!p.end
-          };
-        })
-        .catch(function(e){
-          if (window.console) console.warn('Otto live reply failed, using the script', e);
-          return scripted(n);
-        });
+    function select(sc){
+      current = sc;
+      $('blurb').textContent = sc.blurb;
+      setLive(false);
+      renderPicker();
+      renderLedger(sc);
+      mount(sc);
     }
 
-    $('answer').addEventListener('click', answer);
-    $('end-call').addEventListener('click', end);
-    $('mute').addEventListener('click', function(){
-      if (!st.conv) return;
-      st.muted = !st.muted;
-      st.conv.setMicMuted(st.muted);
-      renderPhase();
-    });
-    $('again').addEventListener('click', function(){ select(st.sc); });
-    $('reply-form').addEventListener('submit', function(e){ e.preventDefault(); send($('draft').value); });
-    $('clock').textContent = now();
-    setInterval(function(){ $('clock').textContent = now(); }, 30000);
-
+    $('again').addEventListener('click', function(){ if (current) select(current); });
     select(SCENARIOS[0]);
   })();
 </script>

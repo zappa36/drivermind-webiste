@@ -92,14 +92,6 @@
   .pv-input::placeholder{color:var(--oat-muted)}
   .pv-input:focus,.pv-input:focus-visible{outline:none;border-color:var(--coral);box-shadow:0 0 0 3px var(--coral-wash)}
 
-  .pv-live{
-    display:inline-flex;align-items:center;gap:7px;padding:4px 12px;
-    border:var(--border-dark);border-radius:var(--radius-pill);
-    font:500 11px/1 var(--font-display);letter-spacing:.09em;text-transform:uppercase;
-    color:var(--oat);
-  }
-  .pv-live i{width:6px;height:6px;border-radius:999px;background:var(--coral);animation:pvLivePulse 2.4s var(--ease) infinite}
-  .ledger .pv-live{border:var(--border-light);color:var(--ink)}
   .ledger .kicker{color:var(--ink-muted)}
 
   /* Otto — coral palette (design-system component, CSS rendition) */
@@ -205,7 +197,6 @@
     border:var(--border-light);border-radius:var(--radius-md);box-shadow:var(--shadow-card);
     padding:22px 24px 26px;display:grid;gap:16px;align-content:start;color:var(--ink);
   }
-  .ledger__head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
   .ledger h2{font:600 20px/1.25 var(--font-display);letter-spacing:0;color:var(--ink)}
   .ledger__group{display:grid;gap:10px;border-top:var(--border-light);padding-top:14px}
   .ledger__label{font:500 11px/1.3 var(--font-display);letter-spacing:.09em;text-transform:uppercase;color:var(--ink-muted)}
@@ -256,13 +247,12 @@
   .consent__no:hover{color:var(--oat)}
 
   /* ============ motion ============ */
-  @keyframes pvLivePulse{0%,100%{opacity:1}50%{opacity:.35}}
   @keyframes fadeUp{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
   @keyframes ottoMorph{0%,100%{border-radius:42% 58% 56% 44%/48% 42% 58% 52%}33%{border-radius:58% 42% 44% 56%/56% 58% 42% 44%}66%{border-radius:46% 54% 62% 38%/40% 56% 44% 60%}}
   @keyframes ottoBlink{0%,92%,100%{transform:scaleY(1)}96%{transform:scaleY(.1)}}
   @keyframes ottoRing{0%{transform:translate(-50%,-50%) scale(.55);opacity:.7}100%{transform:translate(-50%,-50%) scale(1.7);opacity:0}}
   @media (prefers-reduced-motion: reduce){
-    .otto__blob,.otto__eye,.pv-live i,.row__text--new{animation:none}
+    .otto__blob,.otto__eye,.row__text--new{animation:none}
     .otto__ring{display:none}
   }
 </style>
@@ -333,10 +323,7 @@
       </div>
 
       <div class="ledger">
-        <div class="ledger__head">
-          <span class="kicker">What Otto writes down</span>
-          <span class="pv-live" id="ledger-live" hidden><i></i>Live</span>
-        </div>
+        <span class="kicker">What Otto writes down</span>
         <h2 id="ledger-title"></h2>
         <div id="ledger-groups" style="display:contents"></div>
       </div>
@@ -524,10 +511,6 @@
       t.className = 'row__text row__text--new';
       return true;
     }
-    function setLive(on){
-      $('ledger-live').hidden = !on;
-    }
-
     // ---- the widget ----
     var loaded = false;
     function mount(sc){
@@ -572,7 +555,6 @@
         };
         // a new call on the same line starts a fresh record
         renderLedger(sc);
-        setLive(true);
       });
       line.appendChild(w);
     }
@@ -580,7 +562,6 @@
     function select(sc){
       current = sc;
       $('blurb').textContent = sc.blurb;
-      setLive(false);
       renderPicker();
       renderLedger(sc);
       mount(sc);

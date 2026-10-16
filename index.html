@@ -172,10 +172,17 @@
   .hero h1{max-width:720px;font-size:clamp(40px,5.2vw,60px);color:var(--oat)}
   .hero .lead{max-width:640px}
   .hero__ctas{display:flex;align-items:center;gap:24px;flex-wrap:wrap;margin-top:8px}
-  /* Otto himself: the coral blob, eyes and all */
+  /* Otto himself: the coral blob, eyes and all. The amplitudes are custom
+     properties so the phone block can turn them up for the smaller face. */
   .hero__otto{
+    --breath:1.035;--bob:0px;--gaze:3%;
     position:relative;width:200px;height:200px;border-radius:50%;background:var(--coral);margin-top:8px;
     transform-origin:center;animation:ottoBreathe 5.2s ease-in-out infinite;
+  }
+  /* both eyes move as one when Otto looks around (or follows a pointer) */
+  .hero__eyes{
+    position:absolute;inset:0;
+    transform:translate(var(--gx,0px),var(--gy,0px));transition:transform .18s var(--ease);
   }
   .hero__otto i{
     position:absolute;top:37%;width:14%;height:21%;background:var(--oat);border-radius:50%;
@@ -186,6 +193,7 @@
     transform:translate(var(--px,0px),var(--py,0px));transition:transform .18s var(--ease);
   }
   /* idle: the eyes wander now and then; once a pointer is around, they follow it instead */
+  .hero__otto:not(.is-tracking) .hero__eyes{animation:ottoGaze 9s ease-in-out infinite}
   .hero__otto:not(.is-tracking) i::after{animation:ottoGlance 9s ease-in-out infinite}
   .hero__otto i:first-child{left:30%}
   .hero__otto i:last-child{left:56%}
@@ -209,7 +217,12 @@
        stays in the desktop nav and keeps its URL */
     .site-nav a[href="/try-otto.html"]{display:none}
     .hero .wrap{gap:24px;padding-top:64px;padding-bottom:72px}
-    .hero__otto{width:92px;height:92px;margin-top:0}
+    /* a 92px Otto needs bigger moves to read as alive: deeper breath with a
+       small lift, eyes that really look across, and a quicker blink and glance */
+    .hero__otto{--breath:1.07;--bob:-4px;--gaze:8%;width:92px;height:92px;margin-top:0}
+    .hero__otto i{animation-duration:3.6s}
+    .hero__otto:not(.is-tracking) .hero__eyes,
+    .hero__otto:not(.is-tracking) i::after{animation-duration:6.5s}
     .hero .lead{font-size:15px}
     .sec .wrap{padding-top:64px;padding-bottom:64px}
   }
@@ -419,7 +432,18 @@
   @keyframes ottoMorph{0%,100%{border-radius:42% 58% 56% 44%/48% 42% 58% 52%}33%{border-radius:58% 42% 44% 56%/56% 58% 42% 44%}66%{border-radius:46% 54% 62% 38%/40% 56% 44% 60%}}
   @keyframes ottoBlink{0%,92%,100%{transform:scaleY(1)}96%{transform:scaleY(.1)}}
   @keyframes ottoRing{0%{transform:translate(-50%,-50%) scale(.55);opacity:.7}100%{transform:translate(-50%,-50%) scale(1.7);opacity:0}}
-  @keyframes ottoBreathe{0%,100%{transform:scale(1)}50%{transform:scale(1.035)}}
+  @keyframes ottoBreathe{
+    0%,100%{transform:translateY(0) scale(1)}
+    50%{transform:translateY(var(--bob,0px)) scale(var(--breath,1.035))}
+  }
+  /* the eyes shift as a pair (gaze) while the pupils lead the look (glance);
+     same timing, so they read as one movement */
+  @keyframes ottoGaze{
+    0%,34%,100%{transform:translate(0,0)}
+    40%,52%{transform:translate(var(--gaze,3%),calc(var(--gaze,3%) * -.25))}
+    58%,70%{transform:translate(calc(var(--gaze,3%) * -.85),calc(var(--gaze,3%) * .2))}
+    76%{transform:translate(0,0)}
+  }
   @keyframes ottoGlance{
     0%,34%,100%{transform:translate(0,0)}
     40%,52%{transform:translate(36%,-8%)}
@@ -429,7 +453,8 @@
   @media (prefers-reduced-motion: reduce){
     .wave i,.otto__blob,.otto__eye,.pv-live i{animation:none}
     .otto__ring{display:none}
-    .hero__otto,.hero__otto i,.hero__otto i::after,.hero__otto:not(.is-tracking) i::after{animation:none}
+    .hero__otto,.hero__eyes,.hero__otto:not(.is-tracking) .hero__eyes,
+    .hero__otto i,.hero__otto i::after,.hero__otto:not(.is-tracking) i::after{animation:none}
   }
 </style>
 </head>
@@ -463,7 +488,7 @@
         <a class="pv-btn" data-v="primary" data-size="lg" data-on="dark" href="https://calendar.app.google/5S3FCp4oPnLXNt9L7" target="_blank" rel="noopener" id="hero-demo">Book a demo</a>
       </div>
     </div>
-    <div class="hero__otto" aria-hidden="true"><i></i><i></i></div>
+    <div class="hero__otto" aria-hidden="true"><span class="hero__eyes"><i></i><i></i></span></div>
   </div>
 </section>
 
@@ -653,32 +678,61 @@
 </main>
 
 <script>
-  // Hero Otto: on devices with a mouse, his pupils follow the pointer.
+  // Hero Otto: with a mouse, his eyes follow the pointer. On a phone there is
+  // no pointer, so they follow the thumb while it is on the screen and go
+  // back to wandering on their own shortly after it lifts.
   (function(){
     var o = document.querySelector('.hero__otto');
     if (!o) return;
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    if (!matchMedia('(pointer: fine)').matches) return;
-    var raf = null, lx = 0, ly = 0;
+    var fine = matchMedia('(pointer: fine)').matches;
+    var coarse = !fine && matchMedia('(pointer: coarse)').matches;
+    if (!fine && !coarse) return;
+    var raf = null, lx = 0, ly = 0, idle = null;
     function look(){
       raf = null;
       var r = o.getBoundingClientRect();
       var dx = lx - (r.left + r.width / 2), dy = ly - (r.top + r.height / 2);
       var d = Math.hypot(dx, dy) || 1;
-      var reach = r.width * 0.022;             // how far a pupil may travel
-      var k = Math.min(1, d / 260);            // eases in close to the face
-      o.style.setProperty('--px', (dx / d * reach * k).toFixed(1) + 'px');
-      o.style.setProperty('--py', (dy / d * reach * k).toFixed(1) + 'px');
+      var k = Math.min(1, d / (coarse ? 180 : 260));   // eases in close to the face
+      var pupil = r.width * (coarse ? 0.03 : 0.022);   // how far a pupil may travel
+      var eyes = r.width * (coarse ? 0.07 : 0.03);     // and the eyes themselves
+      o.style.setProperty('--px', (dx / d * pupil * k).toFixed(1) + 'px');
+      o.style.setProperty('--py', (dy / d * pupil * k).toFixed(1) + 'px');
+      o.style.setProperty('--gx', (dx / d * eyes * k).toFixed(1) + 'px');
+      o.style.setProperty('--gy', (dy / d * eyes * k).toFixed(1) + 'px');
       o.classList.add('is-tracking');
     }
-    document.addEventListener('mousemove', function(e){
-      lx = e.clientX; ly = e.clientY;
+    function at(x, y){
+      lx = x; ly = y;
       if (!raf) raf = requestAnimationFrame(look);
-    }, { passive: true });
-    document.addEventListener('mouseleave', function(){
-      o.style.setProperty('--px', '0px');
-      o.style.setProperty('--py', '0px');
-    });
+    }
+    function rest(){
+      ['--px', '--py', '--gx', '--gy'].forEach(function(p){ o.style.setProperty(p, '0px'); });
+    }
+    if (fine) {
+      document.addEventListener('mousemove', function(e){ at(e.clientX, e.clientY); }, { passive: true });
+      document.addEventListener('mouseleave', rest);
+    }
+    if (coarse) {
+      var touch = function(e){
+        var t = e.touches[0];
+        if (!t) return;
+        clearTimeout(idle);
+        at(t.clientX, t.clientY);
+      };
+      var release = function(){
+        clearTimeout(idle);
+        idle = setTimeout(function(){
+          rest();                                        // eyes settle to centre…
+          idle = setTimeout(function(){ o.classList.remove('is-tracking'); }, 240);  // …then wander again
+        }, 1200);
+      };
+      document.addEventListener('touchstart', touch, { passive: true });
+      document.addEventListener('touchmove', touch, { passive: true });
+      document.addEventListener('touchend', release, { passive: true });
+      document.addEventListener('touchcancel', release, { passive: true });
+    }
   })();
 </script>
 

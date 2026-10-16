@@ -169,9 +169,20 @@
   .hero .lead{max-width:640px}
   .hero__ctas{display:flex;align-items:center;gap:24px;flex-wrap:wrap;margin-top:8px}
   /* Otto himself: the coral blob, eyes and all */
-  .hero__otto{position:relative;width:200px;height:200px;border-radius:50%;background:var(--coral);margin-top:8px}
-  .hero__otto i{position:absolute;top:37%;width:14%;height:21%;background:var(--oat);border-radius:50%}
-  .hero__otto i::after{content:"";position:absolute;left:24%;top:28%;width:48%;height:48%;border-radius:50%;background:var(--ink-blue-deep)}
+  .hero__otto{
+    position:relative;width:200px;height:200px;border-radius:50%;background:var(--coral);margin-top:8px;
+    transform-origin:center;animation:ottoBreathe 5.2s ease-in-out infinite;
+  }
+  .hero__otto i{
+    position:absolute;top:37%;width:14%;height:21%;background:var(--oat);border-radius:50%;
+    transform-origin:center;animation:ottoBlink 4.4s ease-in-out infinite;
+  }
+  .hero__otto i::after{
+    content:"";position:absolute;left:24%;top:28%;width:48%;height:48%;border-radius:50%;background:var(--ink-blue-deep);
+    transform:translate(var(--px,0px),var(--py,0px));transition:transform .18s var(--ease);
+  }
+  /* idle: the eyes wander now and then; once a pointer is around, they follow it instead */
+  .hero__otto:not(.is-tracking) i::after{animation:ottoGlance 9s ease-in-out infinite}
   .hero__otto i:first-child{left:30%}
   .hero__otto i:last-child{left:56%}
   @media (max-width:720px){
@@ -382,9 +393,17 @@
   @keyframes ottoMorph{0%,100%{border-radius:42% 58% 56% 44%/48% 42% 58% 52%}33%{border-radius:58% 42% 44% 56%/56% 58% 42% 44%}66%{border-radius:46% 54% 62% 38%/40% 56% 44% 60%}}
   @keyframes ottoBlink{0%,92%,100%{transform:scaleY(1)}96%{transform:scaleY(.1)}}
   @keyframes ottoRing{0%{transform:translate(-50%,-50%) scale(.55);opacity:.7}100%{transform:translate(-50%,-50%) scale(1.7);opacity:0}}
+  @keyframes ottoBreathe{0%,100%{transform:scale(1)}50%{transform:scale(1.035)}}
+  @keyframes ottoGlance{
+    0%,34%,100%{transform:translate(0,0)}
+    40%,52%{transform:translate(36%,-8%)}
+    58%,70%{transform:translate(-30%,6%)}
+    76%{transform:translate(0,0)}
+  }
   @media (prefers-reduced-motion: reduce){
     .wave i,.otto__blob,.otto__eye,.pv-live i{animation:none}
     .otto__ring{display:none}
+    .hero__otto,.hero__otto i,.hero__otto i::after,.hero__otto:not(.is-tracking) i::after{animation:none}
   }
 </style>
 
@@ -604,6 +623,36 @@
 </section>
 
 </main>
+
+<script>
+  // Hero Otto: on devices with a mouse, his pupils follow the pointer.
+  (function(){
+    var o = document.querySelector('.hero__otto');
+    if (!o) return;
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (!matchMedia('(pointer: fine)').matches) return;
+    var raf = null, lx = 0, ly = 0;
+    function look(){
+      raf = null;
+      var r = o.getBoundingClientRect();
+      var dx = lx - (r.left + r.width / 2), dy = ly - (r.top + r.height / 2);
+      var d = Math.hypot(dx, dy) || 1;
+      var reach = r.width * 0.022;             // how far a pupil may travel
+      var k = Math.min(1, d / 260);            // eases in close to the face
+      o.style.setProperty('--px', (dx / d * reach * k).toFixed(1) + 'px');
+      o.style.setProperty('--py', (dy / d * reach * k).toFixed(1) + 'px');
+      o.classList.add('is-tracking');
+    }
+    document.addEventListener('mousemove', function(e){
+      lx = e.clientX; ly = e.clientY;
+      if (!raf) raf = requestAnimationFrame(look);
+    }, { passive: true });
+    document.addEventListener('mouseleave', function(){
+      o.style.setProperty('--px', '0px');
+      o.style.setProperty('--py', '0px');
+    });
+  })();
+</script>
 
 <script>
   // Otto-on-the-route board: play the draw-in once it scrolls into view.

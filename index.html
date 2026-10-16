@@ -257,7 +257,7 @@
   @keyframes pvRoute{to{stroke-dashoffset:0}}
   .board .pin,.board .co{opacity:0;transform:translateY(6px)}
   .board.play .pin{animation:pvPop .28s var(--ease) forwards;animation-delay:var(--pd,0s)}
-  .board.play .co{animation:pvPop .3s var(--ease) forwards;animation-delay:var(--cd,0s)}
+  .board.run .co{animation:pvPop .3s var(--ease) forwards;animation-delay:var(--cd,0s)}
   @keyframes pvPop{to{opacity:1;transform:none}}
   .board .van{opacity:0;transition:opacity .4s var(--ease) .2s}
   .board.play .van{opacity:1}
@@ -664,9 +664,18 @@
   (function(){
     var b = document.querySelector('.board');
     if (!b) return;
+    var m = document.getElementById('van-motion');
+    // each lap: clear the conversations and let them pop again as the van
+    // passes — re-adding .run restarts the delay-timed card animations
+    function cycle(){
+      b.classList.remove('run');
+      void b.offsetWidth;
+      b.classList.add('run');
+    }
     function begin(){
-      var m = document.getElementById('van-motion');
       if (m && m.beginElement) { try { m.beginElement(); } catch (e) {} }
+      cycle();
+      if (m && m.addEventListener) m.addEventListener('repeatEvent', cycle);
     }
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     if (!('IntersectionObserver' in window)) { b.classList.add('play'); begin(); return; }

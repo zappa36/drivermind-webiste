@@ -160,52 +160,24 @@
 
   /* ============ hero ============ */
   .hero{position:relative;overflow:hidden;background:var(--ink-blue);color:var(--oat)}
-  .hero .wrap{position:relative;padding-top:112px;padding-bottom:120px}
-  .hero__route{position:absolute;inset:0;width:100%;height:100%}
-  .hero__route .route-draw{stroke-dasharray:1600;stroke-dashoffset:1600;animation:pvDraw 2.4s var(--ease) .2s forwards}
-  .hero__route .route-van{opacity:0;animation:pvFadeIn .2s var(--ease) .6s forwards}
-  .hero__pin{position:absolute;opacity:0;animation:pvTip .2s var(--ease) forwards}
-  .hero__pin--1{left:53.4%;top:68%;animation-delay:1.2s}
-  .hero__pin--2{left:73%;top:36%;animation-delay:1.8s}
-  .hero__pin--3{right:14.6%;top:16%;animation-delay:2.4s}
-  .pin-chip{
-    display:inline-block;background:var(--ink-blue-deep);border:var(--border-dark);
-    border-radius:var(--radius-xs);padding:6px 10px;
-    font:500 11px/1.4 var(--font-display);letter-spacing:.09em;text-transform:uppercase;
-    color:var(--oat);white-space:nowrap;
+  .hero .wrap{
+    position:relative;padding-top:112px;padding-bottom:120px;
+    display:grid;grid-template-columns:minmax(0,1fr) auto;gap:48px;align-items:start;
   }
-  .hero__copy{position:relative;display:grid;gap:24px;justify-items:start}
-  .hero h1{max-width:620px;font-size:clamp(40px,5.2vw,60px);color:var(--oat)}
-  .hero .lead{max-width:560px}
+  .hero__copy{display:grid;gap:24px;justify-items:start}
+  .hero h1{max-width:720px;font-size:clamp(40px,5.2vw,60px);color:var(--oat)}
+  .hero .lead{max-width:640px}
   .hero__ctas{display:flex;align-items:center;gap:24px;flex-wrap:wrap;margin-top:8px}
-  .hero__link{font:600 15px/1 var(--font-display);color:var(--oat);text-decoration:none}
-  .hero__link:hover{text-decoration:underline}
-  @media (max-width:920px){
-    .hero__pin{display:none}
-    /* without the pins the bare route line just cuts through the copy */
-    .hero__route{display:none}
-  }
-  /* compact rhythm on phones: tighter header, shorter section padding */
+  /* Otto himself: the coral blob, eyes and all */
+  .hero__otto{position:relative;width:200px;height:200px;border-radius:50%;background:var(--coral);margin-top:8px}
+  .hero__otto i{position:absolute;top:37%;width:14%;height:21%;background:var(--oat);border-radius:50%}
+  .hero__otto i::after{content:"";position:absolute;left:24%;top:28%;width:48%;height:48%;border-radius:50%;background:var(--ink-blue-deep)}
+  .hero__otto i:first-child{left:30%}
+  .hero__otto i:last-child{left:56%}
   @media (max-width:720px){
-    .site-head .wrap{
-      display:grid;grid-template-columns:1fr auto;align-items:center;
-      gap:10px 16px;padding-top:12px;padding-bottom:14px;
-    }
-    /* the hero's own buttons are a thumb-length away — no CTA in the bar */
-    .site-head .cta{display:none}
-    /* nav on one tidy line; sideways scroll on very narrow phones */
-    .site-nav{
-      grid-row:2;grid-column:1 / -1;margin-left:0;gap:16px;
-      flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;
-      -webkit-overflow-scrolling:touch;padding-bottom:2px;
-    }
-    .site-nav::-webkit-scrollbar{display:none}
-    .site-nav a{font-size:12px;white-space:nowrap}
-    .hero .wrap{padding-top:64px;padding-bottom:72px}
-    .sec .wrap{padding-top:64px;padding-bottom:64px}
-  }
-  @media (max-width:480px){
-    .wrap{padding:0 20px}
+    .hero .wrap{gap:24px}
+    .hero__otto{width:92px;height:92px;margin-top:0}
+    .hero .lead{font-size:15px}
   }
 
   /* ============ sections ============ */
@@ -402,18 +374,12 @@
   .site-foot span{font:400 13px/1 var(--font-body);color:var(--oat-muted)}
 
   /* ============ motion ============ */
-  @keyframes pvDraw{to{stroke-dashoffset:0}}
-  @keyframes pvFadeIn{to{opacity:1}}
-  @keyframes pvTip{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
   @keyframes pvWave{0%,100%{transform:scaleY(.25)}50%{transform:scaleY(1)}}
   @keyframes pvLivePulse{0%,100%{opacity:1}50%{opacity:.35}}
   @keyframes ottoMorph{0%,100%{border-radius:42% 58% 56% 44%/48% 42% 58% 52%}33%{border-radius:58% 42% 44% 56%/56% 58% 42% 44%}66%{border-radius:46% 54% 62% 38%/40% 56% 44% 60%}}
   @keyframes ottoBlink{0%,92%,100%{transform:scaleY(1)}96%{transform:scaleY(.1)}}
   @keyframes ottoRing{0%{transform:translate(-50%,-50%) scale(.55);opacity:.7}100%{transform:translate(-50%,-50%) scale(1.7);opacity:0}}
   @media (prefers-reduced-motion: reduce){
-    .hero__route .route-draw{animation:none;stroke-dashoffset:0}
-    .hero__route .route-van{animation:none;opacity:1}
-    .hero__pin{animation:none;opacity:1}
     .wave i,.otto__blob,.otto__eye,.pv-live i{animation:none}
     .otto__ring{display:none}
   }
@@ -438,35 +404,16 @@
 <!-- ======================= HERO ======================= -->
 <section class="hero on-dark" id="top">
   <div class="wrap">
-    <svg class="hero__route" viewBox="0 0 1240 720" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-      <path d="M 480 780 C 560 640, 520 560, 640 500 C 780 430, 740 340, 880 280 C 990 233, 1030 170, 1160 120" fill="none" stroke="rgba(244,241,232,.1)" stroke-width="8" stroke-linecap="round"/>
-      <path class="route-draw" d="M 480 780 C 560 640, 520 560, 640 500 C 780 430, 740 340, 880 280 C 990 233, 1030 170, 1160 120" fill="none" stroke="rgba(244,241,232,.6)" stroke-width="2" stroke-linecap="round"/>
-      <g class="route-van">
-        <rect x="522" y="588" width="46" height="24" rx="4" fill="#F4F1E8"/>
-        <rect x="552" y="591" width="12" height="11" rx="2" fill="#0E2138"/>
-        <rect x="526" y="598" width="22" height="3" fill="#0E2138" opacity=".4"/>
-        <circle cx="534" cy="614" r="5" fill="#0A1730" stroke="rgba(244,241,232,.5)" stroke-width="2"/>
-        <circle cx="556" cy="614" r="5" fill="#0A1730" stroke="rgba(244,241,232,.5)" stroke-width="2"/>
-      </g>
-      <circle cx="640" cy="500" r="9" fill="none" stroke="rgba(244,241,232,.3)" stroke-width="1.5"/>
-      <circle cx="640" cy="500" r="4.5" fill="#F4F1E8"/>
-      <circle cx="880" cy="280" r="9" fill="none" stroke="rgba(244,241,232,.3)" stroke-width="1.5"/>
-      <circle cx="880" cy="280" r="4.5" fill="#F4F1E8"/>
-      <circle cx="1080" cy="152" r="9" fill="none" stroke="rgba(244,241,232,.3)" stroke-width="1.5"/>
-      <circle cx="1080" cy="152" r="4.5" fill="#F4F1E8"/>
-    </svg>
-    <div class="hero__pin hero__pin--1" aria-hidden="true"><span class="pin-chip">Kollwitzstraße 18 · Road closed, park on Sredzkistraße</span></div>
-    <div class="hero__pin hero__pin--2" aria-hidden="true"><span class="pin-chip">Kollwitzstraße 48 · New code 4711</span></div>
-    <div class="hero__pin hero__pin--3" aria-hidden="true"><span class="pin-chip">Brandt · Home after six</span></div>
     <div class="hero__copy">
-      <span class="kicker">ParcelVox · Voice for the route</span>
-      <h1>What one driver learns, the whole fleet inherits.</h1>
-      <p class="lead">Every driver knows things the map doesn't. Otto, the voice of ParcelVox, captures them at the door and hands them to the next driver. He also makes the calls that keep the route moving: to the customer before the van arrives, to the office when a driver is stuck, and to the driver when something changes.</p>
+      <span class="kicker">ParcelVox · Otto on the route</span>
+      <h1>Meet Otto, the voice in the van.</h1>
+      <p class="lead">ParcelVox puts a voice assistant inside your driver app. Drivers talk to it hands-free, like a colleague. Otto tells them what to expect at each stop, saves what they find for the next driver, and handles the calls to the office and the customer. Here is what Otto can do across one route, stop by stop.</p>
       <div class="hero__ctas">
         <button class="pv-btn" data-v="primary" data-size="lg" data-on="dark" type="button" data-talk-otto hidden>Talk to Otto</button>
         <a class="pv-btn" data-v="primary" data-size="lg" data-on="dark" href="https://calendar.app.google/5S3FCp4oPnLXNt9L7" target="_blank" rel="noopener" id="hero-demo">Book a demo</a>
       </div>
     </div>
+    <div class="hero__otto" aria-hidden="true"><i></i><i></i></div>
   </div>
 </section>
 
@@ -475,12 +422,6 @@
 <!-- ======================= OTTO ON THE ROUTE (replaces the intro loop) ======================= -->
 <section class="sec on-light route-sec" id="how">
   <div class="wrap">
-    <div class="sec-head">
-      <span class="kicker">ParcelVox · Otto on the route</span>
-      <h2>Meet Otto, the voice in the van.</h2>
-      <p class="lead">ParcelVox puts a voice assistant inside your driver app. Drivers talk to it hands-free, like a colleague. Otto tells them what to expect at each stop, saves what they find for the next driver, and handles the calls to the office and the customer. Here is what Otto can do across one route, stop by stop.</p>
-    </div>
-
     <div class="board">
       <svg class="board__map" viewBox="0 0 1000 620" role="img" aria-label="One delivery route through a city block with five stops">
         <polygon points="500.0,80.0 980.0,320.0 500.0,560.0 20.0,320.0" fill="rgba(14,33,56,.10)"/>

@@ -251,25 +251,28 @@
   .more .wrap{display:grid;gap:48px;grid-template-columns:minmax(0,1fr)}
   .more h2{max-width:720px}
   .more .lead{max-width:620px}
-  .more-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px}
+  .more-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:18px}
   .more-card{
     display:grid;gap:12px;align-content:start;background:var(--oat);
     border:var(--border-light);border-radius:var(--radius-md);
     box-shadow:var(--shadow-card);padding:24px;
   }
   .more-card{grid-template-rows:auto auto auto 1fr}
-  .more-card h3{font-size:20px}
-  .more-card p{margin:0;color:var(--ink-muted)}
-  .more-card .says{margin-top:4px;padding-top:14px;border-top:var(--border-light);font-size:14px;color:var(--ink)}
-  .more-card .says b{
-    display:block;margin-bottom:6px;
-    font:500 11px/1 var(--font-display);letter-spacing:.09em;text-transform:uppercase;color:var(--coral-ink);
+  .more-card h3{font-size:19px}
+  .mk{display:flex;align-items:center;gap:10px}
+  .mk__num{
+    flex:0 0 26px;width:26px;height:26px;border-radius:50%;text-align:center;
+    background:var(--ink-blue);color:var(--oat);font:700 12px/26px var(--font-display);
   }
+  .mk__num--skip{background:transparent;border:1.5px dashed var(--coral);color:var(--coral);line-height:23px}
+  .mk__step{font:500 11px/1.3 var(--font-display);letter-spacing:.09em;text-transform:uppercase;color:var(--ink-muted)}
+  .more-card p{margin:0;color:var(--ink-muted)}
   /* on the dark ground the cards become deep panels, like the phone frames */
   .on-dark .more-card{background:var(--ink-blue-deep);border:var(--border-dark);box-shadow:none}
   .on-dark .more-card p{color:var(--oat-muted)}
-  .on-dark .more-card .says{border-top:var(--border-dark);color:var(--oat)}
-  .on-dark .more-card .says b{color:var(--coral)}
+  .on-dark .mk__num{border:1px solid rgba(244,241,232,.3)}
+  .on-dark .mk__num--skip{border:1.5px dashed var(--coral)}
+  .on-dark .mk__step{color:var(--oat-muted)}
   .on-dark .pv-btn[data-v="outline-light"]{border:1px solid var(--line-on-dark);color:var(--oat-muted)}
   .on-dark .more-card .pv-btn:disabled{color:var(--oat-muted)}
   .on-dark .more-card .pv-btn:disabled:hover{border-color:var(--line-on-dark)}
@@ -487,28 +490,38 @@
 <section class="sec on-dark more" id="more">
   <div class="wrap">
     <div class="sec-head">
-      <span class="kicker">Beyond the driver report</span>
-      <h2>What else Otto can do for you.</h2>
-      <p class="lead">The driver report is where ParcelVox starts. These come next — each one by voice, each one inside your rules, and the final say stays with you.</p>
+      <span class="kicker">Otto · stop by stop</span>
+      <h2>Five moments on every route.</h2>
     </div>
     <div class="more-grid">
       <article class="more-card">
-        <h3>Customer call</h3>
-        <p>Otto calls your customer before the van arrives, checks someone will be home and agrees a time. Fewer stairs climbed for nothing, more deliveries that succeed on the first attempt.</p>
-        <p class="says"><b>Otto · to your customer</b>“Understood. Your driver will come after six and hand it to you in person.”</p>
-        <button class="pv-btn" data-v="primary" data-size="sm" data-on="light" type="button" data-try-agent="Customer call" hidden>Talk to Otto</button>
+        <div class="mk"><span class="mk__num">01</span><span class="mk__step">On the way in</span></div>
+        <h3>Pre-arrival notes</h3>
+        <p>A few hundred metres out, Otto says the number, the name and what to expect at the door.</p>
       </article>
       <article class="more-card">
+        <div class="mk"><span class="mk__num">02</span><span class="mk__step">Before moving on</span></div>
+        <h3>The driver reports</h3>
+        <p>The driver says what they found. Otto files it against the address for the next driver.</p>
+        <button class="pv-btn" data-v="primary" data-size="sm" data-on="light" type="button" data-try-agent="Driver report" hidden>Talk to Otto</button>
+      </article>
+      <article class="more-card">
+        <div class="mk"><span class="mk__num">03</span><span class="mk__step">At the door</span></div>
         <h3>Help from the office</h3>
-        <p>Stuck at the door, your driver tells Otto once. Otto reaches the office with the stop and the problem already filled in, and comes back with the answer — even in the weeks when dispatch can't take another call.</p>
-        <p class="says"><b>Otto · to your driver</b>“The new code is 4711. It's on file for the next driver.”</p>
+        <p>The driver tells Otto once. Otto reaches the office and comes back with the answer.</p>
         <button class="pv-btn" data-v="primary" data-size="sm" data-on="light" type="button" data-try-agent="Help from the office" hidden>Talk to Otto</button>
       </article>
       <article class="more-card">
+        <div class="mk"><span class="mk__num mk__num--skip">04</span><span class="mk__step">The plan changes</span></div>
         <h3>Driver check-in</h3>
-        <p>Otto calls your driver for the office, one reason per call, and lets them drive. You decide when: trigger a check-in yourself, or set the rules and Otto makes the call for you.</p>
-        <p class="says"><b>Otto · to your driver</b>“The customer at Kollwitzstraße 71 is away until tomorrow. Skip that stop today.”</p>
+        <p>Otto calls the driver for the office, one reason per call, and lets them drive.</p>
         <button class="pv-btn" data-v="primary" data-size="sm" data-on="light" type="button" data-try-agent="Driver check-in" hidden>Talk to Otto</button>
+      </article>
+      <article class="more-card">
+        <div class="mk"><span class="mk__num">05</span><span class="mk__step">Before the van arrives</span></div>
+        <h3>Customer call</h3>
+        <p>Otto calls the customer, checks someone will be home and agrees a time.</p>
+        <button class="pv-btn" data-v="primary" data-size="sm" data-on="light" type="button" data-try-agent="Customer call" hidden>Talk to Otto</button>
       </article>
     </div>
   </div>

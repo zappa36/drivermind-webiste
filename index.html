@@ -250,8 +250,8 @@
   .board-legend .spk-ic,.board-legend .spk{margin-top:0}
   .lg-route{width:22px;height:3px;border-radius:2px;background:var(--coral);display:inline-block}
   .board-foot{margin:0;max-width:620px;color:var(--ink-muted)}
-  /* scroll-in animation: the route draws, pins pop as it reaches them,
-     callouts follow, the van loops the round */
+  /* scroll-in animation: the route draws and plants the pins, then the
+     van drives the round and each conversation pops up as it passes */
   .board__map .route-draw{stroke-dasharray:1190;stroke-dashoffset:1190}
   .board.play .route-draw{animation:pvRoute 2.6s var(--ease) forwards}
   @keyframes pvRoute{to{stroke-dashoffset:0}}
@@ -509,21 +509,21 @@
         </g>
       </svg>
 
-      <div class="co" style="--x:3%;--y:7%;--cd:0.54s">
+      <div class="co" style="--x:3%;--y:7%;--cd:2.08s">
         <p><i class="spk spk--otto" aria-hidden="true"></i><span class="co__otto">“Next: number 18. Road closed — park at the corner and walk in.”</span></p>
       </div>
-      <div class="co" style="--x:57%;--y:3%;--cd:0.89s">
+      <div class="co" style="--x:57%;--y:3%;--cd:4.45s">
         <p><svg class="spk-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M1 8h14v9H1zM15 11h4l3 3v3h-7zM5.5 19.5m-1.8 0a1.8 1.8 0 1 0 3.6 0a1.8 1.8 0 1 0-3.6 0M17.5 19.5m-1.8 0a1.8 1.8 0 1 0 3.6 0a1.8 1.8 0 1 0-3.6 0" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"/></svg><span>“The staircase lights are broken.”</span></p>
         <p><i class="spk spk--otto" aria-hidden="true"></i><span class="co__otto">“Noted. It's on file for the next driver.”</span></p>
       </div>
-      <div class="co" style="--x:70%;--y:27%;--cd:1.23s">
+      <div class="co" style="--x:70%;--y:27%;--cd:6.82s">
         <p><svg class="spk-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M1 8h14v9H1zM15 11h4l3 3v3h-7zM5.5 19.5m-1.8 0a1.8 1.8 0 1 0 3.6 0a1.8 1.8 0 1 0-3.6 0M17.5 19.5m-1.8 0a1.8 1.8 0 1 0 3.6 0a1.8 1.8 0 1 0-3.6 0" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"/></svg><span>“The code doesn't work.”</span></p>
         <p><i class="spk spk--otto" aria-hidden="true"></i><span class="co__otto">“The office says the new code is 4711. It's on file for the next driver.”</span></p>
       </div>
-      <div class="co" style="--x:72%;--y:68%;--cd:1.57s">
+      <div class="co" style="--x:72%;--y:68%;--cd:9.19s">
         <p><i class="spk spk--otto" aria-hidden="true"></i><span class="co__otto">“Call from the office: number 71 is away until tomorrow. Skip that stop.”</span></p>
       </div>
-      <div class="co" style="--x:2%;--y:58%;--cd:2.25s">
+      <div class="co" style="--x:2%;--y:58%;--cd:13.92s">
         <p><i class="spk spk--otto" aria-hidden="true"></i><span class="co__otto">“Your parcel arrives in ten minutes. Are you at home?”</span></p>
         <p><svg class="spk-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l9-8 9 8M5 9.5V21h14V9.5" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"/></svg><span>“I'm not back before six.”</span></p>
         <p><i class="spk spk--otto" aria-hidden="true"></i><span class="co__otto">“Understood. Your driver will come after six.”</span></p>

@@ -1052,10 +1052,10 @@
     document.addEventListener('keydown', function(e){
       if (e.key === 'Escape' && !modal.hidden) closeModal();
     });
-    document.getElementById('demo-modal-start').addEventListener('click', function(){
-      if (!pending) return;
-      var a = pending[0], b = pending[1];
-      closeModal();
+    // Start a use case: expand Otto on the spot. The intro overlay no longer
+    // stands in the way; it stays one tap away on the Instructions pill
+    // above the widget (and its own Talk to Otto button lands back here).
+    function start(a, b){
       var open = document.querySelector('elevenlabs-convai');
       if (open && open.getAttribute('agent-id') === a[1]) {
         // mounted collapsed: remount expanded. Already expanded (a running
@@ -1064,6 +1064,12 @@
         return;
       }
       engage(a, b, true);
+    }
+    document.getElementById('demo-modal-start').addEventListener('click', function(){
+      if (!pending) return;
+      var a = pending[0], b = pending[1];
+      closeModal();
+      start(a, b);
     });
 
     var current = null;
@@ -1072,9 +1078,8 @@
       mount(a[1], expanded);
     }
 
-
     function pick(a, b){
-      openModal(a, b);
+      start(a, b);
     }
 
     // Hero button: launches the first live agent on the spot. While Otto is

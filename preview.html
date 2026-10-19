@@ -193,6 +193,10 @@
   .hero__otto:not(.is-tracking) i::after{animation:ottoGlance 9s ease-in-out infinite}
   .hero__otto i:first-child{left:30%}
   .hero__otto i:last-child{left:56%}
+  /* come within a face-width of Otto and the cursor turns into a fly;
+     the script alternates the two frames so its wings buzz */
+  .hero.fly{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'%3E%3Cellipse cx='8.6' cy='14.2' rx='7' ry='3' transform='rotate(-34 14 11)' fill='rgba(244,241,232,.55)' stroke='%23F4F1E8' stroke-width='1'/%3E%3Cellipse cx='19.4' cy='14.2' rx='7' ry='3' transform='rotate(34 14 11)' fill='rgba(244,241,232,.55)' stroke='%23F4F1E8' stroke-width='1'/%3E%3Cpath d='M10 12.5l-3.4-2.4M10 15.5l-4 .3M10.5 18.6l-3.2 2.6M18 12.5l3.4-2.4M18 15.5l4 .3M17.5 18.6l3.2 2.6' stroke='%230A1730' stroke-width='2.2' stroke-linecap='round'/%3E%3Cpath d='M10 12.5l-3.4-2.4M10 15.5l-4 .3M10.5 18.6l-3.2 2.6M18 12.5l3.4-2.4M18 15.5l4 .3M17.5 18.6l3.2 2.6' stroke='%23F4F1E8' stroke-width='.9' stroke-linecap='round'/%3E%3Cellipse cx='14' cy='18.2' rx='3.3' ry='5.6' fill='%230A1730' stroke='%23F4F1E8' stroke-width='1.1'/%3E%3Cpath d='M11.6 16.4h4.8M11.3 18.6h5.4M11.6 20.8h4.8' stroke='rgba(244,241,232,.45)' stroke-width='.8'/%3E%3Cellipse cx='14' cy='11.2' rx='3.6' ry='3' fill='%230A1730' stroke='%23F4F1E8' stroke-width='1.1'/%3E%3Ccircle cx='14' cy='6.4' r='2.9' fill='%230A1730' stroke='%23F4F1E8' stroke-width='1.1'/%3E%3Ccircle cx='12.5' cy='6.1' r='1.15' fill='%23FF4D3A'/%3E%3Ccircle cx='15.5' cy='6.1' r='1.15' fill='%23FF4D3A'/%3E%3C/svg%3E") 14 14, auto}
+  .hero.fly.buzz{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'%3E%3Cellipse cx='8.6' cy='14.2' rx='7' ry='3' transform='rotate(-14 14 11)' fill='rgba(244,241,232,.55)' stroke='%23F4F1E8' stroke-width='1'/%3E%3Cellipse cx='19.4' cy='14.2' rx='7' ry='3' transform='rotate(14 14 11)' fill='rgba(244,241,232,.55)' stroke='%23F4F1E8' stroke-width='1'/%3E%3Cpath d='M10 12.5l-3.4-2.4M10 15.5l-4 .3M10.5 18.6l-3.2 2.6M18 12.5l3.4-2.4M18 15.5l4 .3M17.5 18.6l3.2 2.6' stroke='%230A1730' stroke-width='2.2' stroke-linecap='round'/%3E%3Cpath d='M10 12.5l-3.4-2.4M10 15.5l-4 .3M10.5 18.6l-3.2 2.6M18 12.5l3.4-2.4M18 15.5l4 .3M17.5 18.6l3.2 2.6' stroke='%23F4F1E8' stroke-width='.9' stroke-linecap='round'/%3E%3Cellipse cx='14' cy='18.2' rx='3.3' ry='5.6' fill='%230A1730' stroke='%23F4F1E8' stroke-width='1.1'/%3E%3Cpath d='M11.6 16.4h4.8M11.3 18.6h5.4M11.6 20.8h4.8' stroke='rgba(244,241,232,.45)' stroke-width='.8'/%3E%3Cellipse cx='14' cy='11.2' rx='3.6' ry='3' fill='%230A1730' stroke='%23F4F1E8' stroke-width='1.1'/%3E%3Ccircle cx='14' cy='6.4' r='2.9' fill='%230A1730' stroke='%23F4F1E8' stroke-width='1.1'/%3E%3Ccircle cx='12.5' cy='6.1' r='1.15' fill='%23FF4D3A'/%3E%3Ccircle cx='15.5' cy='6.1' r='1.15' fill='%23FF4D3A'/%3E%3C/svg%3E") 14 14, auto}
   /* compact rhythm on phones: tighter header, shorter section padding */
   @media (max-width:720px){
     .site-head .wrap{
@@ -770,11 +774,25 @@
     var coarse = !fine && matchMedia('(pointer: coarse)').matches;
     if (!fine && !coarse) return;
     var raf = null, lx = 0, ly = 0, idle = null;
+    // A fly for a cursor once the mouse comes within a face-width of Otto
+    // (he is watching it, after all). Two cursor frames alternate so its
+    // wings buzz; the exit distance is a little wider than the entry
+    // distance so it does not flicker at the edge of the zone.
+    var hero = o.closest('.hero'), near = false, buzz = null;
+    function fly(on){
+      if (on === near || !hero) return;
+      near = on;
+      hero.classList.toggle('fly', on);
+      clearInterval(buzz);
+      if (on) buzz = setInterval(function(){ hero.classList.toggle('buzz'); }, 110);
+      else hero.classList.remove('buzz');
+    }
     function look(){
       raf = null;
       var r = o.getBoundingClientRect();
       var dx = lx - (r.left + r.width / 2), dy = ly - (r.top + r.height / 2);
       var d = Math.hypot(dx, dy) || 1;
+      if (fine) fly(near ? d < r.width * 1.2 : d < r.width);
       var k = Math.min(1, d / (coarse ? 180 : 260));   // eases in close to the face
       var pupil = r.width * (coarse ? 0.03 : 0.022);   // how far a pupil may travel
       var eyes = r.width * (coarse ? 0.07 : 0.03);     // and the eyes themselves
@@ -793,7 +811,7 @@
     }
     if (fine) {
       document.addEventListener('mousemove', function(e){ at(e.clientX, e.clientY); }, { passive: true });
-      document.addEventListener('mouseleave', rest);
+      document.addEventListener('mouseleave', function(){ rest(); fly(false); });
     }
     if (coarse) {
       var touch = function(e){

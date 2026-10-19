@@ -648,6 +648,7 @@
         <div class="mk"><span class="mk__num">01</span><span class="mk__step">On the way in</span></div>
         <h3>Pre-arrival notes</h3>
         <p>A few hundred metres out, Otto says the number, the name and what to expect at the door.</p>
+        <button class="pv-btn" data-v="primary" data-size="sm" data-on="light" type="button" data-try-agent="Pre-arrival notes" hidden>Talk to Otto</button>
       </article>
       <article class="more-card">
         <div class="mk"><span class="mk__num">02</span><span class="mk__step">Before moving on</span></div>
@@ -904,6 +905,7 @@
     var AGENTS = [
       ['Driver report', 'agent_1901m4be21bbf56r9fhm17j2fk2x'],
       ['Customer call', 'agent_0001m4qwm0gjep1sqhyd3svbfzhf'],
+      ['Pre-arrival notes', 'agent_4501m5a35ytye3gthpat1cbf17kn'],
       ['Help from the office', ''],
       ['Driver check-in', '']
     ];
@@ -1020,6 +1022,11 @@
         title: 'You play the customer.',
         scene: "Before the van arrives, Otto calls the customer to make sure the trip won't be wasted. In this demo, the customer is you.",
         task: "Take the call. Otto checks you'll be home and agrees a time — inside the rules your depot sets."
+      },
+      'Pre-arrival notes': {
+        title: 'You play the driver.',
+        scene: "You're a few hundred metres from the next stop. Otto reads out what's on file for the address: the number, the name and what the last driver found at the door. In this demo, that driver is you.",
+        task: "Ask Otto what to expect at the next stop. He tells you what the previous driver left for you, and you can ask him to repeat it or move on."
       },
       'Help from the office': {
         title: 'You play the driver.',

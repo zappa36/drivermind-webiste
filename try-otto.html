@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ParcelVox — Talk to Otto</title>
-<meta name="description" content="Try Otto yourself. Pick a call, take the other end of the line — the customer, the office, the driver — and watch what Otto writes down as he goes.">
+<meta name="description" content="Try Otto yourself. The five moments from the home page, one call each. Pick one, take the other end of the line — the driver, the office, the customer — and watch what Otto writes down as he goes.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Source+Sans+3:wght@400;700&display=swap" rel="stylesheet">
@@ -159,17 +159,27 @@
   .try-head__note{margin:0;font:400 14px/1.5 var(--font-body);color:var(--oat-muted)}
 
   .sandbox .wrap{padding-bottom:96px;display:grid;gap:36px;grid-template-columns:minmax(0,1fr)}
-  .picker{display:grid;gap:14px}
+  .picker{display:grid;gap:16px}
   .picker__btns{display:flex;gap:12px;flex-wrap:wrap}
+  /* one tab per moment, numbered like the stop badges on the home page's cards */
   .try-btn{
+    display:inline-flex;align-items:center;gap:10px;
     font:600 14px/1 var(--font-display);letter-spacing:.01em;cursor:pointer;
-    padding:10px 18px;border-radius:var(--radius-sm);
+    padding:6px 16px 6px 7px;border-radius:var(--radius-sm);
     background:transparent;color:var(--oat);border:var(--border-dark);
     transition:border-color var(--dur-fast) var(--ease),
       color var(--dur-fast) var(--ease),background var(--dur-fast) var(--ease);
   }
   .try-btn:hover{border-color:var(--oat)}
   .try-btn[aria-pressed="true"]{background:var(--coral);border-color:var(--coral);color:var(--ink-blue-deep)}
+  .try-btn__num{
+    flex:0 0 24px;width:24px;height:24px;border-radius:50%;text-align:center;
+    background:var(--ink-blue);color:var(--oat);border:1px solid rgba(244,241,232,.3);
+    font:700 11px/22px var(--font-display);letter-spacing:0;
+  }
+  .try-btn[aria-pressed="true"] .try-btn__num{background:var(--ink-blue-deep);border-color:var(--ink-blue-deep)}
+  .picker__about{display:grid;gap:6px}
+  .picker__step{font:500 11px/1.3 var(--font-display);letter-spacing:.09em;text-transform:uppercase;color:var(--oat-muted)}
   .picker__blurb{margin:0;max-width:640px;font:400 15px/1.6 var(--font-body);color:var(--oat-muted);text-wrap:pretty}
 
   .bench{display:flex;flex-wrap:wrap;gap:40px;align-items:flex-start}
@@ -298,7 +308,7 @@
   <div class="wrap">
     <span class="kicker">Try it yourself</span>
     <h1>Talk to Otto.</h1>
-    <p class="lead">Pick a call. You take the other end of the line — the customer, the office, the driver — and Otto does his job. Watch what he writes down as he goes.</p>
+    <p class="lead">The five moments from the home page, one call each. Pick one and take the other end of the line — the driver, the office, the customer — while Otto does his job. Watch what he writes down as he goes.</p>
     <p class="try-head__note">It's a live voice call, the same Otto as on the home page: press the phone button in his window, allow your microphone, then just talk.</p>
   </div>
 </section>
@@ -307,8 +317,11 @@
 <section class="on-dark sandbox" aria-label="Otto sandbox">
   <div class="wrap">
     <div class="picker">
-      <div class="picker__btns" role="group" aria-label="Choose a call" id="picker"></div>
-      <p class="picker__blurb" id="blurb"></p>
+      <div class="picker__btns" role="group" aria-label="Choose a moment" id="picker"></div>
+      <div class="picker__about">
+        <span class="picker__step" id="step"></span>
+        <p class="picker__blurb" id="blurb"></p>
+      </div>
     </div>
     <div class="bench">
       <div class="line-col">
@@ -393,9 +406,13 @@
 
 <script>
   // Talk to Otto: the same ElevenLabs widget as the home page, one agent per
-  // use case, pinned into the left column instead of the page corner. The
+  // moment, pinned into the left column instead of the page corner. The
   // visitor presses the phone button in Otto's window and talks; the record
   // on the right fills in as Otto writes things down.
+  //
+  // The tabs are the five moments of the home page's "Five moments on every
+  // route" cards (index.html, #more): same order, numbers, step labels and
+  // titles. Change a moment there, change it here.
   //
   // Pinning: the widget renders into a position:fixed overlay. A transformed
   // ancestor becomes that overlay's containing block, so the .line box holds
@@ -411,46 +428,56 @@
   // Without either the record stays empty — the call itself still works.
   //
   // Paste agent ids from the ElevenLabs dashboard (agent → Widget tab) into
-  // AGENTS. A use case without an id shows its empty outcome rows and says
-  // Otto isn't on that line yet.
+  // AGENTS — the same ids as the home page's AGENTS list. A moment without
+  // an id shows its empty outcome rows and says Otto isn't on that line yet.
   (function(){
     var AGENTS = {
+      notes: 'agent_4501m5a35ytye3gthpat1cbf17kn',
       report: 'agent_1901m4be21bbf56r9fhm17j2fk2x',
-      customer: 'agent_0001m4qwm0gjep1sqhyd3svbfzhf',
       office: '',
-      checkin: ''
+      checkin: '',
+      customer: 'agent_0001m4qwm0gjep1sqhyd3svbfzhf'
     };
     var WIDGET_SRC = 'https://unpkg.com/@elevenlabs/convai-widget-embed';
 
+    // num, step and title are the home page's cards, verbatim.
     var SCENARIOS = [
-      { id: 'report', title: 'Driver report & briefing',
-        blurb: "You're the driver. Otto briefs you on the way in to the stop, then files what you found at the door for whoever drives there next.",
+      { id: 'notes', num: '01', step: 'On the way in', title: 'Pre-arrival notes',
+        blurb: "You're the driver, a few hundred metres from the next stop. Otto says the number, the name and what to expect at the door — what the last driver left for you. Ask him to repeat it or move on.",
+        hint: "Press the phone button in Otto's window, allow your microphone, and ask him what to expect at the next stop.",
+        report: { text: 'door' },
+        ledger: { title: 'Next stop', groups: [
+          { label: 'On file for the address', rows: [{ k: 'Address', id: 'address' }, { k: 'Name', id: 'name' }, { k: 'At the door', id: 'door' }] } ] } },
+
+      { id: 'report', num: '02', step: 'Before moving on', title: 'The driver reports',
+        blurb: "You're the driver, just back from the door. Tell Otto what you found — the code doesn't work, the road is closed, a dog guards the door — and he files it against the address for the next driver.",
         hint: "Press the phone button in Otto's window, allow your microphone, and tell him what you found at the door.",
         report: { text: 'found', stamp: 'filed' },
         ledger: { title: 'Address record', groups: [
           { label: 'From you · today', rows: [{ k: 'Found at the door', id: 'found' }, { k: 'Filed', id: 'filed' }] } ] } },
 
-      { id: 'customer', title: 'Customer call',
-        blurb: "You're the customer. Otto calls before the van arrives — confirms someone's home, agrees a time, and stays inside your rules.",
-        hint: "Press the phone button in Otto's window, allow your microphone, and take the call as the customer would.",
-        report: { text: 'note' },
-        ledger: { title: 'Customer call', groups: [
-          { label: 'Call outcome', rows: [{ k: 'Someone home?', id: 'home' }, { k: 'Agreed time', id: 'time' }, { k: 'Handover', id: 'handover' }, { k: 'Note to driver', id: 'note' }] } ] } },
-
-      { id: 'office', title: 'Help from the office',
+      { id: 'office', num: '03', step: 'At the door', title: 'Help from the office',
         blurb: "You're dispatch. A stuck driver told Otto once; Otto reaches you with everything pre-filled and brings your answer back to the van.",
         hint: "Press the phone button in Otto's window, allow your microphone, and answer as dispatch would.",
         report: { text: 'answer', stamp: 'filed' },
         ledger: { title: 'Dispatch ticket', groups: [
           { label: 'Your answer', rows: [{ k: 'Answer', id: 'answer' }, { k: 'Fallback', id: 'fallback' }, { k: 'Back to the driver', id: 'relay' }, { k: 'Filed to address', id: 'filed' }] } ] } },
 
-      { id: 'checkin', title: 'Driver check-in',
+      { id: 'checkin', num: '04', step: 'The plan changes', title: 'Driver check-in',
         blurb: "You're the driver. Otto calls you for the office — one reason per call, on their trigger or their rules — and lets you drive.",
         hint: "Press the phone button in Otto's window, allow your microphone, and take the call with your hands on the wheel.",
         report: { text: 'back' },
         ledger: { title: 'Driver check-in', groups: [
-          { label: 'Outcome', rows: [{ k: 'Driver confirmed', id: 'confirmed' }, { k: 'Passed back to the office', id: 'back' }, { k: 'Route change', id: 'route' }] } ] } }
+          { label: 'Outcome', rows: [{ k: 'Driver confirmed', id: 'confirmed' }, { k: 'Passed back to the office', id: 'back' }, { k: 'Route change', id: 'route' }] } ] } },
+
+      { id: 'customer', num: '05', step: 'Before the van arrives', title: 'Customer call',
+        blurb: "You're the customer. Otto calls before the van arrives — confirms someone's home, agrees a time, and stays inside your rules.",
+        hint: "Press the phone button in Otto's window, allow your microphone, and take the call as the customer would.",
+        report: { text: 'note' },
+        ledger: { title: 'Customer call', groups: [
+          { label: 'Call outcome', rows: [{ k: 'Someone home?', id: 'home' }, { k: 'Agreed time', id: 'time' }, { k: 'Handover', id: 'handover' }, { k: 'Note to driver', id: 'note' }] } ] } }
     ];
+    var LIVE = SCENARIOS.filter(function(sc){ return !!AGENTS[sc.id]; });
 
     var $ = function(id){ return document.getElementById(id); };
     var now = function(){ var d = new Date(); return d.getHours() + ':' + String(d.getMinutes()).padStart(2, '0'); };
@@ -461,7 +488,11 @@
       return n;
     };
 
-    var current = null;   // the scenario on the line
+    var listOf = function(items){
+      return items.length < 2 ? items.join('') : items.slice(0, -1).join(', ') + ' and ' + items[items.length - 1];
+    };
+
+    var current = null;   // the moment on the line
     var rowEls = {};      // record row id → text node
     var record = {};      // what Otto has written down this call
 
@@ -470,8 +501,10 @@
       var box = $('picker');
       box.textContent = '';
       SCENARIOS.forEach(function(sc){
-        var b = el('button', 'try-btn', sc.title);
+        var b = el('button', 'try-btn');
         b.type = 'button';
+        b.appendChild(el('span', 'try-btn__num', sc.num));
+        b.appendChild(el('span', null, sc.title));
         b.setAttribute('aria-pressed', sc === current ? 'true' : 'false');
         b.addEventListener('click', function(){ select(sc); });
         box.appendChild(b);
@@ -519,7 +552,9 @@
       if (old) old.remove();
       var id = AGENTS[sc.id];
       $('line-off').hidden = !!id;
-      $('hint').textContent = id ? sc.hint : "Otto isn't on this line yet. The driver report and the customer call are live — pick one of those.";
+      $('hint').textContent = id ? sc.hint : LIVE.length
+        ? "Otto isn't on this line yet. He's live on " + listOf(LIVE.map(function(l){ return l.num; })) + " — pick one of those."
+        : "Otto isn't on any line yet.";
       if (!id) return;
       if (!loaded) {
         loaded = true;
@@ -561,6 +596,7 @@
 
     function select(sc){
       current = sc;
+      $('step').textContent = sc.num + ' · ' + sc.step;
       $('blurb').textContent = sc.blurb;
       renderPicker();
       renderLedger(sc);
@@ -568,7 +604,7 @@
     }
 
     $('again').addEventListener('click', function(){ if (current) select(current); });
-    select(SCENARIOS[0]);
+    select(LIVE[0] || SCENARIOS[0]);
   })();
 </script>
 

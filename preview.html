@@ -311,14 +311,12 @@
     flex:0 0 26px;width:26px;height:26px;border-radius:50%;text-align:center;
     background:var(--ink-blue);color:var(--oat);font:700 12px/26px var(--font-display);
   }
-  .mk__num--skip{background:transparent;border:1.5px dashed var(--coral);color:var(--coral);line-height:23px}
   .mk__step{font:500 11px/1.3 var(--font-display);letter-spacing:.09em;text-transform:uppercase;color:var(--ink-muted)}
   .more-card p{margin:0;color:var(--ink-muted)}
   /* on the dark ground the cards become deep panels, like the phone frames */
   .on-dark .more-card{background:var(--ink-blue-deep);border:var(--border-dark);box-shadow:none}
   .on-dark .more-card p{color:var(--oat-muted)}
   .on-dark .mk__num{border:1px solid rgba(244,241,232,.3)}
-  .on-dark .mk__num--skip{border:1.5px dashed var(--coral)}
   .on-dark .mk__step{color:var(--oat-muted)}
   .on-dark .pv-btn[data-v="outline-light"]{border:1px solid var(--line-on-dark);color:var(--oat-muted)}
   .on-dark .more-card .pv-btn:disabled{color:var(--oat-muted)}
@@ -658,7 +656,7 @@
         <button class="pv-btn" data-v="primary" data-size="sm" data-on="light" type="button" data-try-agent="Help from the office" hidden>Talk to Otto</button>
       </article>
       <article class="more-card">
-        <div class="mk"><span class="mk__num mk__num--skip">04</span><span class="mk__step">The plan changes</span></div>
+        <div class="mk"><span class="mk__num">04</span><span class="mk__step">The plan changes</span></div>
         <h3>Driver check-in</h3>
         <p>Otto calls the driver for the office, one reason per call, and lets them drive.</p>
         <button class="pv-btn" data-v="primary" data-size="sm" data-on="light" type="button" data-try-agent="Driver check-in" hidden>Talk to Otto</button>

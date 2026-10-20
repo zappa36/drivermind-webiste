@@ -413,6 +413,7 @@
   (function(){
     var AGENTS = {
       report: 'agent_1901m4be21bbf56r9fhm17j2fk2x',
+      prearrival: 'agent_4501m5a35ytye3gthpat1cbf17kn',
       customer: 'agent_0001m4qwm0gjep1sqhyd3svbfzhf',
       office: '',
       checkin: ''
@@ -426,6 +427,13 @@
         report: { text: 'found', stamp: 'filed' },
         ledger: { title: 'Address record', groups: [
           { label: 'From you · today', rows: [{ k: 'Found at the door', id: 'found' }, { k: 'Filed', id: 'filed' }] } ] } },
+
+      { id: 'prearrival', title: 'Pre-arrival notes',
+        blurb: "You're the driver, a few hundred metres out. Otto reads out what's on file for the next stop — the number, the name and what the last driver found at the door.",
+        hint: "Press the phone button in Otto's window, allow your microphone, and ask Otto what to expect at the next stop.",
+        report: { text: 'door' },
+        ledger: { title: 'Briefing', groups: [
+          { label: 'On file for the stop', rows: [{ k: 'Stop', id: 'stop' }, { k: 'Name', id: 'name' }, { k: 'At the door', id: 'door' }] } ] } },
 
       { id: 'customer', title: 'Customer call',
         blurb: "You're the customer. Otto calls before the van arrives — confirms someone's home, agrees a time, and stays inside your rules.",
@@ -516,7 +524,7 @@
       if (old) old.remove();
       var id = AGENTS[sc.id];
       $('line-off').hidden = !!id;
-      $('hint').textContent = id ? sc.hint : "Otto isn't on this line yet. The driver report and the customer call are live — pick one of those.";
+      $('hint').textContent = id ? sc.hint : "Otto isn't on this line yet. The driver report, the pre-arrival notes and the customer call are live — pick one of those.";
       if (!id) return;
       if (!loaded) {
         loaded = true;

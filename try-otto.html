@@ -350,12 +350,13 @@
     var WIDGET_SRC = 'https://unpkg.com/@elevenlabs/convai-widget-embed';
 
     var SCENARIOS = [
-      { id: 'report', title: 'Driver report & briefing',
-        blurb: "You're the driver. Otto briefs you on the way in to the stop, then files what you found at the door for whoever drives there next.",
-        hint: "Press the phone button in Otto's window, allow your microphone, and tell him what you found at the door.",
+      { id: 'report', title: 'Driver report',
+        blurb: "You're the driver and you've hit a problem at a stop. Tell Otto. He asks what the next driver would need, then turns it into one tip for whoever drives there next.",
+        hint: "Press the phone button in Otto's window, allow your microphone, and tell him what went wrong at the door.",
         report: { text: 'found', stamp: 'filed' },
+        aliases: { tip: 'found', problem: 'found', next_driver: 'found', for_the_next_driver: 'found', kind: 'filed', category: 'filed', type: 'filed', filed_as: 'filed' },
         ledger: { title: 'Address record', groups: [
-          { label: 'From you · today', rows: [{ k: 'Found at the door', id: 'found' }, { k: 'Filed', id: 'filed' }] } ] } },
+          { label: 'From you · today', rows: [{ k: 'Filed as', id: 'filed' }, { k: 'For the next driver', id: 'found' }] } ] } },
 
       { id: 'prearrival', title: 'Pre-arrival notes',
         blurb: "You run the route. Make up a house number and a name, describe a door you know, and Otto turns it into what the driver hears a few hundred metres before the stop.",
@@ -498,7 +499,7 @@
         // there is one, records when and what kind.
         cfg.clientTools.report_incident = function(p){
           var map = sc.report, ok = current === sc && !!p && !!map && writeDown(map.text, p.content);
-          if (ok && map.stamp) writeDown(map.stamp, 'Today ' + now() + (p.kind ? ' · ' + String(p.kind).replace(/_/g, ' ') : ''));
+          if (ok && map.stamp) writeDown(map.stamp, (p.kind ? String(p.kind).replace(/_/g, ' ') + ' · ' : '') + 'today ' + now());
           if (window.console) console[ok ? 'info' : 'warn']('Otto report_incident', ok ? 'ok' : 'ignored', p);
           return ok ? 'Filed' : 'Nothing to file';
         };

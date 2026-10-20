@@ -13,8 +13,9 @@ no enum, "Wait for response" off).
 
 ## First message
 
-Hi, Otto here. You're the driver, and you've just hit a problem at a stop. Three, two,
-one — you're at the door. What's wrong?
+Hi, I'm Otto. Pretend you're a driver who just hit a problem at a stop — a broken gate
+code, a closed road, a dog at the door. Three, two, one. You're at the door. What
+happened?
 
 ## System prompt
 

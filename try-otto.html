@@ -176,13 +176,10 @@
 
   /* the line — Otto's window, the home-page widget pinned into the column.
      transform makes .line the containing block of the widget's fixed
-     overlay; the size fits the expanded panel (400 x 496) plus its padding. */
+     overlay; the size fits the expanded panel (400 x 496) plus its padding.
+     No frame of its own: the widget sits straight on the section. */
   .line-col{flex:0 1 464px;min-width:280px;width:100%;display:grid;gap:14px}
-  .line{
-    position:relative;transform:translateZ(0);overflow:hidden;
-    height:560px;background:var(--ink-blue-deep);
-    border:var(--border-dark);border-radius:var(--radius-md);
-  }
+  .line{position:relative;transform:translateZ(0);overflow:hidden;height:560px}
   .line__off{position:absolute;inset:0;display:grid;place-content:center;justify-items:center;gap:18px;text-align:center}
   .line__off-text{font:600 16px/1.3 var(--font-display);color:var(--oat-muted)}
   .hint{margin:0;font:400 14px/1.5 var(--font-body);color:var(--oat-muted);text-wrap:pretty}

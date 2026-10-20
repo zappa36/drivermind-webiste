@@ -361,6 +361,7 @@
         blurb: "You're the driver, a few hundred metres out. Otto reads out what's on file for the next stop — the number, the name and what the last driver found at the door.",
         hint: "Press the phone button in Otto's window, allow your microphone, and ask Otto what to expect at the next stop.",
         report: { text: 'door' },
+        aliases: { address: 'stop', number: 'stop', house_number: 'stop', street: 'stop', customer: 'name', recipient: 'name', intercom: 'name', found: 'door', note: 'door', notes: 'door', tip: 'door', at_the_door: 'door', last_driver: 'door' },
         ledger: { title: 'Briefing', groups: [
           { label: 'On file for the stop', rows: [{ k: 'Stop', id: 'stop' }, { k: 'Name', id: 'name' }, { k: 'At the door', id: 'door' }] } ] } },
 
@@ -442,6 +443,10 @@
       });
     }
     function writeDown(field, value){
+      // field names as the agent says them: lower-case, underscores, and
+      // the scenario's aliases for near misses
+      field = String(field == null ? '' : field).trim().toLowerCase().replace(/[\s-]+/g, '_');
+      if (!rowEls[field] && current && current.aliases && current.aliases[field]) field = current.aliases[field];
       var t = rowEls[field];
       var v = String(value == null ? '' : value).replace(/\[[a-z ]+\]/gi, '').replace(/\s+/g, ' ').trim().slice(0, 160);
       if (!t || !v || record[field] === v) return !!t;

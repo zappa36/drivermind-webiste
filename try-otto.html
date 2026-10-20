@@ -358,12 +358,12 @@
           { label: 'From you · today', rows: [{ k: 'Found at the door', id: 'found' }, { k: 'Filed', id: 'filed' }] } ] } },
 
       { id: 'prearrival', title: 'Pre-arrival notes',
-        blurb: "You're the driver, a few hundred metres out. Otto reads out what's on file for the next stop — the number, the name and what the last driver found at the door.",
-        hint: "Press the phone button in Otto's window, allow your microphone, and ask Otto what to expect at the next stop.",
+        blurb: "You run the route. Make up a house number and a name, describe a door you know, and Otto turns it into what the driver hears a few hundred metres before the stop.",
+        hint: "Press the phone button in Otto's window, allow your microphone, and describe a building: the number, the name on the bell, what's at the door.",
         report: { text: 'door' },
-        aliases: { address: 'stop', number: 'stop', house_number: 'stop', street: 'stop', customer: 'name', recipient: 'name', intercom: 'name', found: 'door', note: 'door', notes: 'door', tip: 'door', at_the_door: 'door', last_driver: 'door' },
+        aliases: { address: 'stop', number: 'stop', house_number: 'stop', house: 'stop', bell: 'name', name_on_the_bell: 'name', customer: 'name', recipient: 'name', intercom: 'name', found: 'door', note: 'door', notes: 'door', tip: 'door', at_the_door: 'door', expect: 'door' },
         ledger: { title: 'Briefing', groups: [
-          { label: 'On file for the stop', rows: [{ k: 'Stop', id: 'stop' }, { k: 'Name', id: 'name' }, { k: 'At the door', id: 'door' }] } ] } },
+          { label: 'What the driver hears', rows: [{ k: 'House number', id: 'stop' }, { k: 'Name on the bell', id: 'name' }, { k: 'At the door', id: 'door' }] } ] } },
 
       { id: 'customer', title: 'Customer call',
         blurb: "You're the customer. Otto calls before the van arrives — confirms someone's home, agrees a time, and stays inside your rules.",

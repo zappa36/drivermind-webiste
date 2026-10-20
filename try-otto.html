@@ -170,6 +170,11 @@
   }
   .try-btn:hover{border-color:var(--oat)}
   .try-btn[aria-pressed="true"]{background:var(--coral);border-color:var(--coral);color:var(--ink-blue-deep)}
+  /* calls without an agent yet: shown, dimmed, not clickable — as the home
+     page's Coming soon buttons */
+  .try-btn:disabled{cursor:default;color:var(--oat-muted);opacity:.6}
+  .try-btn:disabled:hover{border-color:var(--line-on-dark)}
+  .try-btn__soon{display:block;margin-top:5px;font:500 10px/1 var(--font-display);letter-spacing:.09em;text-transform:uppercase;opacity:.85}
   .picker__blurb{margin:0;max-width:640px;font:400 15px/1.6 var(--font-body);color:var(--oat-muted);text-wrap:pretty}
 
   .bench{display:flex;flex-wrap:wrap;gap:40px;align-items:flex-start}
@@ -480,8 +485,14 @@
       SCENARIOS.forEach(function(sc){
         var b = el('button', 'try-btn', sc.title);
         b.type = 'button';
-        b.setAttribute('aria-pressed', sc === current ? 'true' : 'false');
-        b.addEventListener('click', function(){ select(sc); });
+        if (AGENTS[sc.id]) {
+          b.setAttribute('aria-pressed', sc === current ? 'true' : 'false');
+          b.addEventListener('click', function(){ select(sc); });
+        } else {
+          // coming soon on the home page too: on the list, not on the line
+          b.disabled = true;
+          b.appendChild(el('span', 'try-btn__soon', 'Coming soon'));
+        }
         box.appendChild(b);
       });
     }

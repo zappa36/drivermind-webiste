@@ -5,33 +5,31 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ParcelVox — Talk to Otto</title>
 <meta name="description" content="Try Otto yourself. Pick a call, take the other end of the line — the customer, the office, the driver — and watch what Otto writes down as he goes.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Source+Sans+3:wght@400;700&display=swap" rel="stylesheet">
+<link href="fonts/dm-sans.css" rel="stylesheet">
 <style>
   /* ============ ParcelVox design system tokens (Coral · Ink Blue) ============ */
   :root{
-    --ink-blue:#0E2138;
-    --ink-blue-deep:#0A1730;
-    --coral:#FF4D3A;
-    --coral-deep:#BE3E24;      /* brand coral-on-light: large text, hover grounds */
-    --coral-ink:#B23A22;       /* darkened one step: small coral text needs 4.5:1 on cream */
-    --cream:#EFE9DC;
-    --ink:#1B2536;
-    --oat:#F4F1E8;
-    --ink-muted:rgba(27,37,54,.70);   /* DS ships .62 = 4.1:1; .70 = 5.3:1 on cream */
-    --oat-muted:rgba(244,241,232,.64);
-    --line-on-light:rgba(27,37,54,.16);
-    --line-on-dark:rgba(244,241,232,.16);
-    --wash-on-light:rgba(14,33,56,.06);
-    --wash-on-dark:rgba(244,241,232,.07);
-    --coral-wash:rgba(255,77,58,.12);
-    --font-display:'Space Grotesk',system-ui,-apple-system,sans-serif;
-    --font-body:'Source Sans 3',system-ui,-apple-system,sans-serif;
+    --ink-blue:#2A2E33;
+    --ink-blue-deep:#1F2226;
+    --coral:#2F6FD0;
+    --coral-deep:#2559A8;      /* brand coral-on-light: large text, hover grounds */
+    --coral-ink:#2559A8;       /* darkened one step: small coral text needs 4.5:1 on cream */
+    --cream:#FAFAFA;
+    --ink:#2A2E33;
+    --oat:#FFFFFF;
+    --ink-muted:#6B737C;   /* DS ships .62 = 4.1:1; .70 = 5.3:1 on cream */
+    --oat-muted:rgba(250,250,250,.64);
+    --line-on-light:rgba(42,46,51,.16);
+    --line-on-dark:rgba(250,250,250,.16);
+    --wash-on-light:rgba(42,46,51,.06);
+    --wash-on-dark:rgba(250,250,250,.07);
+    --coral-wash:rgba(47,111,208,.12);
+    --font-display:'DM Sans',system-ui,-apple-system,sans-serif;
+    --font-body:'DM Sans',system-ui,-apple-system,sans-serif;
     --radius-xs:3px;--radius-sm:6px;--radius-md:10px;--radius-pill:999px;
     --border-light:1px solid var(--line-on-light);
     --border-dark:1px solid var(--line-on-dark);
-    --shadow-card:0 1px 2px rgba(14,33,56,.06),0 6px 20px rgba(14,33,56,.08);
+    --shadow-card:0 1px 2px rgba(42,46,51,.06),0 6px 20px rgba(42,46,51,.08);
     --ease:cubic-bezier(.2,.7,.3,1);
     --dur-fast:120ms;
     --focus:0 0 0 2px var(--cream),0 0 0 4px var(--coral);
@@ -89,10 +87,10 @@
   .otto{position:relative;width:64px;height:64px;display:flex;align-items:center;justify-content:center}
   .otto__ring{
     position:absolute;left:50%;top:50%;width:96%;height:96%;border-radius:50%;
-    border:1.5px solid rgba(255,77,58,.55);transform:translate(-50%,-50%);
+    border:1.5px solid rgba(47,111,208,.55);transform:translate(-50%,-50%);
     animation:ottoRing 1.9s ease-out infinite;
   }
-  .otto__ring--2{border-color:rgba(255,77,58,.3);animation-delay:.95s}
+  .otto__ring--2{border-color:rgba(47,111,208,.3);animation-delay:.95s}
   .otto__blob{
     position:relative;width:86%;height:86%;background:var(--coral);
     border-radius:42% 58% 56% 44%/48% 42% 58% 52%;

@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ParcelVox — Talk to Otto</title>
-<meta name="description" content="Try Otto yourself. Pick a call, take the other end of the line — the customer, the office, the driver — and watch what Otto writes down as he goes.">
+<title>Talk to MileVox</title>
+<meta name="description" content="Try MileVox yourself. Pick a call, take the other end of the line — the customer, the office, the driver — and watch what MileVox writes down as it goes.">
 <link href="fonts/dm-sans.css" rel="stylesheet">
 <style>
-  /* ============ ParcelVox design system tokens (Coral · Ink Blue) ============ */
+  /* ============ MileVox design system tokens (Coral · Ink Blue) ============ */
   :root{
     --ink-blue:#2A2E33;
     --ink-blue-deep:#1F2226;
@@ -83,7 +83,7 @@
 
   .ledger .kicker{color:var(--ink-muted)}
 
-  /* Otto — coral palette (design-system component, CSS rendition) */
+  /* MileVox — coral palette (design-system component, CSS rendition) */
   .otto{position:relative;width:64px;height:64px;display:flex;align-items:center;justify-content:center}
   .otto__ring{
     position:absolute;left:50%;top:50%;width:96%;height:96%;border-radius:50%;
@@ -168,7 +168,7 @@
 
   .bench{display:flex;flex-wrap:wrap;gap:40px;align-items:flex-start}
 
-  /* the line — Otto's window, the home-page widget pinned into the column.
+  /* the line — MileVox's window, the home-page widget pinned into the column.
      transform makes .line the containing block of the widget's fixed
      overlay; the size fits the expanded panel (400 x 496) plus its padding.
      No frame of its own: the widget sits straight on the section. */
@@ -183,7 +183,7 @@
     .line-clip,.line{height:520px}
   }
 
-  /* the record — what Otto writes down */
+  /* the record — what MileVox writes down */
   .ledger{
     flex:1 1 340px;min-width:0;background:var(--oat);
     border:var(--border-light);border-radius:var(--radius-md);box-shadow:var(--shadow-card);
@@ -250,9 +250,9 @@
     <a class="wordmark" href="/">Mile<b>Vox</b></a>
     <nav class="site-nav" aria-label="Main">
       <a href="/#how">How it works</a>
-      <a href="/#more">What else Otto does</a>
+      <a href="/#more">What else MileVox does</a>
       <a href="/#drivers">On the driver's side</a>
-      <a href="#try" aria-current="page">Try Otto</a>
+      <a href="#try" aria-current="page">Try MileVox</a>
     </nav>
     <div class="cta"><a class="pv-btn" data-v="primary" data-size="sm" data-on="dark" href="https://calendar.app.google/zsBSuDBnuNR3kuQY7" target="_blank" rel="noopener">Book a demo</a></div>
   </div>
@@ -264,14 +264,14 @@
 <section class="on-dark try-head" id="try">
   <div class="wrap">
     <span class="kicker">Try it yourself</span>
-    <h1>Talk to Otto.</h1>
-    <p class="lead">Pick a call. You take the other end of the line — the customer, the office, the driver — and Otto does his job. Watch what he writes down as he goes.</p>
-    <p class="try-head__note">It's a live voice call, the same Otto as on the home page: press the phone button in his window, allow your microphone, then just talk.</p>
+    <h1>Talk to MileVox.</h1>
+    <p class="lead">Pick a call. You take the other end of the line — the customer, the office, the driver — and MileVox does its job. Watch what it writes down as it goes.</p>
+    <p class="try-head__note">It's a live voice call, the same MileVox as on the home page: press the phone button in its window, allow your microphone, then just talk.</p>
   </div>
 </section>
 
-<!-- ======================= SANDBOX (Otto on the left, the record on the right) ======================= -->
-<section class="on-dark sandbox" aria-label="Otto sandbox">
+<!-- ======================= SANDBOX (MileVox on the left, the record on the right) ======================= -->
+<section class="on-dark sandbox" aria-label="MileVox sandbox">
   <div class="wrap">
     <div class="picker">
       <div class="picker__btns" role="group" aria-label="Choose a call" id="picker"></div>
@@ -292,7 +292,7 @@
       </div>
 
       <div class="ledger">
-        <span class="kicker">What Otto writes down</span>
+        <span class="kicker">What MileVox writes down</span>
         <h2 id="ledger-title"></h2>
         <div id="ledger-groups" style="display:contents"></div>
       </div>
@@ -305,7 +305,7 @@
   <div class="wrap">
     <span class="kicker">Start with one route</span>
     <h2>Heard enough? Give one route a voice.</h2>
-    <p class="lead">Run ParcelVox on one depot route. We measure how many deliveries succeed first time, how long drivers spend at the door and how fast cover drivers find their way.</p>
+    <p class="lead">Run MileVox on one depot route. We measure how many deliveries succeed first time, how long drivers spend at the door and how fast cover drivers find their way.</p>
     <div class="close__ctas">
       <a class="pv-btn" data-v="primary" data-size="lg" data-on="light" href="https://calendar.app.google/zsBSuDBnuNR3kuQY7" target="_blank" rel="noopener">Book a demo</a>
       <a class="close__link" href="/#how">See how it works →</a>
@@ -316,10 +316,10 @@
 </main>
 
 <script>
-  // Talk to Otto: the same ElevenLabs widget as the home page, one agent per
+  // Talk to MileVox: the same ElevenLabs widget as the home page, one agent per
   // use case, pinned into the left column instead of the page corner. The
-  // visitor presses the phone button in Otto's window and talks; the record
-  // on the right fills in as Otto writes things down.
+  // visitor presses the phone button in MileVox's window and talks; the record
+  // on the right fills in as MileVox writes things down.
   //
   // Pinning: the widget renders into a position:fixed overlay. A transformed
   // ancestor becomes that overlay's containing block, so the .line box holds
@@ -336,7 +336,7 @@
   //
   // Paste agent ids from the ElevenLabs dashboard (agent → Widget tab) into
   // AGENTS. A use case without an id shows its empty outcome rows and says
-  // Otto isn't on that line yet.
+  // MileVox isn't on that line yet.
   (function(){
     var AGENTS = {
       report: 'agent_1901m4be21bbf56r9fhm17j2fk2x',
@@ -349,39 +349,39 @@
 
     var SCENARIOS = [
       { id: 'report', title: 'Driver report',
-        blurb: "You're the driver and you've hit a problem at a stop. Tell Otto. He asks what the next driver would need, then turns it into one tip for whoever drives there next.",
-        hint: "Press the phone button in Otto's window, allow your microphone, and tell him what went wrong at the door.",
+        blurb: "You're the driver and you've hit a problem at a stop. Tell MileVox. It asks what the next driver would need, then turns it into one tip for whoever drives there next.",
+        hint: "Press the phone button in MileVox's window, allow your microphone, and tell it what went wrong at the door.",
         report: { text: 'found', stamp: 'filed' },
         aliases: { tip: 'found', problem: 'found', next_driver: 'found', for_the_next_driver: 'found', kind: 'filed', category: 'filed', type: 'filed', filed_as: 'filed' },
         ledger: { title: 'Address record', groups: [
           { label: 'From you · today', rows: [{ k: 'Filed as', id: 'filed' }, { k: 'For the next driver', id: 'found' }] } ] } },
 
       { id: 'prearrival', title: 'Pre-arrival notes',
-        blurb: "You run the route. Make up a house number and a name, describe a door you know, and Otto turns it into what the driver hears a few hundred metres before the stop.",
-        hint: "Press the phone button in Otto's window, allow your microphone, and describe a building: the number, the name on the bell, what's at the door.",
+        blurb: "You run the route. Make up a house number and a name, describe a door you know, and MileVox turns it into what the driver hears a few hundred metres before the stop.",
+        hint: "Press the phone button in MileVox's window, allow your microphone, and describe a building: the number, the name on the bell, what's at the door.",
         report: { text: 'door' },
         aliases: { address: 'stop', number: 'stop', house_number: 'stop', house: 'stop', bell: 'name', name_on_the_bell: 'name', customer: 'name', recipient: 'name', intercom: 'name', found: 'door', note: 'door', notes: 'door', tip: 'door', at_the_door: 'door', expect: 'door' },
         ledger: { title: 'Briefing', groups: [
           { label: 'What the driver hears', rows: [{ k: 'House number', id: 'stop' }, { k: 'Name on the bell', id: 'name' }, { k: 'At the door', id: 'door' }] } ] } },
 
       { id: 'customer', title: 'Customer call',
-        blurb: "You're the customer. Otto calls before the van arrives — confirms someone's home, agrees a time, and stays inside your rules.",
-        hint: "Press the phone button in Otto's window, allow your microphone, and take the call as the customer would.",
+        blurb: "You're the customer. MileVox calls before the van arrives — confirms someone's home, agrees a time, and stays inside your rules.",
+        hint: "Press the phone button in MileVox's window, allow your microphone, and take the call as the customer would.",
         report: { text: 'note' },
         aliases: { at_home: 'home', someone_home: 'home', window: 'time', slot: 'time', agreed_time: 'time', delivery: 'handover', elevator: 'note', note_to_driver: 'note', driver: 'note' },
         ledger: { title: 'Customer call', groups: [
           { label: 'Call outcome', rows: [{ k: 'Someone home?', id: 'home' }, { k: 'Agreed time', id: 'time' }, { k: 'Handover', id: 'handover' }, { k: 'Note to driver', id: 'note' }] } ] } },
 
       { id: 'office', title: 'Help from the office',
-        blurb: "You're dispatch. A stuck driver told Otto once; Otto reaches you with everything pre-filled and brings your answer back to the van.",
-        hint: "Press the phone button in Otto's window, allow your microphone, and answer as dispatch would.",
+        blurb: "You're dispatch. A stuck driver told MileVox once; it reaches you with everything pre-filled and brings your answer back to the van.",
+        hint: "Press the phone button in MileVox's window, allow your microphone, and answer as dispatch would.",
         report: { text: 'answer', stamp: 'filed' },
         ledger: { title: 'Dispatch ticket', groups: [
           { label: 'Your answer', rows: [{ k: 'Answer', id: 'answer' }, { k: 'Fallback', id: 'fallback' }, { k: 'Back to the driver', id: 'relay' }, { k: 'Filed to address', id: 'filed' }] } ] } },
 
       { id: 'checkin', title: 'Driver check-in',
-        blurb: "You're the driver. Otto calls you for the office — one reason per call, on their trigger or their rules — and lets you drive.",
-        hint: "Press the phone button in Otto's window, allow your microphone, and take the call with your hands on the wheel.",
+        blurb: "You're the driver. MileVox calls you for the office — one reason per call, on their trigger or their rules — and lets you drive.",
+        hint: "Press the phone button in MileVox's window, allow your microphone, and take the call with your hands on the wheel.",
         report: { text: 'back' },
         ledger: { title: 'Driver check-in', groups: [
           { label: 'Outcome', rows: [{ k: 'Driver confirmed', id: 'confirmed' }, { k: 'Passed back to the office', id: 'back' }, { k: 'Route change', id: 'route' }] } ] } }
@@ -398,7 +398,7 @@
 
     var current = null;   // the scenario on the line
     var rowEls = {};      // record row id → text node
-    var record = {};      // what Otto has written down this call
+    var record = {};      // what MileVox has written down this call
 
     // ---- rendering ----
     function renderPicker(){
@@ -467,7 +467,7 @@
       $('line-clip').style.height = '';
       var id = AGENTS[sc.id];
       $('line-off').hidden = !!id;
-      $('hint').textContent = id ? sc.hint : "Otto isn't on this line yet. The driver report, the pre-arrival notes and the customer call are live — pick one of those.";
+      $('hint').textContent = id ? sc.hint : "MileVox isn't on this line yet. The driver report, the pre-arrival notes and the customer call are live — pick one of those.";
       if (!id) return;
       if (!loaded) {
         loaded = true;
@@ -489,7 +489,7 @@
         cfg.clientTools.write_down = function(p){
           var ok = current === sc && !!p && writeDown(p.field, p.value);
           // visible in the browser console while testing the agent's tool
-          if (window.console) console[ok ? 'info' : 'warn']('Otto write_down', ok ? 'ok' : 'unknown field', p);
+          if (window.console) console[ok ? 'info' : 'warn']('MileVox write_down', ok ? 'ok' : 'unknown field', p);
           return ok ? 'Written down' : 'Unknown field';
         };
         // The agents' own tool: an incident report whose `content` is the
@@ -498,7 +498,7 @@
         cfg.clientTools.report_incident = function(p){
           var map = sc.report, ok = current === sc && !!p && !!map && writeDown(map.text, p.content);
           if (ok && map.stamp) writeDown(map.stamp, (p.kind ? String(p.kind).replace(/_/g, ' ') + ' · ' : '') + 'today ' + now());
-          if (window.console) console[ok ? 'info' : 'warn']('Otto report_incident', ok ? 'ok' : 'ignored', p);
+          if (window.console) console[ok ? 'info' : 'warn']('MileVox report_incident', ok ? 'ok' : 'ignored', p);
           return ok ? 'Filed' : 'Nothing to file';
         };
         // a new call on the same line starts a fresh record
@@ -508,7 +508,7 @@
       fitTimer = setInterval(fitLine, 250);
     }
 
-    // Top-align Otto's window with the record. The widget's overlay pads
+    // Top-align MileVox's window with the record. The widget's overlay pads
     // its panel 32px in from every edge of .line and anchors it at the
     // bottom, so the panel floats low in the box. .line keeps its full size
     // (its height is what the panel sizes itself against) and is pulled up

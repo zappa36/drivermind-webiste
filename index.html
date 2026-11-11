@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ParcelVox — What one driver learns, the whole fleet inherits</title>
-<meta name="description" content="Every driver knows things the map doesn't. Otto, the voice of ParcelVox, captures them at the door and hands them to the next driver. He also makes the calls that keep the route moving.">
+<title>MileVox — What one driver learns, the whole fleet inherits</title>
+<meta name="description" content="Every driver knows things the map doesn't. MileVox captures them at the door and hands them to the next driver. It also makes the calls that keep the route moving.">
 <link href="fonts/dm-sans.css" rel="stylesheet">
 <style>
-  /* ============ ParcelVox design system tokens (Coral · Ink Blue) ============ */
+  /* ============ MileVox design system tokens (Coral · Ink Blue) ============ */
   :root{
     --ink-blue:#2A2E33;
     --ink-blue-deep:#1F2226;
@@ -123,7 +123,7 @@
   }
   .pv-live i{width:6px;height:6px;border-radius:999px;background:var(--coral);animation:pvLivePulse 2.4s var(--ease) infinite}
 
-  /* Otto — coral palette (design-system component, CSS rendition) */
+  /* MileVox — coral palette (design-system component, CSS rendition) */
   .otto{position:relative;width:64px;height:64px;display:flex;align-items:center;justify-content:center}
   .otto__ring{
     position:absolute;left:50%;top:50%;width:96%;height:96%;border-radius:50%;
@@ -170,14 +170,14 @@
   .hero h1{max-width:720px;font-size:clamp(40px,5.2vw,60px);color:var(--oat)}
   .hero .lead{max-width:640px}
   .hero__ctas{display:flex;align-items:center;gap:24px;flex-wrap:wrap;margin-top:8px}
-  /* Otto himself: the coral blob, eyes and all. The amplitudes are custom
+  /* MileVox himself: the coral blob, eyes and all. The amplitudes are custom
      properties so the phone block can turn them up for the smaller face. */
   .hero__otto{
     --breath:1.035;--bob:0px;--gaze:3%;
     position:relative;width:200px;height:200px;border-radius:50%;background:var(--coral);margin-top:8px;
     transform-origin:center;animation:ottoBreathe 5.2s ease-in-out infinite;
   }
-  /* both eyes move as one when Otto looks around (or follows a pointer) */
+  /* both eyes move as one when MileVox looks around (or follows a pointer) */
   .hero__eyes{
     position:absolute;inset:0;
     transform:translate(var(--gx,0px),var(--gy,0px));transition:transform .18s var(--ease);
@@ -195,7 +195,7 @@
   .hero__otto:not(.is-tracking) i::after{animation:ottoGlance 9s ease-in-out infinite}
   .hero__otto i:first-child{left:30%}
   .hero__otto i:last-child{left:56%}
-  /* come within a face-width of Otto and the cursor turns into a fly;
+  /* come within a face-width of MileVox and the cursor turns into a fly;
      the script alternates the two frames so its wings buzz */
   .hero.fly{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'%3E%3Cellipse cx='8.6' cy='14.2' rx='7' ry='3' transform='rotate(-34 14 11)' fill='rgba(250,250,250,.55)' stroke='%23F4F1E8' stroke-width='1'/%3E%3Cellipse cx='19.4' cy='14.2' rx='7' ry='3' transform='rotate(34 14 11)' fill='rgba(250,250,250,.55)' stroke='%23F4F1E8' stroke-width='1'/%3E%3Cpath d='M10 12.5l-3.4-2.4M10 15.5l-4 .3M10.5 18.6l-3.2 2.6M18 12.5l3.4-2.4M18 15.5l4 .3M17.5 18.6l3.2 2.6' stroke='%230A1730' stroke-width='2.2' stroke-linecap='round'/%3E%3Cpath d='M10 12.5l-3.4-2.4M10 15.5l-4 .3M10.5 18.6l-3.2 2.6M18 12.5l3.4-2.4M18 15.5l4 .3M17.5 18.6l3.2 2.6' stroke='%23F4F1E8' stroke-width='.9' stroke-linecap='round'/%3E%3Cellipse cx='14' cy='18.2' rx='3.3' ry='5.6' fill='%230A1730' stroke='%23F4F1E8' stroke-width='1.1'/%3E%3Cpath d='M11.6 16.4h4.8M11.3 18.6h5.4M11.6 20.8h4.8' stroke='rgba(250,250,250,.45)' stroke-width='.8'/%3E%3Cellipse cx='14' cy='11.2' rx='3.6' ry='3' fill='%230A1730' stroke='%23F4F1E8' stroke-width='1.1'/%3E%3Ccircle cx='14' cy='6.4' r='2.9' fill='%230A1730' stroke='%23F4F1E8' stroke-width='1.1'/%3E%3Ccircle cx='12.5' cy='6.1' r='1.15' fill='%23FF4D3A'/%3E%3Ccircle cx='15.5' cy='6.1' r='1.15' fill='%23FF4D3A'/%3E%3C/svg%3E") 14 14, auto}
   .hero.fly.buzz{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'%3E%3Cellipse cx='8.6' cy='14.2' rx='7' ry='3' transform='rotate(-14 14 11)' fill='rgba(250,250,250,.55)' stroke='%23F4F1E8' stroke-width='1'/%3E%3Cellipse cx='19.4' cy='14.2' rx='7' ry='3' transform='rotate(14 14 11)' fill='rgba(250,250,250,.55)' stroke='%23F4F1E8' stroke-width='1'/%3E%3Cpath d='M10 12.5l-3.4-2.4M10 15.5l-4 .3M10.5 18.6l-3.2 2.6M18 12.5l3.4-2.4M18 15.5l4 .3M17.5 18.6l3.2 2.6' stroke='%230A1730' stroke-width='2.2' stroke-linecap='round'/%3E%3Cpath d='M10 12.5l-3.4-2.4M10 15.5l-4 .3M10.5 18.6l-3.2 2.6M18 12.5l3.4-2.4M18 15.5l4 .3M17.5 18.6l3.2 2.6' stroke='%23F4F1E8' stroke-width='.9' stroke-linecap='round'/%3E%3Cellipse cx='14' cy='18.2' rx='3.3' ry='5.6' fill='%230A1730' stroke='%23F4F1E8' stroke-width='1.1'/%3E%3Cpath d='M11.6 16.4h4.8M11.3 18.6h5.4M11.6 20.8h4.8' stroke='rgba(250,250,250,.45)' stroke-width='.8'/%3E%3Cellipse cx='14' cy='11.2' rx='3.6' ry='3' fill='%230A1730' stroke='%23F4F1E8' stroke-width='1.1'/%3E%3Ccircle cx='14' cy='6.4' r='2.9' fill='%230A1730' stroke='%23F4F1E8' stroke-width='1.1'/%3E%3Ccircle cx='12.5' cy='6.1' r='1.15' fill='%23FF4D3A'/%3E%3Ccircle cx='15.5' cy='6.1' r='1.15' fill='%23FF4D3A'/%3E%3C/svg%3E") 14 14, auto}
@@ -211,7 +211,7 @@
     .site-nav{grid-row:2;grid-column:1 / -1;margin-left:0;gap:6px 14px;padding-bottom:2px}
     .site-nav a{font-size:12px;white-space:nowrap}
     .hero .wrap{gap:24px;padding-top:64px;padding-bottom:72px}
-    /* a 92px Otto needs bigger moves to read as alive: deeper breath with a
+    /* a 92px MileVox needs bigger moves to read as alive: deeper breath with a
        small lift, eyes that really look across, and a quicker blink and glance */
     .hero__otto{--breath:1.07;--bob:-4px;--gaze:8%;width:92px;height:92px;margin-top:0}
     .hero__otto i{animation-duration:3.6s}
@@ -236,7 +236,7 @@
      children count tracks against max-content and overflow small screens. */
   .intro .wrap,.demo .wrap{grid-template-columns:minmax(0,1fr)}
 
-  /* Otto on the route: map board with conversation callouts */
+  /* MileVox on the route: map board with conversation callouts */
   .route-sec .wrap{display:grid;gap:32px;grid-template-columns:minmax(0,1fr)}
   .board{position:relative}
   .board__map{display:block;width:100%;height:auto}
@@ -292,7 +292,7 @@
   .deep-link{justify-self:start;font:600 15px/1 var(--font-display);color:var(--coral-ink);text-decoration:none}
   .deep-link:hover{text-decoration:underline}
 
-  /* what else Otto can do — compact cards for the next use cases */
+  /* what else MileVox can do — compact cards for the next use cases */
   .more .wrap{display:grid;gap:48px;grid-template-columns:minmax(0,1fr)}
   .more h2{max-width:720px}
   .more .lead{max-width:620px}
@@ -320,7 +320,7 @@
   .on-dark .more-card .pv-btn:disabled{color:var(--oat-muted)}
   .on-dark .more-card .pv-btn:disabled:hover{border-color:var(--line-on-dark)}
 
-  /* demo-intro overlay: sets the scene before Otto mounts */
+  /* demo-intro overlay: sets the scene before MileVox mounts */
   .demo-modal{position:fixed;inset:0;z-index:2147483646;display:flex;align-items:center;justify-content:center;padding:20px}
   .demo-modal[hidden]{display:none}
   .demo-modal__back{position:absolute;inset:0;background:rgba(31,34,38,.6)}
@@ -340,7 +340,7 @@
   .demo-modal__later:hover{color:var(--ink)}
   .demo-modal__fine{margin:0;font-size:12.5px;color:var(--ink-muted)}
 
-  /* floating controls while Otto is open (instructions + close) — the
+  /* floating controls while MileVox is open (instructions + close) — the
      widget itself has neither. JS pins them above its top-right corner. */
   .otto-ctl{position:fixed;bottom:96px;right:14px;z-index:2147483647;display:flex;gap:8px;visibility:hidden}
   .otto-pill{
@@ -465,9 +465,9 @@
     <a class="wordmark" href="#top">Mile<b>Vox</b></a>
     <nav class="site-nav" aria-label="Main">
       <a href="#how">How it works</a>
-      <a href="#more">What else Otto does</a>
+      <a href="#more">What else MileVox does</a>
       <a href="#drivers">On the driver's side</a>
-      <a href="/try-otto.html">Try Otto</a>
+      <a href="/try-otto.html">Try MileVox</a>
     </nav>
     <div class="cta"><a class="pv-btn" data-v="primary" data-size="sm" data-on="dark" href="https://calendar.app.google/zsBSuDBnuNR3kuQY7" target="_blank" rel="noopener">Book a demo</a></div>
   </div>
@@ -477,11 +477,11 @@
 <section class="hero on-dark" id="top">
   <div class="wrap">
     <div class="hero__copy">
-      <span class="kicker">ParcelVox · Otto on the route</span>
-      <h1>Meet Otto, the voice of last mile delivery.</h1>
-      <p class="lead">ParcelVox puts a voice assistant inside your driver app. Drivers talk to it hands-free, like a colleague. Otto tells them what to expect at each stop, saves what they find for the next driver, and handles the calls to the office and the customer. Here is what Otto can do across one route, stop by stop.</p>
+      <span class="kicker">MileVox · on the route</span>
+      <h1>Meet MileVox, the voice of last mile delivery.</h1>
+      <p class="lead">MileVox puts a voice assistant inside your driver app. Drivers talk to it hands-free, like a colleague. MileVox tells them what to expect at each stop, saves what they find for the next driver, and handles the calls to the office and the customer. Here is what MileVox can do across one route, stop by stop.</p>
       <div class="hero__ctas">
-        <button class="pv-btn" data-v="primary" data-size="lg" data-on="dark" type="button" data-talk-otto hidden>Talk to Otto</button>
+        <button class="pv-btn" data-v="primary" data-size="lg" data-on="dark" type="button" data-talk-otto hidden>Talk to MileVox</button>
         <a class="pv-btn" data-v="primary" data-size="lg" data-on="dark" href="https://calendar.app.google/zsBSuDBnuNR3kuQY7" target="_blank" rel="noopener" id="hero-demo">Book a demo</a>
       </div>
     </div>
@@ -624,7 +624,7 @@
       <span><i class="lg-route" aria-hidden="true"></i>Today's route</span>
       <span><svg class="spk-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M1 8h14v9H1zM15 11h4l3 3v3h-7zM5.5 19.5m-1.8 0a1.8 1.8 0 1 0 3.6 0a1.8 1.8 0 1 0-3.6 0M17.5 19.5m-1.8 0a1.8 1.8 0 1 0 3.6 0a1.8 1.8 0 1 0-3.6 0" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"/></svg>Driver</span>
       <span><svg class="spk-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l9-8 9 8M5 9.5V21h14V9.5" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"/></svg>Customer</span>
-      <span><i class="spk spk--otto" aria-hidden="true"></i>Otto</span>
+      <span><i class="spk spk--otto" aria-hidden="true"></i>MileVox</span>
     </div>
 
   </div>
@@ -634,45 +634,45 @@
 <section class="sec on-dark more" id="more">
   <div class="wrap">
     <div class="sec-head">
-      <span class="kicker">Otto · stop by stop</span>
+      <span class="kicker">MileVox · stop by stop</span>
       <h2>Five moments on every route.</h2>
     </div>
     <div class="more-grid">
       <article class="more-card">
         <div class="mk"><span class="mk__num">01</span><span class="mk__step">On the way in</span></div>
         <h3>Pre-arrival notes</h3>
-        <p>A few hundred metres out, Otto says the number, the name and what to expect at the door.</p>
-        <button class="pv-btn" data-v="primary" data-size="sm" data-on="light" type="button" data-try-agent="Pre-arrival notes" hidden>Talk to Otto</button>
+        <p>A few hundred metres out, MileVox says the number, the name and what to expect at the door.</p>
+        <button class="pv-btn" data-v="primary" data-size="sm" data-on="light" type="button" data-try-agent="Pre-arrival notes" hidden>Talk to MileVox</button>
       </article>
       <article class="more-card">
         <div class="mk"><span class="mk__num">02</span><span class="mk__step">Before moving on</span></div>
         <h3>The driver reports</h3>
-        <p>The driver says what they found. Otto files it against the address for the next driver.</p>
-        <button class="pv-btn" data-v="primary" data-size="sm" data-on="light" type="button" data-try-agent="Driver report" hidden>Talk to Otto</button>
+        <p>The driver says what they found. MileVox files it against the address for the next driver.</p>
+        <button class="pv-btn" data-v="primary" data-size="sm" data-on="light" type="button" data-try-agent="Driver report" hidden>Talk to MileVox</button>
       </article>
       <article class="more-card">
         <div class="mk"><span class="mk__num">03</span><span class="mk__step">At the door</span></div>
         <h3>Help from the office</h3>
-        <p>The driver tells Otto once. Otto reaches the office and comes back with the answer.</p>
-        <button class="pv-btn" data-v="primary" data-size="sm" data-on="light" type="button" data-try-agent="Help from the office" hidden>Talk to Otto</button>
+        <p>The driver tells MileVox once. It reaches the office and comes back with the answer.</p>
+        <button class="pv-btn" data-v="primary" data-size="sm" data-on="light" type="button" data-try-agent="Help from the office" hidden>Talk to MileVox</button>
       </article>
       <article class="more-card">
         <div class="mk"><span class="mk__num">04</span><span class="mk__step">The plan changes</span></div>
         <h3>Driver check-in</h3>
-        <p>Otto calls the driver for the office, one reason per call, and lets them drive.</p>
-        <button class="pv-btn" data-v="primary" data-size="sm" data-on="light" type="button" data-try-agent="Driver check-in" hidden>Talk to Otto</button>
+        <p>MileVox calls the driver for the office, one reason per call, and lets them drive.</p>
+        <button class="pv-btn" data-v="primary" data-size="sm" data-on="light" type="button" data-try-agent="Driver check-in" hidden>Talk to MileVox</button>
       </article>
       <article class="more-card">
         <div class="mk"><span class="mk__num">05</span><span class="mk__step">Before the van arrives</span></div>
         <h3>Customer call</h3>
-        <p>Otto calls the customer, checks someone will be home and agrees a time.</p>
-        <button class="pv-btn" data-v="primary" data-size="sm" data-on="light" type="button" data-try-agent="Customer call" hidden>Talk to Otto</button>
+        <p>MileVox calls the customer, checks someone will be home and agrees a time.</p>
+        <button class="pv-btn" data-v="primary" data-size="sm" data-on="light" type="button" data-try-agent="Customer call" hidden>Talk to MileVox</button>
       </article>
     </div>
   </div>
 </section>
 
-<!-- demo-intro overlay, opened by the Talk-to-Otto buttons -->
+<!-- demo-intro overlay, opened by the Talk-to-MileVox buttons -->
 <div class="demo-modal" id="demo-modal" hidden>
   <div class="demo-modal__back" data-close></div>
   <div class="demo-modal__card on-light" role="dialog" aria-modal="true" aria-labelledby="demo-modal-title">
@@ -680,12 +680,12 @@
     <h3 id="demo-modal-title">You play the driver.</h3>
     <p class="demo-modal__scene" id="demo-modal-scene"></p>
     <ol class="demo-modal__steps">
-      <li>Press start — Otto appears in the corner of the page.</li>
-      <li><strong>Press the phone button in Otto's window</strong> and allow your microphone.</li>
+      <li>Press start — MileVox appears in the corner of the page.</li>
+      <li><strong>Press the phone button in MileVox's window</strong> and allow your microphone.</li>
       <li id="demo-modal-task"></li>
     </ol>
     <div class="demo-modal__row">
-      <button class="pv-btn" data-v="primary" data-size="lg" type="button" id="demo-modal-start">Talk to Otto</button>
+      <button class="pv-btn" data-v="primary" data-size="lg" type="button" id="demo-modal-start">Talk to MileVox</button>
       <button class="demo-modal__later" type="button" data-close>Maybe later</button>
     </div>
     <p class="demo-modal__fine">A live demo — no real depot behind it. Your microphone is used only during the call, and you can type instead of talking.</p>
@@ -697,8 +697,8 @@
   <div class="wrap">
     <div class="uc__copy">
       <span class="kicker">The SDK</span>
-      <h2>Otto plugs into the stack you already run.</h2>
-      <p class="lead">Otto ships as an SDK inside your own driver app, on the devices your drivers already carry. No new app, no new login, no new hardware.</p>
+      <h2>MileVox plugs into the stack you already run.</h2>
+      <p class="lead">MileVox ships as an SDK inside your own driver app, on the devices your drivers already carry. No new app, no new login, no new hardware.</p>
       <div class="uc__cols">
         <div class="uc__col">
           <h3>Inside your driver app</h3>
@@ -717,7 +717,7 @@
         <div class="uc__col">
           <h3>Your data stays yours</h3>
           <ul>
-            <li>The stop list stays in your app — it is not shared with ParcelVox.</li>
+            <li>The stop list stays in your app — it is not shared with MileVox.</li>
             <li>The tips your drivers collect are yours alone — never shared with other parcel operators. Route knowledge stays your asset.</li>
           </ul>
         </div>
@@ -730,10 +730,10 @@
 <section class="sec on-deep demo" id="demo">
   <div class="wrap">
     <div class="sec-head">
-      <h2>Otto, on the road.</h2>
+      <h2>MileVox, on the road.</h2>
     </div>
     <div class="demo__frame">
-      <iframe src="https://www.youtube-nocookie.com/embed/B9bVdusV64k?rel=0" title="ParcelVox demo video" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      <iframe src="https://www.youtube-nocookie.com/embed/B9bVdusV64k?rel=0" title="MileVox demo video" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
     </div>
   </div>
 </section>
@@ -743,7 +743,7 @@
   <div class="wrap">
     <span class="kicker">On the driver's side</span>
     <h2>A colleague, not a supervisor.</h2>
-    <p class="lead">Otto counts what your drivers share, never how fast they drive. There's no tracking of pace and no stops-per-hour league table. Drivers who feel watched stop talking. Drivers who feel helped tell Otto everything.</p>
+    <p class="lead">MileVox counts what your drivers share, never how fast they drive. There's no tracking of pace and no stops-per-hour league table. Drivers who feel watched stop talking. Drivers who feel helped tell MileVox everything.</p>
   </div>
 </section>
 
@@ -759,7 +759,7 @@
 </main>
 
 <script>
-  // Hero Otto: with a mouse, his eyes follow the pointer. On a phone there is
+  // Hero MileVox: with a mouse, his eyes follow the pointer. On a phone there is
   // no pointer, so they follow the thumb while it is on the screen and go
   // back to wandering on their own shortly after it lifts.
   (function(){
@@ -770,7 +770,7 @@
     var coarse = !fine && matchMedia('(pointer: coarse)').matches;
     if (!fine && !coarse) return;
     var raf = null, lx = 0, ly = 0, idle = null;
-    // A fly for a cursor once the mouse comes within a face-width of Otto
+    // A fly for a cursor once the mouse comes within a face-width of MileVox
     // (he is watching it, after all). Two cursor frames alternate so its
     // wings buzz; the exit distance is a little wider than the entry
     // distance so it does not flicker at the edge of the zone.
@@ -832,7 +832,7 @@
 </script>
 
 <script>
-  // Otto-on-the-route board: play the draw-in once it scrolls into view,
+  // MileVox-on-the-route board: play the draw-in once it scrolls into view,
   // then drive the van round the route. The van is placed by script each
   // frame so it can face the way it is going and take its place among
   // the buildings: behind the ones nearer the viewer, in front of the rest.
@@ -903,12 +903,12 @@
 </script>
 
 <script>
-  // Talk to Otto: ElevenLabs agents, always on the page. Paste agent ids
+  // Talk to MileVox: ElevenLabs agents, always on the page. Paste agent ids
   // from the ElevenLabs dashboard (agent → Widget tab) into AGENTS below;
   // while every id is empty nothing mounts and the hero button stays
   // hidden, so this ships dormant. With an id, the first live agent mounts
   // on load, and the hero button opens the instructions overlay (which can
-  // also revive Otto after the Close pill removed him).
+  // also revive MileVox after the Close pill removed him).
   (function(){
     var AGENTS = [
       ['Driver report', 'agent_1901m4be21bbf56r9fhm17j2fk2x'],
@@ -959,7 +959,7 @@
         c.id = 'otto-close';
         c.className = 'otto-pill';
         c.type = 'button';
-        c.innerHTML = 'Close Otto <span aria-hidden="true">\u2715</span>';
+        c.innerHTML = 'Close MileVox <span aria-hidden="true">\u2715</span>';
         c.addEventListener('click', closeOtto);
         wrap.appendChild(info);
         wrap.appendChild(c);
@@ -1024,27 +1024,27 @@
       'Driver report': {
         title: 'You play the driver.',
         scene: "One of your drivers hits a problem at a stop — the gate code doesn't work, the road is closed, a dog guards the door. In this demo, that driver is you.",
-        task: "Tell Otto what went wrong, the way your driver would say it. He asks a couple of questions at most, then turns it into a tip for the next driver."
+        task: "Tell MileVox what went wrong, the way your driver would say it. It asks a couple of questions at most, then turns it into a tip for the next driver."
       },
       'Customer call': {
         title: 'You play the customer.',
-        scene: "Before the van arrives, Otto calls the customer to make sure the trip won't be wasted. In this demo, the customer is you.",
-        task: "Take the call. Otto checks you'll be home and agrees a time — inside the rules your depot sets."
+        scene: "Before the van arrives, MileVox calls the customer to make sure the trip won't be wasted. In this demo, the customer is you.",
+        task: "Take the call. MileVox checks you'll be home and agrees a time — inside the rules your depot sets."
       },
       'Pre-arrival notes': {
         title: 'You know the building.',
         scene: "A few hundred metres before a stop, the driver hears what's on file for the door. In this demo you supply the building: make up a house number and a name, and describe a door you know.",
-        task: "Tell Otto the number, the name on the bell and what to expect at the door. He turns it into the briefing the driver on that route would hear."
+        task: "Tell MileVox the number, the name on the bell and what to expect at the door. It turns it into the briefing the driver on that route would hear."
       },
       'Help from the office': {
         title: 'You play the driver.',
         scene: "Your driver is stuck at the door — the code on the label doesn't work. In this demo, that driver is you.",
-        task: "Tell Otto the problem once. He takes it to the office and comes back with the answer."
+        task: "Tell MileVox the problem once. It takes it to the office and comes back with the answer."
       },
       'Driver check-in': {
         title: 'You play the driver.',
         scene: "The office needs one thing from the van without pulling anyone over. In this demo, the driver is you.",
-        task: "Take Otto's call — one reason per call, one clear line, hands on the wheel."
+        task: "Take MileVox's call — one reason per call, one clear line, hands on the wheel."
       }
     };
     var modal = document.getElementById('demo-modal');
@@ -1066,9 +1066,9 @@
     document.addEventListener('keydown', function(e){
       if (e.key === 'Escape' && !modal.hidden) closeModal();
     });
-    // Start a use case: expand Otto on the spot. The intro overlay no longer
+    // Start a use case: expand MileVox on the spot. The intro overlay no longer
     // stands in the way; it stays one tap away on the Instructions pill
-    // above the widget (and its own Talk to Otto button lands back here).
+    // above the widget (and its own Talk to MileVox button lands back here).
     function start(a, b){
       var open = document.querySelector('elevenlabs-convai');
       if (open && open.getAttribute('agent-id') === a[1]) {
@@ -1096,7 +1096,7 @@
       start(a, b);
     }
 
-    // Hero button: launches the first live agent on the spot. While Otto is
+    // Hero button: launches the first live agent on the spot. While MileVox is
     // live, the hero's coral hit belongs to him; Book a demo steps back to
     // the outline style (one coral accent per surface).
     var demoBtn = document.getElementById('hero-demo');
@@ -1106,7 +1106,7 @@
       h.addEventListener('click', function(){ pick(live[0], null); });
     });
 
-    // Try-Otto buttons on the use-case cards: shown only when that use
+    // Try-MileVox buttons on the use-case cards: shown only when that use
     // case's agent id is filled in, opening its own scenario overlay.
     document.querySelectorAll('[data-try-agent]').forEach(function(btn){
       var label = btn.getAttribute('data-try-agent');
@@ -1122,7 +1122,7 @@
       }
     });
 
-    // Otto is always on the page: mount the first live agent on load,
+    // MileVox is always on the page: mount the first live agent on load,
     // collapsed to the corner bar.
     engage(live[0], null, false);
   })();

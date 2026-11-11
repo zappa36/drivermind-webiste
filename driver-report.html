@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ParcelVox — the driver report, in detail</title>
-<meta name="description" content="The ParcelVox driver report in detail: what the driver says, what Otto files against the address, and what the next driver hears on the way in.">
+<title>MileVox — the driver report, in detail</title>
+<meta name="description" content="The MileVox driver report in detail: what the driver says, what MileVox files against the address, and what the next driver hears on the way in.">
 <link href="fonts/dm-sans.css" rel="stylesheet">
 <style>
-  /* ============ ParcelVox design system tokens (Coral · Ink Blue) ============ */
+  /* ============ MileVox design system tokens (Coral · Ink Blue) ============ */
   :root{
     --ink-blue:#2A2E33;
     --ink-blue-deep:#1F2226;
@@ -117,7 +117,7 @@
   }
   .pv-live i{width:6px;height:6px;border-radius:999px;background:var(--coral);animation:pvLivePulse 2.4s var(--ease) infinite}
 
-  /* Otto — coral palette (design-system component, CSS rendition) */
+  /* MileVox — coral palette (design-system component, CSS rendition) */
   .otto{position:relative;width:64px;height:64px;display:flex;align-items:center;justify-content:center}
   .otto__ring{
     position:absolute;left:50%;top:50%;width:96%;height:96%;border-radius:50%;
@@ -235,7 +235,7 @@
   .loop__ex--tip span{display:flex;gap:10px}
   .loop__ex--tip i{font-style:normal;flex:0 0 76px;color:var(--ink-muted)}
 
-  /* what else Otto can do — compact cards for the next use cases */
+  /* what else MileVox can do — compact cards for the next use cases */
   .more .wrap{display:grid;gap:48px;grid-template-columns:minmax(0,1fr)}
   .more h2{max-width:720px}
   .more .lead{max-width:620px}
@@ -253,7 +253,7 @@
     font:500 11px/1 var(--font-display);letter-spacing:.09em;text-transform:uppercase;color:var(--coral-ink);
   }
 
-  /* try Otto — one ElevenLabs agent per use case, mounted on demand */
+  /* try MileVox — one ElevenLabs agent per use case, mounted on demand */
   .try .wrap{display:grid;gap:32px;grid-template-columns:minmax(0,1fr)}
   .try__btns{display:flex;gap:12px;flex-wrap:wrap}
   .try-btn{
@@ -266,7 +266,7 @@
   .try-btn:hover{border-color:var(--oat)}
   .try-btn[aria-pressed="true"]{background:var(--coral);border-color:var(--coral);color:var(--ink-blue-deep)}
   .try__note{margin:0;color:var(--oat-muted);font-size:14px;min-height:22px}
-  /* demo-intro overlay: sets the scene before Otto mounts */
+  /* demo-intro overlay: sets the scene before MileVox mounts */
   .demo-modal{position:fixed;inset:0;z-index:2147483646;display:flex;align-items:center;justify-content:center;padding:20px}
   .demo-modal[hidden]{display:none}
   .demo-modal__back{position:absolute;inset:0;background:rgba(31,34,38,.6)}
@@ -286,7 +286,7 @@
   .demo-modal__later:hover{color:var(--ink)}
   .demo-modal__fine{margin:0;font-size:12.5px;color:var(--ink-muted)}
 
-  /* floating controls while Otto is open (instructions + close) — the
+  /* floating controls while MileVox is open (instructions + close) — the
      widget itself has neither. JS pins them above its top-right corner. */
   .otto-ctl{position:fixed;bottom:96px;right:14px;z-index:2147483647;display:flex;gap:8px}
   .otto-pill{
@@ -409,7 +409,7 @@
       <span class="kicker">Driver report</span>
       <h2>Ten minutes lost, stop after stop. Never again.</h2>
       <p class="lead">The gate code has changed. There's a dog at the door. Scaffolding covers the entrance. Today, what a driver learns leaves with them.</p>
-      <p class="body-p">With ParcelVox, your driver presses Otto, says what happened and moves on. Otto asks what the next driver needs to know, three questions at most. He files the tip against the address. The next time anyone drives to that stop, Otto reads the tip to them on the way in.</p>
+      <p class="body-p">With MileVox, your driver presses the talk button, says what happened and moves on. MileVox asks what the next driver needs to know, three questions at most. It files the tip against the address. The next time anyone drives to that stop, MileVox reads the tip to them on the way in.</p>
       <div class="uc__cols">
         <div class="uc__col">
           <h3>For your drivers</h3>
@@ -439,9 +439,9 @@
         </div>
         <div class="transcript">
           <div class="turn"><span>Driver · 0:02</span><p>“Road's closed, couldn't get to the address.”</p></div>
-          <div class="turn turn--otto"><span>Otto · 0:05</span><p>“Got it. Was there a way round?”</p></div>
+          <div class="turn turn--otto"><span>MileVox · 0:05</span><p>“Got it. Was there a way round?”</p></div>
           <div class="turn"><span>Driver · 0:08</span><p>“Parked on Sredzkistraße and walked. Two minutes.”</p></div>
-          <div class="turn turn--otto"><span>Otto · 0:12 · speaking</span><p>“Thanks. I'll tell the next driver: road closed, park on Sredzkistraße and walk in.”</p></div>
+          <div class="turn turn--otto"><span>MileVox · 0:12 · speaking</span><p>“Thanks. I'll tell the next driver: road closed, park on Sredzkistraße and walk in.”</p></div>
         </div>
         <div class="controls">
           <span class="ctrl"><i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg></i>Mute</span>
@@ -450,7 +450,7 @@
         </div>
       </div>
       <div class="readout">
-        <div class="readout__kick"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>Otto reads out · on the way in</div>
+        <div class="readout__kick"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>MileVox reads out · on the way in</div>
         <p>Heads up — Kollwitzstraße 18, coming up. A driver reported: road closed, park on Sredzkistraße.</p>
       </div>
     </div>

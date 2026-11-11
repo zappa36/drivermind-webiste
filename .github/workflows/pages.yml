@@ -27,6 +27,7 @@ jobs:
         run: |
           mkdir -p _site
           cp index.html driver-report.html try-otto.html _site/
+          cp -r fonts _site/
           touch _site/.nojekyll
 
       - uses: actions/configure-pages@v5

@@ -1,38 +1,31 @@
 /*
  * Builds preview.html from index.html.
  *
- * index.html loads its typefaces from Google Fonts. Sandboxed preview hosts
- * (and the artifact CSP) block external font requests, which silently drops
- * Saira and JetBrains Mono to a generic sans and changes the whole page.
- * This inlines the four faces the page actually renders as woff2 data URIs
- * and strips the document shell, since the preview host supplies its own.
+ * index.html loads DM Sans (the Milevox design-system face) from fonts/.
+ * Sandboxed preview hosts (and the artifact CSP) block that relative request,
+ * which silently drops the page to a generic sans. This inlines the variable
+ * DM Sans Latin face as a woff2 data URI and strips the document shell, since
+ * the preview host supplies its own.
  *
- * Fonts come from the Fontsource npm packages (SIL Open Font License).
- * Usage: node build-preview.js <dir-with-extracted-fontsource-packages>
+ * Fonts: fonts/DMSans-*.woff2 (Google Fonts v17, SIL Open Font License).
+ * Usage: node build-preview.js
  */
 const fs = require('fs');
 const path = require('path');
 
-const FONT_DIR = process.argv[2];
-if (!FONT_DIR) {
-  console.error('usage: node build-preview.js <fontsource-dir>');
-  process.exit(1);
-}
+const FONT_DIR = path.join(__dirname, 'fonts');
 
-// Only the weights the stylesheet actually uses. Space Grotesk is the
-// structural face (500 kickers, 600 headings/buttons, 700 display/numbers);
-// Source Sans 3 is the reading face (400 body, 700 emphasis).
+// One variable file covers every weight the stylesheet uses (400 body,
+// 500 kickers, 600 headings/buttons, 700 display). The page has no italics,
+// and Latin Extended is only needed for accented names, so the preview
+// carries just the basic Latin subset to stay small.
 const FACES = [
-  ['Space Grotesk', 500, 'sg/package/files/space-grotesk-latin-500-normal.woff2'],
-  ['Space Grotesk', 600, 'sg/package/files/space-grotesk-latin-600-normal.woff2'],
-  ['Space Grotesk', 700, 'sg/package/files/space-grotesk-latin-700-normal.woff2'],
-  ['Source Sans 3', 400, 'ss3/package/files/source-sans-3-latin-400-normal.woff2'],
-  ['Source Sans 3', 700, 'ss3/package/files/source-sans-3-latin-700-normal.woff2'],
+  ['DM Sans', 'normal', '100 1000', 'DMSans-Latin.woff2'],
 ];
 
-const faceCss = FACES.map(([family, weight, file]) => {
+const faceCss = FACES.map(([family, style, weight, file]) => {
   const b64 = fs.readFileSync(path.join(FONT_DIR, file)).toString('base64');
-  return `  @font-face{font-family:'${family}';font-style:normal;font-weight:${weight};font-display:swap;` +
+  return `  @font-face{font-family:'${family}';font-style:${style};font-weight:${weight};font-display:swap;` +
          `src:url(data:font/woff2;base64,${b64}) format('woff2')}`;
 }).join('\n');
 
@@ -44,9 +37,8 @@ let html = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8');
 html = html.replace(/var GA_ID = '[^']*'/, "var GA_ID = ''");
 html = html.replace(/var AGENTS = \[[\s\S]*?\];/, (m) => m.replace(/', '[^']*'\]/g, "', '']"));
 
-// Drop the Google Fonts preconnects and stylesheet link.
-html = html.replace(/^\s*<link rel="preconnect"[^>]*>\n/gm, '');
-html = html.replace(/^\s*<link href="https:\/\/fonts\.googleapis\.com[^>]*>\n/gm, '');
+// Drop the local font stylesheet link; the faces are inlined below.
+html = html.replace(/^\s*<link href="fonts\/[^"]*\.css"[^>]*>\n/gm, '');
 
 // Inline the faces at the top of the existing stylesheet.
 html = html.replace('<style>\n', `<style>\n${faceCss}\n`);

@@ -18,12 +18,12 @@ type Env = (key: string) => string | undefined;
 // form fails on a new domain until it is added here and the function
 // redeployed. zappa36.github.io stays as the pre-domain fallback origin.
 const ALLOWED = (origin: string) =>
-  /^https:\/\/(www\.)?parcelvox\.com$/.test(origin) ||
+  /^https:\/\/(www\.)?milevox\.cloud$/.test(origin) ||
   origin === 'https://zappa36.github.io' ||
   /^http:\/\/localhost(:\d+)?$/.test(origin);
 
 const cors = (origin: string) => ({
-  'Access-Control-Allow-Origin': ALLOWED(origin) ? origin : 'https://parcelvox.com',
+  'Access-Control-Allow-Origin': ALLOWED(origin) ? origin : 'https://milevox.cloud',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type, Authorization, apikey',
   'Content-Type': 'application/json',

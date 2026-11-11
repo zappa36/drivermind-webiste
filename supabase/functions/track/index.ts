@@ -10,12 +10,12 @@
 type Env = (key: string) => string | undefined;
 
 const ALLOWED = (origin: string) =>
-  /^https:\/\/(www\.)?parcelvox\.com$/.test(origin) ||
+  /^https:\/\/(www\.)?milevox\.cloud$/.test(origin) ||
   origin === 'https://zappa36.github.io' ||
   /^http:\/\/localhost(:\d+)?$/.test(origin);
 
 const cors = (origin: string) => ({
-  'Access-Control-Allow-Origin': ALLOWED(origin) ? origin : 'https://parcelvox.com',
+  'Access-Control-Allow-Origin': ALLOWED(origin) ? origin : 'https://milevox.cloud',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type',
 });
